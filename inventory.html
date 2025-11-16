@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory - Orion POS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style_new.css">
+    <style>
+       .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .admin-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .admin-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-xl);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .btn-add {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            transition: var(--transition);
+        }
+        
+        .btn-add:hover {
+            background: var(--primary-dark);
+        }
+        
+        .table-container {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        
+        /* Override Bootstrap table styles */
+        .table {
+            margin: 0 !important;
+            font-size: 13px !important;
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+        
+        .table>:not(caption)>*>* {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            color: var(--text-primary);
+        }
+        
+        .table thead {
+            background: var(--secondary) !important;
+            border-bottom: 1px solid var(--border-color) !important;
+        }
+        
+        .table th {
+            font-weight: 600;
+            color: var(--text-primary) !important;
+            padding: var(--spacing-lg);
+            border: none;
+        }
+        
+        .table td {
+            padding: var(--spacing-lg);
+            border-color: var(--border-color) !important;
+            vertical-align: middle;
+        }
+        
+        .table tbody tr:hover {
+            background: var(--secondary) !important;
+        }
+        
+        .badge {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-md);
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .badge-success {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+        }
+        
+        .badge-warning {
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--warning);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+        
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: var(--secondary);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .btn-icon:hover {
+            background: var(--secondary-dark);
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="bi bi-lightning-fill"></i>
+                    <span>Orion</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <i class="bi bi-shop"></i>
+                    <span>POS</span>
+                </a>
+                <a href="dashboard.html" class="nav-item">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Inventory</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <i class="bi bi-clock-history"></i>
+                    <span>History</span>
+                </a>
+                <a href="users.html" class="nav-item">
+                    <i class="bi bi-people"></i>
+                    <span>Users</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <div class="user-info">
+                        <div class="user-name">Alice</div>
+                        <div class="user-role">Admin</div>
+                    </div>
+                </div>
+                <a href="login.html" class="logout-btn">
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="admin-main">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 class="page-title">Inventory Management</h1>
+                </div>
+            </header>
+            
+            <div class="admin-content">
+                <div class="content-header">
+                    <div></div>
+                    <button class="btn-add">
+                        <i class="bi bi-plus-circle"></i> Add Product
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Espresso</td>
+                                <td>Coffee</td>
+                                <td>$3.50</td>
+                                <td>120</td>
+                                <td><span class="badge badge-success">In Stock</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn-icon" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Latte</td>
+                                <td>Coffee</td>
+                                <td>$4.50</td>
+                                <td>85</td>
+                                <td><span class="badge badge-success">In Stock</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn-icon" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Sandwich</td>
+                                <td>Food</td>
+                                <td>$7.99</td>
+                                <td>15</td>
+                                <td><span class="badge badge-warning">Low Stock</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn-icon" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

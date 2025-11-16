@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - Orion POS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style_new.css">
+    <style>
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .admin-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .admin-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-xl);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .btn-add {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        .user-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 24px;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .user-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .user-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: var(--secondary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-md);
+            display: inline-block;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .user-status {
+            font-size: 12px;
+            color: var(--success);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            width: 100%;
+        }
+        
+        .btn-icon {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-white);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        
+        .btn-icon:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="bi bi-lightning-fill"></i>
+                    <span>Orion</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <i class="bi bi-shop"></i>
+                    <span>POS</span>
+                </a>
+                <a href="dashboard.html" class="nav-item">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="inventory.html" class="nav-item">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Inventory</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <i class="bi bi-clock-history"></i>
+                    <span>History</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="bi bi-people"></i>
+                    <span>Users</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <div class="user-info">
+                        <div class="user-name">Alice</div>
+                        <div class="user-role">Admin</div>
+                    </div>
+                </div>
+                <a href="login.html" class="logout-btn">
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="admin-main">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 class="page-title">User Management</h1>
+                </div>
+            </header>
+            
+            <div class="admin-content">
+                <div class="content-header">
+                    <div></div>
+                    <button class="btn-add">
+                        <i class="bi bi-plus-circle"></i> Add User
+                    </button>
+                </div>
+                
+                <div class="users-grid">
+                    <div class="user-card">
+                        <div class="user-avatar">A</div>
+                        <div class="user-name">Alice Johnson</div>
+                        <div class="user-role">Admin</div>
+                        <div class="user-status">● Online</div>
+                        <div class="user-actions">
+                            <button class="btn-icon"><i class="bi bi-pencil"></i> Edit</button>
+                            <button class="btn-icon"><i class="bi bi-trash"></i> Delete</button>
+                        </div>
+                    </div>
+                    <div class="user-card">
+                        <div class="user-avatar">B</div>
+                        <div class="user-name">Bob Smith</div>
+                        <div class="user-role">Cashier</div>
+                        <div class="user-status">● Online</div>
+                        <div class="user-actions">
+                            <button class="btn-icon"><i class="bi bi-pencil"></i> Edit</button>
+                            <button class="btn-icon"><i class="bi bi-trash"></i> Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

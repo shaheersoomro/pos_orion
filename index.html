@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion POS - Modern Point of Sale System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Modern CSS -->
+    <link rel="stylesheet" href="style_new.css">
+</head>
+
+<body>
+    <div class="pos-wrapper">
+        <!-- Sidebar Navigation -->
+        <!-- <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="bi bi-lightning-fill"></i>
+                    <span>Orion</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="pos">
+                    <i class="bi bi-shop"></i>
+                    <span>POS</span>
+                </a>
+                <a href="dashboard.html" class="nav-item" data-page="dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="inventory.html" class="nav-item" data-page="inventory">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Inventory</span>
+                </a>
+                <a href="history.html" class="nav-item" data-page="history">
+                    <i class="bi bi-clock-history"></i>
+                    <span>History</span>
+                </a>
+                <a href="users.html" class="nav-item" data-page="users">
+                    <i class="bi bi-people"></i>
+                    <span>Users</span>
+                </a>
+                <a href="settings.html" class="nav-item" data-page="settings">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <div class="user-info">
+                        <div class="user-name">Alice</div>
+                        <div class="user-role">Cashier</div>
+                    </div>
+                </div>
+                <a href="login.html" class="logout-btn" title="Logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+            </div>
+        </aside> -->
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 class="page-title">Point of Sale</h1>
+                </div>
+                <div class="header-center">
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" id="product-search" placeholder="Search products...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Today's Sales</span>
+                            <span class="stat-value">$1,250.50</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Transactions</span>
+                            <span class="stat-value">55</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- POS Layout -->
+            <div class="pos-layout">
+                <!-- Left: Products Section -->
+                <div class="products-section">
+                    <!-- Search & Filter -->
+                    <div class="products-header">
+                        <!-- <div class="search-box">
+                            <i class="bi bi-search"></i>
+                            <input type="text" id="product-search" placeholder="Search products...">
+                        </div> -->
+                        <div class="category-filter">
+                            <button class="filter-btn active" data-category="all">All</button>
+                            <button class="filter-btn" data-category="coffee">Coffee</button>
+                            <button class="filter-btn" data-category="food">Food</button>
+                            <button class="filter-btn" data-category="services">Services</button>
+                        </div>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div class="products-grid" id="products-grid">
+                        <!-- Products will be populated by JavaScript -->
+                    </div>
+                </div>
+
+
+            </div>
+        </main>
+        <!-- Right: Order Summary & Cart -->
+        <aside class="order-panel">
+            <!-- Order Header -->
+            <div class="order-header">
+                <h2>Order #<span id="order-number">001</span></h2>
+                <div class="order-time" id="order-time">12:30 PM</div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="order-items" id="order-items">
+                <div class="empty-state">
+                    <i class="bi bi-inbox"></i>
+                    <p>No items added</p>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (8%)</span>
+                    <span id="tax">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span id="total">$0.00</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="order-actions">
+                <button class="btn-action btn-secondary" id="btn-cancel">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </button>
+                <button class="btn-action btn-primary" id="btn-payment">
+                    <i class="bi bi-credit-card"></i> Payment
+                </button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="payment-info">
+                        <div class="info-row">
+                            <span>Total Amount:</span>
+                            <span class="amount" id="modal-total">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="payment-methods">
+                        <button class="payment-method active" data-method="cash">
+                            <i class="bi bi-cash-coin"></i> Cash
+                        </button>
+                        <button class="payment-method" data-method="card">
+                            <i class="bi bi-credit-card"></i> Card
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount Received</label>
+                        <input type="number" id="amount-received" placeholder="0.00" step="0.01">
+                    </div>
+                    <div class="change-due" id="change-display" style="display: none;">
+                        <span>Change Due:</span>
+                        <span id="change-amount">$0.00</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-action btn-primary" id="btn-complete-payment">Complete
+                        Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complete Modal -->
+    <div class="modal complete-modal fade" id="completeModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="successfull-badge">
+                        <i class="bi bi-check"></i>
+                    </div>
+                    <div class="Successfull-info">
+                        <h1>Payment Successfull!</h1>
+                        <p>Thank you for your purchase.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Print Bill</button>
+                    <button type="button" class="btn-action btn-primary" id="btn-complete-payment">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script_new.js"></script>
+</body>
+
+</html>

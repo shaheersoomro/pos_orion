@@ -719,24 +719,26 @@ function setupEventListeners() {
   });
 }
 
-const togglePassword = document.getElementById("togglePassword");
-const passwordInput = document.getElementById("password");
-
-// Password visibility toggle
-togglePassword.addEventListener("click", function () {
-  const type =
-    passwordInput.getAttribute("type") === "password" ? "text" : "password";
-  passwordInput.setAttribute("type", type);
-
-  // Update the icon
-  const icon = this.querySelector("i");
-  if (type === "text") {
-    icon.classList.remove("bi-eye");
-    icon.classList.add("bi-eye-slash");
-    this.setAttribute("aria-label", "Hide password");
-  } else {
-    icon.classList.remove("bi-eye-slash");
-    icon.classList.add("bi-eye");
-    this.setAttribute("aria-label", "Show password");
-  }
+document.querySelectorAll(".toggle-password").forEach(toggle => {
+    toggle.addEventListener("click", function () {
+        // Find the password input within the same container
+        const passwordContainer = this.closest('.password-container');
+        const passwordInput = passwordContainer.querySelector('input[type="password"], input[type="text"]');
+        
+        // Toggle the input type
+        const type = passwordInput.type === 'password' ? 'text' : 'password';
+        passwordInput.type = type;
+        
+        // Update the icon and aria-label
+        const icon = this.querySelector("i");
+        if (type === "text") {
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+            this.setAttribute("aria-label", "Hide password");
+        } else {
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+            this.setAttribute("aria-label", "Show password");
+        }
+    });
 });

@@ -400,7 +400,6 @@ function completePayment() {
     document.getElementById("paymentModal")
   );
   paymentModal.hide();
-
 }
 
 // ============================================
@@ -562,7 +561,8 @@ function setupAddUserListeners() {
 
   // Real-time validation
   userName.addEventListener("input", function () {
-    if (userName.value.trim().length < 2) { // Fixed: changed 'productName' to 'userName'
+    if (userName.value.trim().length < 2) {
+      // Fixed: changed 'productName' to 'userName'
       showValidationMessage("User name must be at least 2 characters");
     } else {
       hideValidationMessage();
@@ -602,7 +602,9 @@ function addNewUser() {
   }
 
   // Check for duplicate user emails
-  const existingUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  const existingUser = users.find(
+    (u) => u.email.toLowerCase() === email.toLowerCase()
+  );
   if (existingUser) {
     alert("A user with this email already exists");
     return;
@@ -614,7 +616,7 @@ function addNewUser() {
     name: name,
     role: role,
     email: email,
-    password: password
+    password: password,
   };
 
   // Add to users array
@@ -692,7 +694,8 @@ function setupEventListeners() {
     document
       .getElementById("btn-add-user")
       .addEventListener("click", openAddUserModal);
-      document.getElementById("btn-save-user")
+    document
+      .getElementById("btn-save-user")
       .addEventListener("click", addNewUser);
     setupAddUserListeners();
   }
@@ -715,3 +718,25 @@ function setupEventListeners() {
     });
   });
 }
+
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+
+// Password visibility toggle
+togglePassword.addEventListener("click", function () {
+  const type =
+    passwordInput.getAttribute("type") === "password" ? "text" : "password";
+  passwordInput.setAttribute("type", type);
+
+  // Update the icon
+  const icon = this.querySelector("i");
+  if (type === "text") {
+    icon.classList.remove("bi-eye");
+    icon.classList.add("bi-eye-slash");
+    this.setAttribute("aria-label", "Hide password");
+  } else {
+    icon.classList.remove("bi-eye-slash");
+    icon.classList.add("bi-eye");
+    this.setAttribute("aria-label", "Show password");
+  }
+});

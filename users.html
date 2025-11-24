@@ -292,7 +292,13 @@
                         </div>
                         <div class="mb-3 form-group">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-control" id="user-password" placeholder="••••••••">
+                            <div class="password-container">
+                                <input type="password" class="form-control" id="user-password" placeholder="••••••••">
+                                <button type="button" class="toggle-password" id="togglePassword"
+                                    aria-label="Show password">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         
                         <div id="user-validation" class="alert alert-warning" style="display: none;"></div>

@@ -851,7 +851,7 @@ body {
     margin-bottom: var(--spacing-md);
 }
 
-.form-group input{
+.form-group input {
     width: 100%;
     padding: var(--spacing-md);
     border: 1px solid var(--border-color);
@@ -863,8 +863,8 @@ body {
     color: var(--text-secondary);
 }
 
-.form-group input::placeholder{
-    
+.form-group input::placeholder {
+
     color: var(--text-secondary);
 }
 
@@ -877,7 +877,7 @@ body {
 }
 
 
-.form-group select{
+.form-group select {
     width: 100%;
     padding: var(--spacing-md);
     border: 1px solid var(--border-color);
@@ -908,6 +908,40 @@ body {
     font-weight: 600;
     color: var(--success);
 }
+
+.password-container {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+            background-color: var(--bg-white);
+            color: var(--text-secondary)
+        }
+        
+        .toggle-password:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        .toggle-password i {
+            font-size: 16px;
+        }
 
 /* ============================================
    RESPONSIVE DESIGN

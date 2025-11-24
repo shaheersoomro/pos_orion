@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory - Orion POS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style_new.css">
     <style>
-       .admin-wrapper {
+        .admin-wrapper {
             display: flex;
             height: 100vh;
         }
-        
+
         .admin-main {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-        
+
         .admin-content {
             flex: 1;
             overflow-y: auto;
             padding: var(--spacing-xl);
         }
-        
+
         .content-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: var(--spacing-xl);
         }
-        
+
         .btn-add {
             background: var(--primary);
             color: white;
@@ -49,18 +51,18 @@
             gap: var(--spacing-md);
             transition: var(--transition);
         }
-        
+
         .btn-add:hover {
             background: var(--primary-dark);
         }
-        
+
         .table-container {
             background: var(--bg-white);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-md);
             overflow: hidden;
         }
-        
+
         /* Override Bootstrap table styles */
         .table {
             margin: 0 !important;
@@ -69,58 +71,58 @@
             border-spacing: 0;
             width: 100%;
         }
-        
+
         .table>:not(caption)>*>* {
             background-color: transparent !important;
             box-shadow: none !important;
             border-bottom: 1px solid var(--border-color) !important;
             color: var(--text-primary);
         }
-        
+
         .table thead {
             background: var(--secondary) !important;
             border-bottom: 1px solid var(--border-color) !important;
         }
-        
+
         .table th {
             font-weight: 600;
             color: var(--text-primary) !important;
             padding: var(--spacing-lg);
             border: none;
         }
-        
+
         .table td {
             padding: var(--spacing-lg);
             border-color: var(--border-color) !important;
             vertical-align: middle;
         }
-        
+
         .table tbody tr:hover {
             background: var(--secondary) !important;
         }
-        
+
         .badge {
             padding: var(--spacing-sm) var(--spacing-md);
             border-radius: var(--radius-md);
             font-size: 11px;
             font-weight: 600;
         }
-        
+
         .badge-success {
             background: rgba(46, 204, 113, 0.1);
             color: var(--success);
         }
-        
+
         .badge-warning {
             background: rgba(255, 107, 53, 0.1);
             color: var(--warning);
         }
-        
+
         .action-buttons {
             display: flex;
             gap: var(--spacing-md);
         }
-        
+
         .btn-icon {
             width: 32px;
             height: 32px;
@@ -134,17 +136,18 @@
             justify-content: center;
             transition: var(--transition);
         }
-        
+
         .btn-icon:hover {
             background: var(--secondary-dark);
             color: var(--primary);
         }
     </style>
 </head>
+
 <body>
     <div class="admin-wrapper">
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <!-- <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
                     <i class="bi bi-lightning-fill"></i>
@@ -191,24 +194,36 @@
                     <i class="bi bi-box-arrow-right"></i>
                 </a>
             </div>
-        </aside>
-        
+        </aside> -->
+
         <!-- Main Content -->
         <div class="admin-main">
             <header class="top-header">
                 <div class="header-left">
                     <h1 class="page-title">Inventory Management</h1>
                 </div>
+                <div class="header-right">
+                    <div class="user-profile">
+                        <div class="avatar">A</div>
+                        <div class="user-info">
+                            <div class="user-name">Alice</div>
+                            <div class="user-role">Cashier</div>
+                        </div>
+                        <a href="login.html" class="logout-btn" title="Logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
             </header>
-            
+
             <div class="admin-content">
                 <div class="content-header">
                     <div></div>
-                    <button class="btn-add">
+                    <button class="btn-add" id="btn-add-product">
                         <i class="bi bi-plus-circle"></i> Add Product
                     </button>
                 </div>
-                
+
                 <div class="table-container">
                     <table class="table">
                         <thead>
@@ -277,9 +292,101 @@
                     </table>
                 </div>
             </div>
+            <nav class="bottom-navbar">
+                <a href="index.html" class="nav-item" data-page="pos">
+                    <i class="bi bi-shop"></i>
+                    <span>POS</span>
+                </a>
+                <a href="dashboard.html" class="nav-item" data-page="dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="inventory.html" class="nav-item active" data-page="inventory">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Inventory</span>
+                </a>
+                <a href="history.html" class="nav-item" data-page="history">
+                    <i class="bi bi-clock-history"></i>
+                    <span>History</span>
+                </a>
+                <a href="users.html" class="nav-item" data-page="users">
+                    <i class="bi bi-people"></i>
+                    <span>Users</span>
+                </a>
+                <a href="settings.html" class="nav-item" data-page="settings">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
         </div>
     </div>
-    
+
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-product-form">
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="product-name" placeholder="Product Name" required>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Price</label>
+                            <input type="number" class="form-control" id="product-price" step="0.01" min="0" placeholder="0.0" required>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-control" id="product-category">
+                                <option value="coffee">Coffee</option>
+                                <option value="food">Food</option>
+                                <option value="services">Services</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Icon URL (optional)</label>
+                            <input type="text" class="form-control" id="product-icon" placeholder="images/product.png">
+                        </div>
+                        <div id="product-validation" class="alert alert-warning" style="display: none;"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-action btn-primary" id="btn-save-product">Save Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade success-modal" id="addProductSuccessModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- <h5 class="modal-title">Success</h5> -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="successfull-badge">
+                        <i class="bi bi-check"></i>
+                    </div>
+                    <div class="Successfull-info">
+                        <h1>Product Added Successfull!</h1>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script_new.js"></script>
 </body>
+
 </html>

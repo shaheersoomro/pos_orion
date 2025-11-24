@@ -343,7 +343,7 @@ body {
 
 .header-center {
     flex: 1;
-    max-width: 400px;
+    max-width: 280px;
 }
 
 
@@ -509,7 +509,7 @@ body {
 .products-grid {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: var(--spacing-md);
     padding: var(--spacing-lg);
     overflow-y: auto;
@@ -794,7 +794,9 @@ body {
     color: var(--primary);
 }
 
-.complete-modal .modal-body {
+
+
+.success-modal .modal-body {
     padding: var(--spacing-lg);
     display: flex;
     flex-direction: column;
@@ -849,7 +851,7 @@ body {
     margin-bottom: var(--spacing-md);
 }
 
-.form-group input {
+.form-group input{
     width: 100%;
     padding: var(--spacing-md);
     border: 1px solid var(--border-color);
@@ -858,12 +860,42 @@ body {
     font-family: 'Inter', sans-serif;
     transition: var(--transition);
     background-color: var(--bg-light);
+    color: var(--text-secondary);
+}
+
+.form-group input::placeholder{
+    
+    color: var(--text-secondary);
 }
 
 .form-group input:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(91, 75, 158, 0.1);
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+}
+
+
+.form-group select{
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition);
+    background-color: var(--bg-light);
+    color: var(--text-secondary);
+
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(91, 75, 158, 0.1);
+    background-color: var(--bg-light);
+    color: var(--text-primary);
 }
 
 .change-due {

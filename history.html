@@ -57,20 +57,22 @@
 
         .filter-group input,
         .filter-group select {
+            background-color: var(--bg-light);
+            color: var(--text-secondary);
             padding: var(--spacing-md);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
             font-family: 'Inter', sans-serif;
             font-size: 13px;
         }
-
+        
         .table-container {
             background: var(--bg-white);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-md);
             overflow: hidden;
         }
-        
+
         /* Override Bootstrap table styles */
         .table {
             margin: 0 !important;
@@ -125,7 +127,7 @@
 <body>
     <div class="admin-wrapper">
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <!-- <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
                     <i class="bi bi-lightning-fill"></i>
@@ -172,13 +174,25 @@
                     <i class="bi bi-box-arrow-right"></i>
                 </a>
             </div>
-        </aside>
+        </aside> -->
 
         <!-- Main Content -->
         <div class="admin-main">
             <header class="top-header">
                 <div class="header-left">
                     <h1 class="page-title">Transaction History</h1>
+                </div>
+                <div class="header-right">
+                    <div class="user-profile">
+                        <div class="avatar">A</div>
+                        <div class="user-info">
+                            <div class="user-name">Alice</div>
+                            <div class="user-role">Cashier</div>
+                        </div>
+                        <a href="login.html" class="logout-btn" title="Logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </header>
 
@@ -238,6 +252,32 @@
                     </table>
                 </div>
             </div>
+            <nav class="bottom-navbar">
+                <a href="index.html" class="nav-item" data-page="pos">
+                    <i class="bi bi-shop"></i>
+                    <span>POS</span>
+                </a>
+                <a href="dashboard.html" class="nav-item" data-page="dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="inventory.html" class="nav-item" data-page="inventory">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Inventory</span>
+                </a>
+                <a href="history.html" class="nav-item active" data-page="history">
+                    <i class="bi bi-clock-history"></i>
+                    <span>History</span>
+                </a>
+                <a href="users.html" class="nav-item" data-page="users">
+                    <i class="bi bi-people"></i>
+                    <span>Users</span>
+                </a>
+                <a href="settings.html" class="nav-item" data-page="settings">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
         </div>
     </div>
 

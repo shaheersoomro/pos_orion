@@ -720,26 +720,237 @@ function setupEventListeners() {
 }
 
 // password visibility toggle
-document.querySelectorAll(".toggle-password").forEach(toggle => {
-    toggle.addEventListener("click", function () {
-        // Find the password input within the same container
-        const passwordContainer = this.closest('.password-container');
-        const passwordInput = passwordContainer.querySelector('input[type="password"], input[type="text"]');
-        
-        // Toggle the input type
-        const type = passwordInput.type === 'password' ? 'text' : 'password';
-        passwordInput.type = type;
-        
-        // Update the icon and aria-label
-        const icon = this.querySelector("i");
-        if (type === "text") {
-            icon.classList.remove("bi-eye");
-            icon.classList.add("bi-eye-slash");
-            this.setAttribute("aria-label", "Hide password");
-        } else {
-            icon.classList.remove("bi-eye-slash");
-            icon.classList.add("bi-eye");
-            this.setAttribute("aria-label", "Show password");
-        }
-    });
+document.querySelectorAll(".toggle-password").forEach((toggle) => {
+  toggle.addEventListener("click", function () {
+    // Find the password input within the same container
+    const passwordContainer = this.closest(".password-container");
+    const passwordInput = passwordContainer.querySelector(
+      'input[type="password"], input[type="text"]'
+    );
+
+    // Toggle the input type
+    const type = passwordInput.type === "password" ? "text" : "password";
+    passwordInput.type = type;
+
+    // Update the icon and aria-label
+    const icon = this.querySelector("i");
+    if (type === "text") {
+      icon.classList.remove("bi-eye");
+      icon.classList.add("bi-eye-slash");
+      this.setAttribute("aria-label", "Hide password");
+    } else {
+      icon.classList.remove("bi-eye-slash");
+      icon.classList.add("bi-eye");
+      this.setAttribute("aria-label", "Show password");
+    }
+  });
 });
+
+const signupBtn = document.getElementById("signup-btn");
+if (signupBtn) {
+  signupBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+    
+    // Clear previous error messages
+    clearErrors();
+    
+    let isValid = true;
+
+    // Email validation
+    if (!email) {
+      showError('email', 'Email is required.');
+      isValid = false;
+    } else if (!isValidEmail(email)) {
+      showError('email', 'Please enter a valid email address.');
+      isValid = false;
+    }
+
+    // Password validation
+    if (!password) {
+      showError('password', 'Password is required.');
+      isValid = false;
+    } else {
+      const passwordErrors = validatePassword(password);
+      if (passwordErrors.length > 0) {
+        showError('password', passwordErrors.join('<br>'));
+        isValid = false;
+      }
+    }
+
+    // Confirm password validation
+    if (!confirmPassword) {
+      showError('confirm-password', 'Please confirm your password.');
+      isValid = false;
+    } else if (password !== confirmPassword) {
+      showError('confirm-password', 'Passwords do not match.');
+      isValid = false;
+    }
+
+    if (isValid) {
+      // Here you would typically send a request to your server to create the account
+      console.log("Signing up with:", { email, password });
+      
+      // Show success message
+      showSuccess('Account created successfully!');
+      
+      // Optional: Redirect after a short delay
+      setTimeout(() => {
+        window.location.href = "create_account.html";
+      }, 1500);
+    }
+  });
+}
+
+// Email validation function
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+// Strong password validation function
+function validatePassword(password) {
+  const errors = [];
+  
+  if (password.length < 8) {
+    errors.push('• At least 8 characters long');
+  }
+  
+  if (!/(?=.*[a-z])/.test(password)) {
+    errors.push('• At least one lowercase letter');
+  }
+  
+  if (!/(?=.*[A-Z])/.test(password)) {
+    errors.push('• At least one uppercase letter');
+  }
+  
+  if (!/(?=.*\d)/.test(password)) {
+    errors.push('• At least one number');
+  }
+  
+  if (!/(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/.test(password)) {
+    errors.push('• At least one special character');
+  }
+  
+  return errors;
+}
+
+// Show error message function
+function showError(fieldId, message) {
+  const field = document.getElementById(fieldId);
+  const errorElement = document.createElement('div');
+  errorElement.className = 'error-message';
+  errorElement.innerHTML = message;
+  errorElement.style.color = '#BE3E3F';
+  errorElement.style.fontSize = '0.875rem';
+  errorElement.style.marginTop = '0.25rem';
+  
+  field.parentNode.appendChild(errorElement);
+  field.style.borderColor = '#BE3E3F';
+}
+
+// Show success message function
+function showSuccess(message) {
+  // Remove any existing success message
+  const existingSuccess = document.querySelector('.success-message');
+  if (existingSuccess) {
+    existingSuccess.remove();
+  }
+  
+  const successElement = document.createElement('div');
+  successElement.className = 'success-message';
+  successElement.textContent = message;
+  successElement.style.color = '#02CA3A';
+  successElement.style.backgroundColor = '#d4edda';
+  successElement.style.border = '1px solid #c3e6cb';
+  successElement.style.borderRadius = '0.25rem';
+  successElement.style.padding = '0.75rem';
+  successElement.style.margin = '1rem 0';
+  successElement.style.fontSize = '0.875rem';
+  
+  // Insert success message before the form or in a suitable location
+  const form = document.querySelector('form');
+  form.parentNode.insertBefore(successElement, form);
+}
+
+// Clear all error messages function
+function clearErrors() {
+  // Remove error messages
+  const errorMessages = document.querySelectorAll('.error-message');
+  errorMessages.forEach(error => error.remove());
+  
+  // Remove success message
+  const successMessage = document.querySelector('.success-message');
+  if (successMessage) {
+    successMessage.remove();
+  }
+  
+  // Reset border colors
+  const fields = ['email', 'password', 'confirm-password'];
+  fields.forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      field.style.borderColor = '';
+    }
+  });
+}
+
+// Optional: Add real-time validation as user types
+document.addEventListener('DOMContentLoaded', function() {
+  const emailField = document.getElementById('email');
+  const passwordField = document.getElementById('password');
+  const confirmPasswordField = document.getElementById('confirm-password');
+  
+  if (emailField) {
+    emailField.addEventListener('blur', function() {
+      const email = this.value.trim();
+      if (email && !isValidEmail(email)) {
+        showError('email', 'Please enter a valid email address.');
+      }
+    });
+  }
+  
+  if (passwordField) {
+    passwordField.addEventListener('blur', function() {
+      const password = this.value;
+      if (password) {
+        const passwordErrors = validatePassword(password);
+        if (passwordErrors.length > 0) {
+          showError('password', 'Password requirements:<br>' + passwordErrors.join('<br>'));
+        }
+      }
+    });
+  }
+  
+  if (confirmPasswordField) {
+    confirmPasswordField.addEventListener('blur', function() {
+      const password = document.getElementById('password').value;
+      const confirmPassword = this.value;
+      if (password && confirmPassword && password !== confirmPassword) {
+        showError('confirm-password', 'Passwords do not match.');
+      }
+    });
+  }
+  
+  // Clear errors when user starts typing
+  const fields = [emailField, passwordField, confirmPasswordField];
+  fields.forEach(field => {
+    if (field) {
+      field.addEventListener('input', function() {
+        clearErrorsForField(this.id);
+      });
+    }
+  });
+});
+
+function clearErrorsForField(fieldId) {
+  const field = document.getElementById(fieldId);
+  const errorMessage = field.parentNode.querySelector('.error-message');
+  if (errorMessage) {
+    errorMessage.remove();
+  }
+  field.style.borderColor = '';
+}
+

@@ -931,17 +931,39 @@ body {
 }
 
 .toggle-password:hover {
-            background-color: var(--bg-white);
-            color: var(--text-secondary)
-        }
-        
-        .toggle-password:active {
-            transform: translateY(-50%) scale(0.95);
-        }
-        
-        .toggle-password i {
-            font-size: 16px;
-        }
+    background-color: var(--bg-white);
+    color: var(--text-secondary)
+}
+
+.toggle-password:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.toggle-password i {
+    font-size: 16px;
+}
+
+
+.error-message {
+    color: var(--warning);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    line-height: 1.4;
+}
+
+.success-message {
+    color: var(--success);
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+}
+
+input.error {
+    border-color: var(--warning) !important;
+}
 
 /* ============================================
    RESPONSIVE DESIGN

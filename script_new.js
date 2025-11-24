@@ -719,6 +719,7 @@ function setupEventListeners() {
   });
 }
 
+// password visibility toggle
 document.querySelectorAll(".toggle-password").forEach(toggle => {
     toggle.addEventListener("click", function () {
         // Find the password input within the same container

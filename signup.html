@@ -36,17 +36,7 @@
             font-family: 'Inter', sans-serif;
             background: var(--bg-light);
         }
-
-        /* .login-container {
-            display: flex;
-            height: 100vh;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-
-        } */
-
-
+        
         .overlay {
             position: relative;
             top: 0;
@@ -63,7 +53,13 @@
         }
 
         .login-card {
-            padding: 40px;
+            padding: 20px 40px;
+            /* Reduced top/bottom padding */
+            justify-content: flex-start;
+            /* Align content to the top */
+            overflow-y: auto;
+            /* Allow scrolling for long forms */
+
             background-color: var(--bg-white);
             display: flex;
             flex-direction: column;
@@ -274,7 +270,8 @@
                         <div class="form-group">
                             <label for="password">Confirm Password</label>
                             <div class="password-container">
-                                <input type="password" class="password" id="confirm-password" placeholder="••••••••" required>
+                                <input type="password" class="password" id="confirm-password" placeholder="••••••••"
+                                    required>
                                 <button type="button" class="toggle-password" aria-label="Show password">
                                     <i class="bi bi-eye"></i>
                                 </button>

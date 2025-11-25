@@ -840,6 +840,7 @@ function validatePassword(password) {
 // Show error message function
 function showError(fieldId, message) {
   const field = document.getElementById(fieldId);
+  const formGroup = field.closest('.form-group');
   const errorElement = document.createElement('div');
   errorElement.className = 'error-message';
   errorElement.innerHTML = message;
@@ -847,7 +848,7 @@ function showError(fieldId, message) {
   errorElement.style.fontSize = '0.875rem';
   errorElement.style.marginTop = '0.25rem';
   
-  field.parentNode.appendChild(errorElement);
+  formGroup.appendChild(errorElement);
   field.style.borderColor = '#BE3E3F';
 }
 
@@ -862,7 +863,7 @@ function showSuccess(message) {
   const successElement = document.createElement('div');
   successElement.className = 'success-message';
   successElement.textContent = message;
-  successElement.style.color = '#02CA3A';
+  successElement.style.color = '#02CA3A;';
   successElement.style.backgroundColor = '#d4edda';
   successElement.style.border = '1px solid #c3e6cb';
   successElement.style.borderRadius = '0.25rem';

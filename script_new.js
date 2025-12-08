@@ -719,239 +719,828 @@ function setupEventListeners() {
   });
 }
 
-// password visibility toggle
-document.querySelectorAll(".toggle-password").forEach((toggle) => {
-  toggle.addEventListener("click", function () {
-    // Find the password input within the same container
-    const passwordContainer = this.closest(".password-container");
-    const passwordInput = passwordContainer.querySelector(
-      'input[type="password"], input[type="text"]'
-    );
+// Common functions for both login and signup
+// Strong password validation function (exactly as in your original code)
+function validatePassword(password) {
+  const errors = [];
 
-    // Toggle the input type
-    const type = passwordInput.type === "password" ? "text" : "password";
-    passwordInput.type = type;
+  if (password.length < 8) {
+    errors.push("• At least 8 characters long");
+  }
 
-    // Update the icon and aria-label
-    const icon = this.querySelector("i");
-    if (type === "text") {
-      icon.classList.remove("bi-eye");
-      icon.classList.add("bi-eye-slash");
-      this.setAttribute("aria-label", "Hide password");
-    } else {
-      icon.classList.remove("bi-eye-slash");
-      icon.classList.add("bi-eye");
-      this.setAttribute("aria-label", "Show password");
-    }
-  });
-});
+  if (!/(?=.*[a-z])/.test(password)) {
+    errors.push("• At least one lowercase letter");
+  }
 
-const signupBtn = document.getElementById("signup-btn");
-if (signupBtn) {
-  signupBtn.addEventListener("click", function (e) {
-    e.preventDefault();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirm-password").value;
-    
-    // Clear previous error messages
-    clearErrors();
-    
-    let isValid = true;
+  if (!/(?=.*[A-Z])/.test(password)) {
+    errors.push("• At least one uppercase letter");
+  }
 
-    // Email validation
-    if (!email) {
-      showError('email', 'Email is required.');
-      isValid = false;
-    } else if (!isValidEmail(email)) {
-      showError('email', 'Please enter a valid email address.');
-      isValid = false;
-    }
+  if (!/(?=.*\d)/.test(password)) {
+    errors.push("• At least one number");
+  }
 
-    // Password validation
-    if (!password) {
-      showError('password', 'Password is required.');
-      isValid = false;
-    } else {
-      const passwordErrors = validatePassword(password);
-      if (passwordErrors.length > 0) {
-        showError('password', passwordErrors.join('<br>'));
-        isValid = false;
-      }
-    }
+  if (!/(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/.test(password)) {
+    errors.push("• At least one special character");
+  }
 
-    // Confirm password validation
-    if (!confirmPassword) {
-      showError('confirm-password', 'Please confirm your password.');
-      isValid = false;
-    } else if (password !== confirmPassword) {
-      showError('confirm-password', 'Passwords do not match.');
-      isValid = false;
-    }
-
-    if (isValid) {
-      // Here you would typically send a request to your server to create the account
-      console.log("Signing up with:", { email, password });
-      
-      // Show success message
-      showSuccess('Account created successfully!');
-      
-      // Optional: Redirect after a short delay
-      setTimeout(() => {
-        window.location.href = "create_account.html";
-      }, 1500);
-    }
-  });
+  return errors;
 }
 
-// Email validation function
+// Complete JavaScript code for both login and signup pages
+const signupBtn = document.getElementById("signup-btn");
+const loginBtn = document.getElementById("login-btn");
+
+// Common functions
 function isValidEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
-// Strong password validation function
-function validatePassword(password) {
-  const errors = [];
-  
-  if (password.length < 8) {
-    errors.push('• At least 8 characters long');
-  }
-  
-  if (!/(?=.*[a-z])/.test(password)) {
-    errors.push('• At least one lowercase letter');
-  }
-  
-  if (!/(?=.*[A-Z])/.test(password)) {
-    errors.push('• At least one uppercase letter');
-  }
-  
-  if (!/(?=.*\d)/.test(password)) {
-    errors.push('• At least one number');
-  }
-  
-  if (!/(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/.test(password)) {
-    errors.push('• At least one special character');
-  }
-  
-  return errors;
-}
-
-// Show error message function
 function showError(fieldId, message) {
+  clearErrorForField(fieldId);
+  
   const field = document.getElementById(fieldId);
-  const formGroup = field.closest('.form-group');
-  const errorElement = document.createElement('div');
-  errorElement.className = 'error-message';
+  if (!field) return;
+  
+  const formGroup = field.closest(".form-group");
+  const errorElement = document.createElement("div");
+  errorElement.className = "error-message";
+  errorElement.setAttribute("data-field", fieldId);
   errorElement.innerHTML = message;
-  errorElement.style.color = '#BE3E3F';
-  errorElement.style.fontSize = '0.875rem';
-  errorElement.style.marginTop = '0.25rem';
-  
+  errorElement.style.color = "#BE3E3F";
+  errorElement.style.fontSize = "0.875rem";
+  errorElement.style.marginTop = "0.25rem";
+
   formGroup.appendChild(errorElement);
-  field.style.borderColor = '#BE3E3F';
+  field.style.borderColor = "#BE3E3F";
 }
 
-// Show success message function
 function showSuccess(message) {
-  // Remove any existing success message
-  const existingSuccess = document.querySelector('.success-message');
-  if (existingSuccess) {
-    existingSuccess.remove();
-  }
-  
-  const successElement = document.createElement('div');
-  successElement.className = 'success-message';
+  const existingSuccess = document.querySelector(".success-message");
+  if (existingSuccess) existingSuccess.remove();
+
+  const successElement = document.createElement("div");
+  successElement.className = "success-message";
   successElement.textContent = message;
-  successElement.style.color = '#02CA3A;';
-  successElement.style.backgroundColor = '#d4edda';
-  successElement.style.border = '1px solid #c3e6cb';
-  successElement.style.borderRadius = '0.25rem';
-  successElement.style.padding = '0.75rem';
-  successElement.style.margin = '1rem 0';
-  successElement.style.fontSize = '0.875rem';
-  
-  // Insert success message before the form or in a suitable location
-  const form = document.querySelector('form');
-  form.parentNode.insertBefore(successElement, form);
+  successElement.style.color = "#02CA3A";
+  successElement.style.backgroundColor = "#d4edda";
+  successElement.style.border = "1px solid #c3e6cb";
+  successElement.style.borderRadius = "0.25rem";
+  successElement.style.padding = "0.75rem";
+  successElement.style.margin = "1rem 0";
+  successElement.style.fontSize = "0.875rem";
+
+  const form = document.querySelector("form");
+  if (form) form.parentNode.insertBefore(successElement, form);
 }
 
-// Clear all error messages function
 function clearErrors() {
-  // Remove error messages
-  const errorMessages = document.querySelectorAll('.error-message');
-  errorMessages.forEach(error => error.remove());
+  document.querySelectorAll(".error-message").forEach(error => error.remove());
+  document.querySelectorAll(".success-message").forEach(msg => msg.remove());
   
-  // Remove success message
-  const successMessage = document.querySelector('.success-message');
-  if (successMessage) {
-    successMessage.remove();
-  }
-  
-  // Reset border colors
-  const fields = ['email', 'password', 'confirm-password'];
+  const fields = ["email", "password", "confirm-password"];
   fields.forEach(fieldId => {
     const field = document.getElementById(fieldId);
-    if (field) {
-      field.style.borderColor = '';
-    }
+    if (field) field.style.borderColor = "";
   });
 }
 
-// Optional: Add real-time validation as user types
-document.addEventListener('DOMContentLoaded', function() {
-  const emailField = document.getElementById('email');
-  const passwordField = document.getElementById('password');
-  const confirmPasswordField = document.getElementById('confirm-password');
+function clearErrorForField(fieldId) {
+  const field = document.getElementById(fieldId);
+  if (!field) return;
   
-  if (emailField) {
-    emailField.addEventListener('blur', function() {
-      const email = this.value.trim();
-      if (email && !isValidEmail(email)) {
-        showError('email', 'Please enter a valid email address.');
+  const formGroup = field.closest(".form-group");
+  if (!formGroup) return;
+  
+  const errorMessage = formGroup.querySelector(`.error-message[data-field="${fieldId}"]`) || 
+                       formGroup.querySelector(".error-message");
+  if (errorMessage) errorMessage.remove();
+  
+  field.style.borderColor = "";
+}
+
+function initPasswordToggle() {
+  document.querySelectorAll(".toggle-password").forEach(button => {
+    button.addEventListener("click", function() {
+      const passwordInput = this.parentElement.querySelector("input");
+      const icon = this.querySelector("i");
+      
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.replace("bi-eye", "bi-eye-slash");
+        this.setAttribute("aria-label", "Hide password");
+      } else {
+        passwordInput.type = "password";
+        icon.classList.replace("bi-eye-slash", "bi-eye");
+        this.setAttribute("aria-label", "Show password");
       }
     });
+  });
+}
+
+// LOGIN FUNCTIONALITY
+if (loginBtn) {
+  loginBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    clearErrors();
+    let isValid = true;
+
+    if (!email) {
+      showError("email", "Email is required.");
+      isValid = false;
+    } else if (!isValidEmail(email)) {
+      showError("email", "Please enter a valid email address.");
+      isValid = false;
+    }
+
+    if (!password) {
+      showError("password", "Password is required.");
+      isValid = false;
+    }
+
+    if (isValid) {
+      showSuccess("Login successful! Redirecting...");
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1000);
+    }
+  });
+
+  // Real-time validation for login
+  const loginEmail = document.getElementById("email");
+  const loginPassword = document.getElementById("password");
+
+  if (loginEmail) {
+    loginEmail.addEventListener("blur", function() {
+      clearErrorForField("email");
+      const email = this.value.trim();
+      if (email && !isValidEmail(email)) {
+        showError("email", "Please enter a valid email address.");
+      }
+    });
+    loginEmail.addEventListener("input", () => clearErrorForField("email"));
   }
-  
-  if (passwordField) {
-    passwordField.addEventListener('blur', function() {
+
+  if (loginPassword) {
+    loginPassword.addEventListener("blur", function() {
+      clearErrorForField("password");
+      if (!this.value) showError("password", "Password is required.");
+    });
+    loginPassword.addEventListener("input", () => clearErrorForField("password"));
+  }
+}
+
+// SIGNUP FUNCTIONALITY
+if (signupBtn) {
+  signupBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+
+    clearErrors();
+    let isValid = true;
+
+    if (!email) {
+      showError("email", "Email is required.");
+      isValid = false;
+    } else if (!isValidEmail(email)) {
+      showError("email", "Please enter a valid email address.");
+      isValid = false;
+    }
+
+    if (!password) {
+      showError("password", "Password is required.");
+      isValid = false;
+    } else {
+      const passwordErrors = validatePassword(password);
+      if (passwordErrors.length > 0) {
+        showError("password", passwordErrors.join("<br>"));
+        isValid = false;
+      }
+    }
+
+    if (!confirmPassword) {
+      showError("confirm-password", "Please confirm your password.");
+      isValid = false;
+    } else if (password !== confirmPassword) {
+      showError("confirm-password", "Passwords do not match.");
+      isValid = false;
+    }
+
+    if (isValid) {
+      showSuccess("Account created successfully! Redirecting to login...");
+      setTimeout(() => {
+        window.location.href = "create_account.html";
+      }, 1500);
+    }
+  });
+
+  // Real-time validation for signup
+  const signupEmail = document.getElementById("email");
+  const signupPassword = document.getElementById("password");
+  const confirmPassword = document.getElementById("confirm-password");
+
+  if (signupEmail) {
+    signupEmail.addEventListener("blur", function() {
+      clearErrorForField("email");
+      const email = this.value.trim();
+      if (email && !isValidEmail(email)) {
+        showError("email", "Please enter a valid email address.");
+      }
+    });
+    signupEmail.addEventListener("input", () => clearErrorForField("email"));
+  }
+
+  if (signupPassword) {
+    signupPassword.addEventListener("blur", function() {
+      clearErrorForField("password");
       const password = this.value;
       if (password) {
         const passwordErrors = validatePassword(password);
         if (passwordErrors.length > 0) {
-          showError('password', 'Password requirements:<br>' + passwordErrors.join('<br>'));
+          showError("password", "Password requirements:<br>" + passwordErrors.join("<br>"));
         }
       }
     });
+    signupPassword.addEventListener("input", () => clearErrorForField("password"));
   }
-  
-  if (confirmPasswordField) {
-    confirmPasswordField.addEventListener('blur', function() {
-      const password = document.getElementById('password').value;
+
+  if (confirmPassword) {
+    confirmPassword.addEventListener("blur", function() {
+      clearErrorForField("confirm-password");
+      const password = document.getElementById("password").value;
       const confirmPassword = this.value;
       if (password && confirmPassword && password !== confirmPassword) {
-        showError('confirm-password', 'Passwords do not match.');
+        showError("confirm-password", "Passwords do not match.");
       }
     });
+    confirmPassword.addEventListener("input", () => clearErrorForField("confirm-password"));
   }
-  
-  // Clear errors when user starts typing
-  const fields = [emailField, passwordField, confirmPasswordField];
-  fields.forEach(field => {
-    if (field) {
-      field.addEventListener('input', function() {
-        clearErrorsForField(this.id);
-      });
-    }
-  });
-});
-
-function clearErrorsForField(fieldId) {
-  const field = document.getElementById(fieldId);
-  const errorMessage = field.parentNode.querySelector('.error-message');
-  if (errorMessage) {
-    errorMessage.remove();
-  }
-  field.style.borderColor = '';
 }
 
+// Initialize on page load
+document.addEventListener("DOMContentLoaded", function() {
+  initPasswordToggle();
+});
+
+// setup for business info and tax info validation
+document.addEventListener('DOMContentLoaded', function() {
+    // Toast notification system
+    function showToast(title, message, type) {
+        const toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) return;
+        
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill';
+        
+        toast.innerHTML = `
+            <i class="bi ${icon} toast-icon"></i>
+            <div class="toast-content">
+                <div class="toast-title">${title}</div>
+                <div class="toast-message">${message}</div>
+            </div>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 5000);
+    }
+
+    // Safe element getter with null check
+    function getElement(id) {
+        const element = document.getElementById(id);
+        if (!element) {
+            console.warn(`Element with id '${id}' not found`);
+        }
+        return element;
+    }
+
+    // Validation functions
+    function validateBusinessName(name) {
+        if (!name || name.trim() === '') {
+            return { isValid: false, message: 'Business name is required' };
+        }
+        if (name.length < 2) {
+            return { isValid: false, message: 'Business name must be at least 2 characters' };
+        }
+        return { isValid: true, message: '' };
+    }
+
+    function validateBusinessType(type) {
+        if (!type) {
+            return { isValid: false, message: 'Business type is required' };
+        }
+        return { isValid: true, message: '' };
+    }
+
+    function validateAddress(address) {
+        if (!address || address.trim() === '') {
+            return { isValid: false, message: 'Address is required' };
+        }
+        if (address.length < 5) {
+            return { isValid: false, message: 'Address must be at least 5 characters' };
+        }
+        return { isValid: true, message: '' };
+    }
+
+    function validatePhone(phone) {
+        if (!phone || phone.trim() === '') {
+            return { isValid: false, message: 'Phone number is required' };
+        }
+        // Simple phone validation
+        const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+            return { isValid: false, message: 'Please enter a valid phone number' };
+        }
+        return { isValid: true, message: '' };
+    }
+
+    function validateOwnerName(name) {
+        if (!name || name.trim() === '') {
+            return { isValid: false, message: 'Owner name is required' };
+        }
+        if (name.length < 2) {
+            return { isValid: false, message: 'Owner name must be at least 2 characters' };
+        }
+        return { isValid: true, message: '' };
+    }
+
+    function validateTaxRate(rate) {
+        if (!rate || rate === '') {
+            return { isValid: false, message: 'Tax rate is required' };
+        }
+        const numRate = parseFloat(rate);
+        if (isNaN(numRate) || numRate < 0 || numRate > 100) {
+            return { isValid: false, message: 'Tax rate must be between 0 and 100' };
+        }
+        return { isValid: true, message: '' };
+    }
+
+    function validateTaxName(name) {
+        if (!name || name.trim() === '') {
+            return { isValid: false, message: 'Tax name is required' };
+        }
+        return { isValid: true, message: '' };
+    }
+
+    // Safe update validation status for a form group
+    function updateValidationStatus(groupId, isValid, message) {
+        const group = getElement(groupId);
+        const messageEl = getElement(`${groupId}-message`);
+        
+        if (!group || !messageEl) {
+            return;
+        }
+        
+        group.classList.remove('error', 'success');
+        messageEl.className = 'validation-message';
+        
+        if (isValid) {
+            group.classList.add('success');
+            messageEl.textContent = message || '';
+            messageEl.classList.add('success');
+        } else {
+            group.classList.add('error');
+            messageEl.textContent = message || '';
+            messageEl.classList.add('error');
+        }
+    }
+
+    // Check if all fields in a section are valid
+    function isBusinessSectionValid() {
+        const nameInput = getElement('business-name');
+        const typeInput = getElement('business-type');
+        const addressInput = getElement('business-address');
+        const phoneInput = getElement('business-phone');
+        const ownerInput = getElement('business-owner');
+        
+        // Check if elements exist before validating
+        if (!nameInput || !typeInput || !addressInput || !phoneInput || !ownerInput) {
+            return false;
+        }
+        
+        const nameValid = validateBusinessName(nameInput.value).isValid;
+        const typeValid = validateBusinessType(typeInput.value).isValid;
+        const addressValid = validateAddress(addressInput.value).isValid;
+        const phoneValid = validatePhone(phoneInput.value).isValid;
+        const ownerValid = validateOwnerName(ownerInput.value).isValid;
+        
+        return nameValid && typeValid && addressValid && phoneValid && ownerValid;
+    }
+
+    function isTaxSectionValid() {
+        const rateInput = getElement('tax-rate');
+        const nameInput = getElement('tax-name');
+        
+        // Check if elements exist before validating
+        if (!rateInput || !nameInput) {
+            return false;
+        }
+        
+        const rateValid = validateTaxRate(rateInput.value).isValid;
+        const nameValid = validateTaxName(nameInput.value).isValid;
+        
+        return rateValid && nameValid;
+    }
+
+    // Initialize only if the required elements exist
+    function initializeBusinessSection() {
+        const businessEditToggle = getElement('business-edit-toggle');
+        const businessSaveBtn = getElement('business-save');
+        const businessCancelBtn = getElement('business-cancel');
+        const businessInputs = document.querySelectorAll('#business-name, #business-type, #business-address, #business-phone, #business-owner');
+        
+        if (!businessEditToggle || !businessSaveBtn || !businessCancelBtn || businessInputs.length === 0) {
+            console.log('Business section not found - skipping initialization');
+            return;
+        }
+        
+        const originalBusinessValues = {};
+        
+        // Store original values
+        businessInputs.forEach(input => {
+            originalBusinessValues[input.id] = input.value;
+        });
+        
+        businessEditToggle.addEventListener('click', function() {
+            const isEditing = businessInputs[0].disabled;
+            
+            // Toggle disabled state
+            businessInputs.forEach(input => {
+                input.disabled = !isEditing;
+            });
+            
+            // Toggle save and cancel buttons visibility
+            businessSaveBtn.style.display = isEditing ? 'block' : 'none';
+            businessCancelBtn.style.display = isEditing ? 'block' : 'none';
+            
+            // Change icon
+            const icon = this.querySelector('i');
+            if (icon) {
+                icon.className = isEditing ? 'bi bi-x-lg' : 'bi bi-pencil-square';
+            }
+            
+            // If canceling edit, reset to original values
+            if (!isEditing) {
+                businessInputs.forEach(input => {
+                    input.value = originalBusinessValues[input.id];
+                });
+                
+                // Clear validation messages
+                const validationGroups = ['business-name-group', 'business-type-group', 'business-address-group', 'business-phone-group', 'business-owner-group'];
+                validationGroups.forEach(groupId => {
+                    const group = getElement(groupId);
+                    const messageEl = getElement(`${groupId}-message`);
+                    if (group && messageEl) {
+                        group.classList.remove('error', 'success');
+                        messageEl.textContent = '';
+                        messageEl.className = 'validation-message';
+                    }
+                });
+                
+                // Disable save button
+                businessSaveBtn.disabled = true;
+            }
+        });
+        
+        // Add validation on input for business section
+        businessInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                let validationResult;
+                
+                switch(this.id) {
+                    case 'business-name':
+                        validationResult = validateBusinessName(this.value);
+                        updateValidationStatus('business-name-group', validationResult.isValid, validationResult.message);
+                        break;
+                    case 'business-type':
+                        validationResult = validateBusinessType(this.value);
+                        updateValidationStatus('business-type-group', validationResult.isValid, validationResult.message);
+                        break;
+                    case 'business-address':
+                        validationResult = validateAddress(this.value);
+                        updateValidationStatus('business-address-group', validationResult.isValid, validationResult.message);
+                        break;
+                    case 'business-phone':
+                        validationResult = validatePhone(this.value);
+                        updateValidationStatus('business-phone-group', validationResult.isValid, validationResult.message);
+                        break;
+                    case 'business-owner':
+                        validationResult = validateOwnerName(this.value);
+                        updateValidationStatus('business-owner-group', validationResult.isValid, validationResult.message);
+                        break;
+                }
+                
+                // Update save button state
+                businessSaveBtn.disabled = !isBusinessSectionValid();
+            });
+        });
+        
+        businessSaveBtn.addEventListener('click', function() {
+            if (isBusinessSectionValid()) {
+                // In a real app, you would save the data to the server here
+                showToast('Success', 'Business information saved successfully!', 'success');
+                
+                // Update original values
+                businessInputs.forEach(input => {
+                    originalBusinessValues[input.id] = input.value;
+                });
+                
+                // Disable inputs and hide buttons
+                businessInputs.forEach(input => {
+                    input.disabled = true;
+                });
+                businessSaveBtn.style.display = 'none';
+                businessCancelBtn.style.display = 'none';
+                
+                // Reset icon
+                const icon = businessEditToggle.querySelector('i');
+                if (icon) {
+                    icon.className = 'bi bi-pencil-square';
+                }
+            } else {
+                showToast('Error', 'Please fix validation errors before saving', 'error');
+            }
+        });
+        
+        businessCancelBtn.addEventListener('click', function() {
+            // Reset to original values
+            businessInputs.forEach(input => {
+                input.value = originalBusinessValues[input.id];
+            });
+            
+            // Disable inputs and hide buttons
+            businessInputs.forEach(input => {
+                input.disabled = true;
+            });
+            businessSaveBtn.style.display = 'none';
+            businessCancelBtn.style.display = 'none';
+            
+            // Reset icon
+            const icon = businessEditToggle.querySelector('i');
+            if (icon) {
+                icon.className = 'bi bi-pencil-square';
+            }
+            
+            // Clear validation messages
+            const validationGroups = ['business-name-group', 'business-type-group', 'business-address-group', 'business-phone-group', 'business-owner-group'];
+            validationGroups.forEach(groupId => {
+                const group = getElement(groupId);
+                const messageEl = getElement(`${groupId}-message`);
+                if (group && messageEl) {
+                    group.classList.remove('error', 'success');
+                    messageEl.textContent = '';
+                    messageEl.className = 'validation-message';
+                }
+            });
+        });
+    }
+
+    function initializeTaxSection() {
+        const taxEditToggle = getElement('tax-edit-toggle');
+        const taxSaveBtn = getElement('tax-save');
+        const taxCancelBtn = getElement('tax-cancel');
+        const taxInputs = document.querySelectorAll('#tax-rate, #tax-name');
+        const taxCheckbox = getElement('tax-inclusive');
+        
+        if (!taxEditToggle || !taxSaveBtn || !taxCancelBtn || taxInputs.length === 0 || !taxCheckbox) {
+            console.log('Tax section not found - skipping initialization');
+            return;
+        }
+        
+        const originalTaxValues = {
+            'tax-rate': getElement('tax-rate').value,
+            'tax-name': getElement('tax-name').value,
+            'tax-inclusive': getElement('tax-inclusive').checked
+        };
+        
+        taxEditToggle.addEventListener('click', function() {
+            const isEditing = taxInputs[0].disabled;
+            
+            // Toggle disabled state
+            taxInputs.forEach(input => {
+                input.disabled = !isEditing;
+            });
+            taxCheckbox.disabled = !isEditing;
+            
+            // Toggle save and cancel buttons visibility
+            taxSaveBtn.style.display = isEditing ? 'block' : 'none';
+            taxCancelBtn.style.display = isEditing ? 'block' : 'none';
+            
+            // Change icon
+            const icon = this.querySelector('i');
+            if (icon) {
+                icon.className = isEditing ? 'bi bi-x-lg' : 'bi bi-pencil-square';
+            }
+            
+            // If canceling edit, reset to original values
+            if (!isEditing) {
+                getElement('tax-rate').value = originalTaxValues['tax-rate'];
+                getElement('tax-name').value = originalTaxValues['tax-name'];
+                taxCheckbox.checked = originalTaxValues['tax-inclusive'];
+                
+                // Clear validation messages
+                const validationGroups = ['tax-rate-group', 'tax-name-group'];
+                validationGroups.forEach(groupId => {
+                    const group = getElement(groupId);
+                    const messageEl = getElement(`${groupId}-message`);
+                    if (group && messageEl) {
+                        group.classList.remove('error', 'success');
+                        messageEl.textContent = '';
+                        messageEl.className = 'validation-message';
+                    }
+                });
+                
+                // Disable save button
+                taxSaveBtn.disabled = true;
+            }
+        });
+        
+        // Add validation on input for tax section
+        taxInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                let validationResult;
+                
+                switch(this.id) {
+                    case 'tax-rate':
+                        validationResult = validateTaxRate(this.value);
+                        updateValidationStatus('tax-rate-group', validationResult.isValid, validationResult.message);
+                        break;
+                    case 'tax-name':
+                        validationResult = validateTaxName(this.value);
+                        updateValidationStatus('tax-name-group', validationResult.isValid, validationResult.message);
+                        break;
+                }
+                
+                // Update save button state
+                taxSaveBtn.disabled = !isTaxSectionValid();
+            });
+        });
+        
+        taxSaveBtn.addEventListener('click', function() {
+            if (isTaxSectionValid()) {
+                // In a real app, you would save the data to the server here
+                showToast('Success', 'Tax settings saved successfully!', 'success');
+                
+                // Update original values
+                originalTaxValues['tax-rate'] = getElement('tax-rate').value;
+                originalTaxValues['tax-name'] = getElement('tax-name').value;
+                originalTaxValues['tax-inclusive'] = taxCheckbox.checked;
+                
+                // Disable inputs and hide buttons
+                taxInputs.forEach(input => {
+                    input.disabled = true;
+                });
+                taxCheckbox.disabled = true;
+                taxSaveBtn.style.display = 'none';
+                taxCancelBtn.style.display = 'none';
+                
+                // Reset icon
+                const icon = taxEditToggle.querySelector('i');
+                if (icon) {
+                    icon.className = 'bi bi-pencil-square';
+                }
+            } else {
+                showToast('Error', 'Please fix validation errors before saving', 'error');
+            }
+        });
+        
+        taxCancelBtn.addEventListener('click', function() {
+            // Reset to original values
+            getElement('tax-rate').value = originalTaxValues['tax-rate'];
+            getElement('tax-name').value = originalTaxValues['tax-name'];
+            taxCheckbox.checked = originalTaxValues['tax-inclusive'];
+            
+            // Disable inputs and hide buttons
+            taxInputs.forEach(input => {
+                input.disabled = true;
+            });
+            taxCheckbox.disabled = true;
+            taxSaveBtn.style.display = 'none';
+            taxCancelBtn.style.display = 'none';
+            
+            // Reset icon
+            const icon = taxEditToggle.querySelector('i');
+            if (icon) {
+                icon.className = 'bi bi-pencil-square';
+            }
+            
+            // Clear validation messages
+            const validationGroups = ['tax-rate-group', 'tax-name-group'];
+            validationGroups.forEach(groupId => {
+                const group = getElement(groupId);
+                const messageEl = getElement(`${groupId}-message`);
+                if (group && messageEl) {
+                    group.classList.remove('error', 'success');
+                    messageEl.textContent = '';
+                    messageEl.className = 'validation-message';
+                }
+            });
+        });
+    }
+
+    function initializePermissionsSection() {
+        const permissionsEditToggle = getElement('permissions-edit-toggle');
+        const permissionsSaveBtn = getElement('permissions-save');
+        const permissionsCancelBtn = getElement('permissions-cancel');
+        const permissionInputs = document.querySelectorAll('.permissions-table input');
+        
+        if (!permissionsEditToggle || !permissionsSaveBtn || !permissionsCancelBtn || permissionInputs.length === 0) {
+            console.log('Permissions section not found - skipping initialization');
+            return;
+        }
+        
+        const originalPermissionValues = [];
+        
+        // Store original values
+        permissionInputs.forEach((input, index) => {
+            originalPermissionValues[index] = input.checked;
+        });
+        
+        permissionsEditToggle.addEventListener('click', function() {
+            const isEditing = permissionInputs[0].disabled;
+            
+            // Toggle disabled state
+            permissionInputs.forEach(input => {
+                input.disabled = !isEditing;
+            });
+            
+            // Toggle save and cancel buttons visibility
+            permissionsSaveBtn.style.display = isEditing ? 'block' : 'none';
+            permissionsCancelBtn.style.display = isEditing ? 'block' : 'none';
+            
+            // Change icon
+            const icon = this.querySelector('i');
+            if (icon) {
+                icon.className = isEditing ? 'bi bi-x-lg' : 'bi bi-pencil-square';
+            }
+            
+            // If canceling edit, reset to original values
+            if (!isEditing) {
+                permissionInputs.forEach((input, index) => {
+                    input.checked = originalPermissionValues[index];
+                });
+            }
+        });
+        
+        permissionsSaveBtn.addEventListener('click', function() {
+            // In a real app, you would save the data to the server here
+            showToast('Success', 'Permissions saved successfully!', 'success');
+            
+            // Update original values
+            permissionInputs.forEach((input, index) => {
+                originalPermissionValues[index] = input.checked;
+            });
+            
+            // Disable inputs and hide buttons
+            permissionInputs.forEach(input => {
+                input.disabled = true;
+            });
+            permissionsSaveBtn.style.display = 'none';
+            permissionsCancelBtn.style.display = 'none';
+            
+            // Reset icon
+            const icon = permissionsEditToggle.querySelector('i');
+            if (icon) {
+                icon.className = 'bi bi-pencil-square';
+            }
+        });
+        
+        permissionsCancelBtn.addEventListener('click', function() {
+            // Reset to original values
+            permissionInputs.forEach((input, index) => {
+                input.checked = originalPermissionValues[index];
+            });
+            
+            // Disable inputs and hide buttons
+            permissionInputs.forEach(input => {
+                input.disabled = true;
+            });
+            permissionsSaveBtn.style.display = 'none';
+            permissionsCancelBtn.style.display = 'none';
+            
+            // Reset icon
+            const icon = permissionsEditToggle.querySelector('i');
+            if (icon) {
+                icon.className = 'bi bi-pencil-square';
+            }
+        });
+    }
+
+    // Initialize all sections
+    initializeBusinessSection();
+    initializeTaxSection();
+    initializePermissionsSection();
+});

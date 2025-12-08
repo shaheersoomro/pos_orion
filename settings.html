@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Orion POS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style_new.css">
@@ -15,65 +17,86 @@
             display: flex;
             height: 100vh;
         }
-        
+
         .admin-main {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-        
+
         .admin-content {
             flex: 1;
             overflow-y: auto;
             padding: var(--spacing-xl);
         }
-        
+
         .settings-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: var(--spacing-lg);
         }
-        
+
         .settings-card {
             background: var(--bg-white);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-md);
             overflow: hidden;
         }
-        
+
         .settings-header {
             padding: var(--spacing-lg);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
+            justify-content: space-between;
+        }
+
+        .settings-title {
+            display: flex;
+            align-items: center;
             gap: var(--spacing-md);
         }
-        
+
         .settings-header i {
             font-size: 20px;
             color: var(--primary);
         }
-        
+
         .settings-header h3 {
             margin: 0;
             font-size: 16px;
             font-weight: 700;
             color: var(--text-primary);
         }
-        
+
+        .edit-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .edit-toggle:hover {
+            color: var(--primary);
+            background: var(--secondary);
+        }
+
         .settings-body {
             padding: var(--spacing-lg);
         }
-        
+
         .form-group {
             margin-bottom: var(--spacing-lg);
         }
-        
+
         .form-group:last-child {
             margin-bottom: 0;
         }
-        
+
         .form-group label {
             display: block;
             font-size: 13px;
@@ -81,7 +104,7 @@
             color: var(--text-primary);
             margin-bottom: var(--spacing-md);
         }
-        
+
         .form-group input,
         .form-group select {
             width: 100%;
@@ -93,7 +116,7 @@
             transition: var(--transition);
             color: var(--text-secondary);
         }
-        
+
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
@@ -101,25 +124,31 @@
             box-shadow: 0 0 0 3px rgba(91, 75, 158, 0.1);
             color: var(--text-primary);
         }
-        
+
+        .form-group input:disabled,
+        .form-group select:disabled {
+            background-color: var(--bg-light);
+            cursor: not-allowed;
+        }
+
         .form-check {
             display: flex;
             align-items: center;
             gap: var(--spacing-md);
             margin-bottom: var(--spacing-md);
         }
-        
+
         .form-check input {
             width: auto;
             cursor: pointer;
         }
-        
+
         .form-check label {
             margin: 0;
             cursor: pointer;
             font-weight: 400;
         }
-        
+
         .btn-save {
             width: 100%;
             padding: var(--spacing-md);
@@ -131,35 +160,166 @@
             cursor: pointer;
             transition: var(--transition);
         }
-        
+
         .btn-save:hover {
             background: var(--primary-dark);
         }
-        
+
         .permissions-table {
             width: 100%;
             font-size: 13px;
             border-collapse: collapse;
         }
-        
+
         .permissions-table th,
         .permissions-table td {
             padding: var(--spacing-md);
             text-align: left;
             border-bottom: 1px solid var(--border-color);
         }
-        
+
         .permissions-table th {
             background: var(--secondary);
             font-weight: 600;
             color: var(--text-primary);
         }
-        
+
         .permissions-table input {
             cursor: pointer;
         }
+
+        .validation-message {
+            font-size: 12px;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .error {
+            color: var(--warning);
+        }
+
+        .success {
+            color: var(--success);
+        }
+
+        .form-group.error input,
+        .form-group.error select {
+            border-color: var(--warning);
+        }
+
+        .form-group.success input,
+        .form-group.success select {
+            border-color: var(--success);
+        }
+
+        /* Toast Container */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Toast Styles */
+
+        .toast:not(.show) {
+            display: block;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: white;
+            min-width: 300px;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transform: translateX(100%);
+            opacity: 0;
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        .toast.success {
+            background-color: #10b981;
+            border-left: 4px solid #059669;
+        }
+
+        .toast.error {
+            background-color: #ef4444;
+            border-left: 4px solid #dc2626;
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        /* Toast Animation */
+        @keyframes slideIn {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Toast Exit Animation */
+        .toast.fade-out {
+            animation: slideOut 0.3s ease forwards;
+        }
+
+        @keyframes slideOut {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .btn-cancel {
+            width: 100%;
+            padding: var(--spacing-md);
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-cancel:hover {
+            background: var(--bg-white);
+        }
     </style>
 </head>
+
 <body>
     <div class="admin-wrapper">
         <!-- Sidebar -->
@@ -231,61 +391,107 @@
                     </div>
                 </div>
             </header>
-            
+
             <div class="admin-content">
                 <div class="settings-grid">
                     <!-- Business Information -->
                     <div class="settings-card">
                         <div class="settings-header">
-                            <i class="bi bi-shop"></i>
-                            <h3>Business Information</h3>
+                            <div class="settings-title">
+                                <i class="bi bi-shop"></i>
+                                <h3>Business Information</h3>
+                            </div>
+                            <button class="edit-toggle" id="business-edit-toggle">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
                         </div>
                         <div class="settings-body">
-                            <div class="form-group">
+                            <div class="form-group" id="business-name-group">
                                 <label>Business Name</label>
-                                <input type="text" value="Orion Cafe & Salon">
+                                <input type="text" value="Orion Cafe & Salon" id="business-name" disabled>
+                                <div class="validation-message" id="business-name-group-message"></div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="business-type-group">
+                                <label>Business Type</label>
+                                <select class="form-control" id="business-type" disabled>
+                                    <option value="Restaurant">Restaurant</option>
+                                    <option value="Café" selected>Café</option>
+                                    <option value="Beauty Salon">Beauty Salon</option>
+                                    <option value="Services">Services</option>
+                                </select>
+                                <div class="validation-message" id="business-type-group-message"></div>
+                            </div>
+                            <div class="form-group" id="business-address-group">
                                 <label>Address</label>
-                                <input type="text" value="123 Main St, Anytown, USA">
+                                <input type="text" value="123 Main St, Anytown, USA" id="business-address" disabled>
+                                <div class="validation-message" id="business-address-group-message"></div>
+                            </div>
+                            <div class="form-group" id="business-phone-group">
+                                <label>Phone</label>
+                                <input type="tel" value="(555) 123-4567" id="business-phone" disabled>
+                                <div class="validation-message" id="business-phone-group-message"></div>
+                            </div>
+                            <div class="form-group" id="business-owner-group">
+                                <label>Owner's Name</label>
+                                <input type="text" value="Alice" id="business-owner" disabled>
+                                <div class="validation-message" id="business-owner-group-message"></div>
                             </div>
                             <div class="form-group">
-                                <label>Phone</label>
-                                <input type="tel" value="(555) 123-4567">
+                                <label>Email</label>
+                                <input type="email" value="admin@example.com" disabled>
                             </div>
-                            <button class="btn-save">Save Changes</button>
+                            <div class="action-buttons">
+                                <button class="btn-cancel" id="business-cancel" style="display: none;">Cancel</button>
+                                <button class="btn-save" id="business-save" style="display: none;">Save Changes</button>
+                            </div>
                         </div>
                     </div>
-                    
+
                     <!-- Tax Settings -->
                     <div class="settings-card">
                         <div class="settings-header">
-                            <i class="bi bi-percent"></i>
-                            <h3>Tax Settings</h3>
+                            <div class="settings-title">
+                                <i class="bi bi-percent"></i>
+                                <h3>Tax Settings</h3>
+                            </div>
+                            <button class="edit-toggle" id="tax-edit-toggle">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
                         </div>
                         <div class="settings-body">
-                            <div class="form-group">
+                            <div class="form-group" id="tax-rate-group">
                                 <label>Sales Tax Rate (%)</label>
-                                <input type="number" value="8.00" step="0.01">
+                                <input type="number" value="8.00" step="0.01" id="tax-rate" disabled>
+                                <div class="validation-message" id="tax-rate-group-message"></div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="tax-name-group">
                                 <label>Tax Name</label>
-                                <input type="text" value="Sales Tax">
+                                <input type="text" value="Sales Tax" id="tax-name" disabled>
+                                <div class="validation-message" id="tax-name-group-message"></div>
                             </div>
                             <div class="form-check">
-                                <input type="checkbox" id="tax-inclusive" checked>
+                                <input type="checkbox" id="tax-inclusive" checked disabled>
                                 <label for="tax-inclusive">Prices are tax-inclusive</label>
                             </div>
-                            <button class="btn-save">Save Changes</button>
+                            <div class="action-buttons">
+                                <button class="btn-cancel" id="tax-cancel" style="display: none;">Cancel</button>
+                                <button class="btn-save" id="tax-save" style="display: none;" disabled>Save
+                                    Changes</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Permissions -->
                 <div class="settings-card" style="margin-top: var(--spacing-lg);">
                     <div class="settings-header">
-                        <i class="bi bi-shield-lock"></i>
-                        <h3>User Permissions</h3>
+                        <div class="settings-title">
+                            <i class="bi bi-shield-lock"></i>
+                            <h3>User Permissions</h3>
+                        </div>
+                        <button class="edit-toggle" id="permissions-edit-toggle">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
                     </div>
                     <div class="settings-body">
                         <table class="permissions-table">
@@ -300,57 +506,62 @@
                             <tbody>
                                 <tr>
                                     <td>Access Dashboard</td>
-                                    <td style="text-align: center;"><input type="checkbox" checked></td>
-                                    <td style="text-align: center;"><input type="checkbox" checked></td>
-                                    <td style="text-align: center;"><input type="checkbox"></td>
+                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
+                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
+                                    <td style="text-align: center;"><input type="checkbox" disabled></td>
                                 </tr>
                                 <tr>
                                     <td>Manage Inventory</td>
-                                    <td style="text-align: center;"><input type="checkbox" checked></td>
-                                    <td style="text-align: center;"><input type="checkbox" checked></td>
-                                    <td style="text-align: center;"><input type="checkbox"></td>
+                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
+                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
+                                    <td style="text-align: center;"><input type="checkbox" disabled></td>
                                 </tr>
                                 <tr>
                                     <td>Process Refunds</td>
-                                    <td style="text-align: center;"><input type="checkbox" checked></td>
-                                    <td style="text-align: center;"><input type="checkbox" checked></td>
-                                    <td style="text-align: center;"><input type="checkbox"></td>
+                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
+                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
+                                    <td style="text-align: center;"><input type="checkbox" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <button class="btn-save" style="margin-top: var(--spacing-lg);">Save Permissions</button>
+                        <button class="btn-cancel" id="permissions-cancel" style="display: none;">Cancel</button>
+                        <button class="btn-save" id="permissions-save"
+                            style="margin-top: var(--spacing-lg); display: none;">Save Permissions</button>
                     </div>
                 </div>
             </div>
             <nav class="bottom-navbar">
-            <a href="index.html" class="nav-item" data-page="pos">
-                <i class="bi bi-shop"></i>
-                <span>POS</span>
-            </a>
-            <a href="dashboard.html" class="nav-item" data-page="dashboard">
-                <i class="bi bi-speedometer2"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="inventory.html" class="nav-item" data-page="inventory">
-                <i class="bi bi-box-seam"></i>
-                <span>Inventory</span>
-            </a>
-            <a href="history.html" class="nav-item" data-page="history">
-                <i class="bi bi-clock-history"></i>
-                <span>History</span>
-            </a>
-            <a href="users.html" class="nav-item" data-page="users">
-                <i class="bi bi-people"></i>
-                <span>Users</span>
-            </a>
-            <a href="settings.html" class="nav-item active" data-page="settings">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-        </nav>
+                <a href="index.html" class="nav-item" data-page="pos">
+                    <i class="bi bi-shop"></i>
+                    <span>POS</span>
+                </a>
+                <a href="dashboard.html" class="nav-item" data-page="dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="inventory.html" class="nav-item" data-page="inventory">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Inventory</span>
+                </a>
+                <a href="history.html" class="nav-item" data-page="history">
+                    <i class="bi bi-clock-history"></i>
+                    <span>History</span>
+                </a>
+                <a href="users.html" class="nav-item" data-page="users">
+                    <i class="bi bi-people"></i>
+                    <span>Users</span>
+                </a>
+                <a href="settings.html" class="nav-item active" data-page="settings">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
         </div>
     </div>
-    
+
+    <div class="toast-container" id="toast-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script_new.js"></script>
 </body>
+
 </html>

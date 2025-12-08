@@ -1,79 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Orion POS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style_new.css">
+
     <style>
         .admin-wrapper {
             display: flex;
             height: 100vh;
         }
-        
+
         .admin-main {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-        
+
         .admin-content {
             flex: 1;
             overflow-y: auto;
             padding: var(--spacing-xl);
         }
-        
+
         .settings-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: var(--spacing-lg);
         }
-        
+
         .settings-card {
             background: var(--bg-white);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-md);
             overflow: hidden;
         }
-        
+
         .settings-header {
             padding: var(--spacing-lg);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
+            justify-content: space-between;
+        }
+
+        .settings-title {
+            display: flex;
+            align-items: center;
             gap: var(--spacing-md);
         }
-        
+
         .settings-header i {
             font-size: 20px;
             color: var(--primary);
         }
-        
+
         .settings-header h3 {
             margin: 0;
             font-size: 16px;
             font-weight: 700;
             color: var(--text-primary);
         }
-        
+
+        .edit-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .edit-toggle:hover {
+            color: var(--primary);
+            background: var(--secondary);
+        }
+
         .settings-body {
             padding: var(--spacing-lg);
         }
-        
+
         .form-group {
             margin-bottom: var(--spacing-lg);
         }
-        
+
         .form-group:last-child {
             margin-bottom: 0;
         }
-        
+
         .form-group label {
             display: block;
             font-size: 13px;
@@ -81,7 +105,7 @@
             color: var(--text-primary);
             margin-bottom: var(--spacing-md);
         }
-        
+
         .form-group input,
         .form-group select {
             width: 100%;
@@ -93,7 +117,7 @@
             transition: var(--transition);
             color: var(--text-secondary);
         }
-        
+
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
@@ -101,25 +125,31 @@
             box-shadow: 0 0 0 3px rgba(91, 75, 158, 0.1);
             color: var(--text-primary);
         }
-        
+
+        .form-group input:disabled,
+        .form-group select:disabled {
+            background-color: var(--bg-light);
+            cursor: not-allowed;
+        }
+
         .form-check {
             display: flex;
             align-items: center;
             gap: var(--spacing-md);
             margin-bottom: var(--spacing-md);
         }
-        
+
         .form-check input {
             width: auto;
             cursor: pointer;
         }
-        
+
         .form-check label {
             margin: 0;
             cursor: pointer;
             font-weight: 400;
         }
-        
+
         .btn-save {
             width: 100%;
             padding: var(--spacing-md);
@@ -131,35 +161,166 @@
             cursor: pointer;
             transition: var(--transition);
         }
-        
+
         .btn-save:hover {
             background: var(--primary-dark);
         }
-        
+
         .permissions-table {
             width: 100%;
             font-size: 13px;
             border-collapse: collapse;
         }
-        
+
         .permissions-table th,
         .permissions-table td {
             padding: var(--spacing-md);
             text-align: left;
             border-bottom: 1px solid var(--border-color);
         }
-        
+
         .permissions-table th {
             background: var(--secondary);
             font-weight: 600;
             color: var(--text-primary);
         }
-        
+
         .permissions-table input {
             cursor: pointer;
         }
+
+        .validation-message {
+            font-size: 12px;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .error {
+            color: var(--warning);
+        }
+
+        .success {
+            color: var(--success);
+        }
+
+        .form-group.error input,
+        .form-group.error select {
+            border-color: var(--warning);
+        }
+
+        .form-group.success input,
+        .form-group.success select {
+            border-color: var(--success);
+        }
+
+        /* Toast Container */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Toast Styles */
+
+        .toast:not(.show) {
+            display: block;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: white;
+            min-width: 300px;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transform: translateX(100%);
+            opacity: 0;
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        .toast.success {
+            background-color: #10b981;
+            border-left: 4px solid #059669;
+        }
+
+        .toast.error {
+            background-color: #ef4444;
+            border-left: 4px solid #dc2626;
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        /* Toast Animation */
+        @keyframes slideIn {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Toast Exit Animation */
+        .toast.fade-out {
+            animation: slideOut 0.3s ease forwards;
+        }
+
+        @keyframes slideOut {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .btn-cancel {
+            width: 100%;
+            padding: var(--spacing-md);
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-cancel:hover {
+            background: var(--bg-white);
+        }
     </style>
 </head>
+
 <body>
     <div class="admin-wrapper">
         <!-- Sidebar -->
@@ -226,7 +387,7 @@
                     </div>
                 </div>
             </header>
-            
+
             <div class="admin-content">
                 <div class="settings-grid">
                     <!-- Business Information -->
@@ -236,40 +397,45 @@
                             <h3>Business Information</h3>
                         </div>
                         <div class="settings-body">
-                            <div class="form-group">
+                            <div class="form-group" id="business-name-group">
                                 <label>Business Name</label>
-                                <input type="text" placeholder="Enter Business Name">
+                                <input type="text" placeholder="Enter Business Name" id="business-name">
+                                <div class="validation-message" id="business-name-group-message"></div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="business-type-group">
                                 <label>Business Type</label>
-                                <select class="form-control" id="Business-type">
-                                <option value="Restaurant">Restaurant</option>
-                                <option value="Café">Café</option>
-                                <option value="Café">Beauty Salon</option>
-                                <option value="Services">Services</option>
-                            </select>
+                                <select class="form-control" id="business-type">
+                                    <option value="" disabled selected>Please Select</option>
+                                    <option value="Restaurant">Restaurant</option>
+                                    <option value="Café">Café</option>
+                                    <option value="Beauty Salon">Beauty Salon</option>
+                                    <option value="Services">Services</option>
+                                </select>
+                                <div class="validation-message" id="business-type-group-message"></div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="business-address-group">
                                 <label>Address</label>
-                                <input type="text" placeholder="Enter Address">
+                                <input type="text" placeholder="Enter Address" id="business-address">
+                                <div class="validation-message" id="business-address-group-message"></div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="business-phone-group">
                                 <label>Phone</label>
-                                <input type="tel" placeholder="Enter Phone Number">
+                                <input type="tel" placeholder="Enter Phone Number" id="business-phone">
+                                <div class="validation-message" id="business-phone-group-message"></div>
+                            </div>
+                            <div class="form-group" id="business-owner-group">
+                                <label>Owner's Name</label>
+                                <input type="text" placeholder="Enter Owner's Name" id="business-owner">
+                                <div class="validation-message" id="business-owner-group-message"></div>
                             </div>
                             <div class="form-group">
-                                <label>Email <Address></Address></label>
+                                <label>Email</label>
                                 <input type="email" value="admin@example.com" disabled>
                             </div>
-
-                        <div class="form-group">
-                                <label>Owner's Name</label>
-                                <input type="text" placeholder="Enter Owner's Name">
-                            </div>
-                            <button class="btn-save">Save Changes</button>
+                            <button class="btn-save" id="business-save">Save Changes</button>
                         </div>
                     </div>
-                    
+
                     <!-- Tax Settings -->
                     <div class="settings-card">
                         <div class="settings-header">
@@ -277,26 +443,502 @@
                             <h3>Tax Settings</h3>
                         </div>
                         <div class="settings-body">
-                            <div class="form-group">
+                            <div class="form-group" id="tax-rate-group">
                                 <label>Sales Tax Rate (%)</label>
-                                <input type="number" value="8.00" step="0.01">
+                                <input type="number" value="8.00" step="0.01" id="tax-rate">
+                                <div class="validation-message" id="tax-rate-group-message"></div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="tax-name-group">
                                 <label>Tax Name</label>
-                                <input type="text" value="Sales Tax">
+                                <input type="text" value="Sales Tax" id="tax-name">
+                                <div class="validation-message" id="tax-name-group-message"></div>
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" id="tax-inclusive" checked>
                                 <label for="tax-inclusive">Prices are tax-inclusive</label>
                             </div>
-                            <button class="btn-save">Save Changes</button>
+                            <button class="btn-save" id="tax-save">Save Changes</button>
                         </div>
                     </div>
-                </div>   
+                </div>
             </div>
         </div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // create_account.js - Validation for Business Registration Page
+        document.addEventListener('DOMContentLoaded', function () {
+            // Toast notification system
+            function showToast(title, message, type) {
+                const toastContainer = document.getElementById('toast-container');
+                if (!toastContainer) {
+                    // Create toast container if it doesn't exist
+                    const container = document.createElement('div');
+                    container.className = 'toast-container';
+                    container.id = 'toast-container';
+                    document.body.appendChild(container);
+                }
+
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+
+                const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill';
+
+                toast.innerHTML = `
+            <i class="bi ${icon} toast-icon"></i>
+            <div class="toast-content">
+                <div class="toast-title">${title}</div>
+                <div class="toast-message">${message}</div>
+            </div>
+        `;
+
+                document.getElementById('toast-container').appendChild(toast);
+
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.classList.add('fade-out');
+                        setTimeout(() => {
+                            if (toast.parentNode) {
+                                toast.remove();
+                            }
+                        }, 300);
+                    }
+                }, 5000);
+            }
+
+            // Safe element getter with null check
+            function getElement(id) {
+                const element = document.getElementById(id);
+                if (!element) {
+                    console.warn(`Element with id '${id}' not found`);
+                }
+                return element;
+            }
+
+            // Validation functions
+            function validateBusinessName(name) {
+                if (!name || name.trim() === '') {
+                    return { isValid: false, message: 'Business name is required' };
+                }
+                if (name.length < 2) {
+                    return { isValid: false, message: 'Business name must be at least 2 characters' };
+                }
+                if (name.length > 100) {
+                    return { isValid: false, message: 'Business name must be less than 100 characters' };
+                }
+                return { isValid: true,};
+            }
+
+            function validateBusinessType(type) {
+                if (!type) {
+                    return { isValid: false, message: 'Please select a business type' };
+                }
+                return { isValid: true,};
+            }
+
+            function validateAddress(address) {
+                if (!address || address.trim() === '') {
+                    return { isValid: false, message: 'Address is required' };
+                }
+                if (address.length < 5) {
+                    return { isValid: false, message: 'Address must be at least 5 characters' };
+                }
+                if (address.length > 200) {
+                    return { isValid: false, message: 'Address must be less than 200 characters' };
+                }
+                return { isValid: true,};
+            }
+
+            function validatePhone(phone) {
+                if (!phone || phone.trim() === '') {
+                    return { isValid: false, message: 'Phone number is required' };
+                }
+
+                // Remove all non-digit characters
+                const cleanedPhone = phone.replace(/\D/g, '');
+
+                // Validate phone number (US format: 10 digits)
+                if (cleanedPhone.length < 10) {
+                    return { isValid: false, message: 'Phone number must be at least 10 digits' };
+                }
+
+                // Additional format validation
+                const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+                if (!phoneRegex.test(phone)) {
+                    return { isValid: false, message: 'Please enter a valid phone number' };
+                }
+
+                return { isValid: true,};
+            }
+
+            function validateOwnerName(name) {
+                if (!name || name.trim() === '') {
+                    return { isValid: false, message: 'Owner name is required' };
+                }
+                if (name.length < 2) {
+                    return { isValid: false, message: 'Owner name must be at least 2 characters' };
+                }
+                if (name.length > 100) {
+                    return { isValid: false, message: 'Owner name must be less than 100 characters' };
+                }
+
+                // Validate name format (only letters, spaces, hyphens, and apostrophes)
+                const nameRegex = /^[a-zA-Z\s\-']+$/;
+                if (!nameRegex.test(name)) {
+                    return { isValid: false, message: 'Owner name can only contain letters, spaces, hyphens, and apostrophes' };
+                }
+
+                return { isValid: true,};
+            }
+
+            function validateEmail(email) {
+                if (!email || email.trim() === '') {
+                    return { isValid: false, message: 'Email is required' };
+                }
+
+                // Basic email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    return { isValid: false, message: 'Please enter a valid email address' };
+                }
+
+                return { isValid: true,};
+            }
+
+            function validateTaxRate(rate) {
+                if (!rate || rate === '') {
+                    return { isValid: false, message: 'Tax rate is required' };
+                }
+
+                const numRate = parseFloat(rate);
+                if (isNaN(numRate)) {
+                    return { isValid: false, message: 'Tax rate must be a number' };
+                }
+                if (numRate < 0) {
+                    return { isValid: false, message: 'Tax rate cannot be negative' };
+                }
+                if (numRate > 100) {
+                    return { isValid: false, message: 'Tax rate cannot exceed 100%' };
+                }
+
+                return { isValid: true,};
+            }
+
+            function validateTaxName(name) {
+                if (!name || name.trim() === '') {
+                    return { isValid: false, message: 'Tax name is required' };
+                }
+                if (name.length > 50) {
+                    return { isValid: false, message: 'Tax name must be less than 50 characters' };
+                }
+                return { isValid: true,};
+            }
+
+            // Update validation status for a form group
+            function updateValidationStatus(groupId, isValid, message) {
+                const group = getElement(groupId);
+                const messageEl = getElement(`${groupId}-message`);
+
+                if (!group || !messageEl) {
+                    return;
+                }
+
+                // Remove previous validation classes
+                group.classList.remove('error', 'success');
+                messageEl.className = 'validation-message';
+
+                if (isValid) {
+                    group.classList.add('success');
+                    messageEl.textContent = message || '';
+                    messageEl.classList.add('success');
+                } else {
+                    group.classList.add('error');
+                    messageEl.textContent = message || '';
+                    messageEl.classList.add('error');
+                }
+            }
+
+            // Clear validation status
+            function clearValidationStatus(groupId) {
+                const group = getElement(groupId);
+                const messageEl = getElement(`${groupId}-message`);
+
+                if (group && messageEl) {
+                    group.classList.remove('error', 'success');
+                    messageEl.textContent = '';
+                    messageEl.className = 'validation-message';
+                }
+            }
+
+            // Check if all business fields are valid
+            function isBusinessSectionValid() {
+                const inputs = {
+                    'business-name': getElement('business-name'),
+                    'business-type': getElement('business-type'),
+                    'business-address': getElement('business-address'),
+                    'business-phone': getElement('business-phone'),
+                    'business-owner': getElement('business-owner')
+                };
+
+                // Check if all required elements exist
+                for (const key in inputs) {
+                    if (!inputs[key]) {
+                        console.warn(`Missing input: ${key}`);
+                        return false;
+                    }
+                }
+
+                // Validate each field
+                const validations = [
+                    validateBusinessName(inputs['business-name'].value),
+                    validateBusinessType(inputs['business-type'].value),
+                    validateAddress(inputs['business-address'].value),
+                    validatePhone(inputs['business-phone'].value),
+                    validateOwnerName(inputs['business-owner'].value)
+                ];
+
+                return validations.every(v => v.isValid);
+            }
+
+            // Check if all tax fields are valid
+            function isTaxSectionValid() {
+                const rateInput = getElement('tax-rate');
+                const nameInput = getElement('tax-name');
+
+                if (!rateInput || !nameInput) {
+                    return false;
+                }
+
+                const rateValid = validateTaxRate(rateInput.value).isValid;
+                const nameValid = validateTaxName(nameInput.value).isValid;
+
+                return rateValid && nameValid;
+            }
+
+            // Initialize real-time validation for business information
+            function initializeBusinessValidation() {
+                const businessInputs = [
+                    { id: 'business-name', groupId: 'business-name-group', validator: validateBusinessName },
+                    { id: 'business-address', groupId: 'business-address-group', validator: validateAddress },
+                    { id: 'business-phone', groupId: 'business-phone-group', validator: validatePhone },
+                    { id: 'business-owner', groupId: 'business-owner-group', validator: validateOwnerName }
+                ];
+
+                const businessTypeSelect = getElement('business-type');
+                const businessTypeGroup = getElement('business-type-group');
+
+                // Add input event listeners for text inputs
+                businessInputs.forEach(({ id, groupId, validator }) => {
+                    const input = getElement(id);
+                    if (!input) return;
+
+                    input.addEventListener('blur', function () {
+                        const validation = validator(this.value);
+                        updateValidationStatus(groupId, validation.isValid, validation.message);
+                    });
+
+                    input.addEventListener('input', function () {
+                        if (this.value.trim() === '') {
+                            clearValidationStatus(groupId);
+                        } else {
+                            const validation = validator(this.value);
+                            if (!validation.isValid) {
+                                updateValidationStatus(groupId, validation.isValid, validation.message);
+                            } else {
+                                clearValidationStatus(groupId);
+                            }
+                        }
+                    });
+                });
+
+                // Add change event listener for business type select
+                if (businessTypeSelect && businessTypeGroup) {
+                    businessTypeSelect.addEventListener('change', function () {
+                        const validation = validateBusinessType(this.value);
+                        updateValidationStatus('business-type-group', validation.isValid, validation.message);
+                    });
+                }
+            }
+
+            // Initialize real-time validation for tax settings
+            function initializeTaxValidation() {
+                const taxRateInput = getElement('tax-rate');
+                const taxNameInput = getElement('tax-name');
+
+                if (taxRateInput) {
+                    taxRateInput.addEventListener('blur', function () {
+                        const validation = validateTaxRate(this.value);
+                        updateValidationStatus('tax-rate-group', validation.isValid, validation.message);
+                    });
+
+                    taxRateInput.addEventListener('input', function () {
+                        if (this.value.trim() === '') {
+                            clearValidationStatus('tax-rate-group');
+                        } else {
+                            const validation = validateTaxRate(this.value);
+                            if (!validation.isValid) {
+                                updateValidationStatus('tax-rate-group', validation.isValid, validation.message);
+                            } else {
+                                clearValidationStatus('tax-rate-group');
+                            }
+                        }
+                    });
+                }
+
+                if (taxNameInput) {
+                    taxNameInput.addEventListener('blur', function () {
+                        const validation = validateTaxName(this.value);
+                        updateValidationStatus('tax-name-group', validation.isValid, validation.message);
+                    });
+
+                    taxNameInput.addEventListener('input', function () {
+                        if (this.value.trim() === '') {
+                            clearValidationStatus('tax-name-group');
+                        } else {
+                            const validation = validateTaxName(this.value);
+                            if (!validation.isValid) {
+                                updateValidationStatus('tax-name-group', validation.isValid, validation.message);
+                            } else {
+                                clearValidationStatus('tax-name-group');
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Handle form submission
+            function initializeFormSubmission() {
+                const saveBusinessBtn = getElement('business-save');
+                const saveTaxBtn = getElement('tax-save');
+
+                // Validate and save business information
+                if (saveBusinessBtn) {
+                    saveBusinessBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        // Validate all business fields
+                        const inputs = [
+                            { id: 'business-name', groupId: 'business-name-group', validator: validateBusinessName },
+                            { id: 'business-type', groupId: 'business-type-group', validator: validateBusinessType },
+                            { id: 'business-address', groupId: 'business-address-group', validator: validateAddress },
+                            { id: 'business-phone', groupId: 'business-phone-group', validator: validatePhone },
+                            { id: 'business-owner', groupId: 'business-owner-group', validator: validateOwnerName }
+                        ];
+
+                        let allValid = true;
+
+                        // Run validation on all fields
+                        inputs.forEach(({ id, groupId, validator }) => {
+                            const input = getElement(id);
+                            if (input) {
+                                const validation = validator(input.value);
+                                updateValidationStatus(groupId, validation.isValid, validation.message);
+                                if (!validation.isValid) {
+                                    allValid = false;
+                                }
+                            }
+                        });
+
+                        if (allValid) {
+                            // Here you would normally submit the data to your server
+                            // For now, just show a success message
+                            showToast('Success', 'Business information saved successfully!', 'success');
+
+                            // In a real application, you would:
+                            // 1. Send data to your backend API
+                            // 2. Handle the response
+                            // 3. Show appropriate messages
+
+                            console.log('Business Information:', {
+                                businessName: getElement('business-name')?.value,
+                                businessType: getElement('business-type')?.value,
+                                address: getElement('business-address')?.value,
+                                phone: getElement('business-phone')?.value,
+                                ownerName: getElement('business-owner')?.value,
+                                email: getElement('business-email')?.value
+                            });
+
+                        } else {
+                            showToast('Error', 'Please fix all validation errors before saving', 'error');
+                        }
+                    });
+                }
+
+                // Validate and save tax settings
+                if (saveTaxBtn) {
+                    saveTaxBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        // Validate tax fields
+                        const taxRateInput = getElement('tax-rate');
+                        const taxNameInput = getElement('tax-name');
+
+                        let allValid = true;
+
+                        if (taxRateInput) {
+                            const rateValidation = validateTaxRate(taxRateInput.value);
+                            updateValidationStatus('tax-rate-group', rateValidation.isValid, rateValidation.message);
+                            if (!rateValidation.isValid) allValid = false;
+                        }
+
+                        if (taxNameInput) {
+                            const nameValidation = validateTaxName(taxNameInput.value);
+                            updateValidationStatus('tax-name-group', nameValidation.isValid, nameValidation.message);
+                            if (!nameValidation.isValid) allValid = false;
+                        }
+
+                        if (allValid) {
+                            showToast('Success', 'Tax settings saved successfully!', 'success');
+
+                            console.log('Tax Settings:', {
+                                taxRate: getElement('tax-rate')?.value,
+                                taxName: getElement('tax-name')?.value,
+                                taxInclusive: getElement('tax-inclusive')?.checked
+                            });
+
+                        } else {
+                            showToast('Error', 'Please fix all validation errors before saving', 'error');
+                        }
+                    });
+                }
+            }
+
+            // Initialize email field as always disabled
+            function initializeEmailField() {
+                const emailField = document.querySelector('input[type="email"]');
+                if (emailField) {
+                    // Make sure email field is always disabled
+                    emailField.disabled = true;
+
+                    // Optionally, you can pre-fill it with a value or get it from somewhere
+                    // For example, if you have a logged-in user's email
+                    // emailField.value = 'user@example.com';
+                }
+            }
+
+            // Initialize everything
+            function initialize() {
+                console.log('Initializing Business Registration Validation...');
+
+                // Initialize email field
+                initializeEmailField();
+
+                // Initialize real-time validation
+                initializeBusinessValidation();
+                initializeTaxValidation();
+
+                // Initialize form submission
+                initializeFormSubmission();
+
+                console.log('Business Registration Validation initialized successfully');
+            }
+
+            // Start initialization
+            initialize();
+        });
+    </script>
 </body>
+
 </html>

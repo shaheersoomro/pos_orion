@@ -16,107 +16,479 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Modern CSS -->
     <link rel="stylesheet" href="style_new.css">
+    <style>
+        .spinner {
+            border: 3px solid var(--secondary);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Toast Container */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast:not(.show) {
+            display: block;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: white;
+            min-width: 300px;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transform: translateX(100%);
+            opacity: 0;
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        .toast.success {
+            background-color: #10b981;
+            border-left: 4px solid #059669;
+        }
+
+        .toast.error {
+            background-color: #ef4444;
+            border-left: 4px solid #dc2626;
+        }
+
+        .toast.info {
+            background-color: #3b82f6;
+            border-left: 4px solid #1d4ed8;
+        }
+
+        .toast.warning {
+            background-color: #f59e0b;
+            border-left: 4px solid #d97706;
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.fade-out {
+            animation: slideOut 0.3s ease forwards;
+        }
+
+        @keyframes slideOut {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .low-stock-badge {
+            background: #ffc107;
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+
+        .product-stock {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        .product-card {
+            position: relative;
+            /* background: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            cursor: pointer; */
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .product-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed !important;
+            pointer-events: none;
+        }
+
+        .product-card.disabled .product-name,
+        .product-card.disabled .product-price,
+        .product-card.disabled .product-stock {
+            color: #6c757d;
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .product-price {
+            font-weight: 700;
+            font-size: 18px;
+            color: #28a745;
+            margin-bottom: 8px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .order-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .item-price {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 4px;
+        }
+
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+        }
+
+        .quantity-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .quantity-btn.minus {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .quantity-btn.minus:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .quantity {
+            font-weight: 600;
+            font-size: 14px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .item-subtotal {
+            font-weight: 600;
+            font-size: 14px;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .remove-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .remove-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            transform: scale(1.05);
+        }
+
+
+
+        .product-card.disabled .product-name {
+            color: #6c757d;
+        }
+
+        .product-card.disabled .product-price {
+            color: #6c757d;
+        }
+
+        .product-card.disabled .product-stock {
+            color: #6c757d;
+        }
+
+        .btn-action:disabled,
+        .btn-action.disabled {
+            opacity: 0.5;
+            cursor: not-allowed !important;
+            pointer-events: none;
+            background-color: var(--secondary) !important;
+            border-color: var(--secondary) !important;
+        }
+
+        .btn-action.btn-primary:disabled,
+        .btn-action.btn-primary.disabled {
+            background-color: var(--primary-light) !important;
+            border-color: var(--primary-light) !important;
+        }
+
+        /* Discount Styles */
+        .btn-info {
+            background-color: var(--info);
+            border-color: var(--info);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: var(--info-dark);
+            border-color: var(--info-dark);
+        }
+
+        .discount-card {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .discount-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(91, 75, 158, 0.1);
+        }
+
+        .discount-card.active {
+            border-color: var(--primary);
+            background: var(--secondary);
+        }
+
+        .discount-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .discount-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .discount-type {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .discount-type-badge {
+            font-size: 10px;
+            background: rgba(91, 75, 158, 0.1);
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 12px;
+            margin-left: 8px;
+            font-weight: normal;
+        }
+
+        .discount-type.percentage {
+            background: rgba(91, 75, 158, 0.1);
+            color: var(--primary);
+        }
+
+        .discount-type.fixed {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+        }
+
+        .discount-type.bogo {
+            background: rgba(241, 196, 15, 0.1);
+            color: var(--warning);
+        }
+
+        .discount-details {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .discount-amount {
+            font-weight: 600;
+            color: var(--success);
+            font-size: 14px;
+        }
+
+        .discount-conditions {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: var(--spacing-xs);
+            padding-top: var(--spacing-xs);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .applied-discounts-container {
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+        }
+
+        .applied-discount-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm);
+            background: var(--bg-light);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .applied-discount-info {
+            flex: 1;
+        }
+
+        .applied-discount-name {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .applied-discount-amount {
+            font-size: 12px;
+            color: var(--success);
+        }
+
+        .remove-discount-btn {
+            background: none;
+            border: none;
+            color: var(--warning);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .remove-discount-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 20px;
+        }
+
+        .empty-state i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+    </style>
 </head>
 
 <body>
     <div class="pos-wrapper">
-        <!-- Sidebar Navigation -->
-        <!-- <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="bi bi-lightning-fill"></i>
-                    <span>Orion</span>
-                </div>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item active" data-page="pos">
-                    <i class="bi bi-shop"></i>
-                    <span>POS</span>
-                </a>
-                <a href="dashboard.html" class="nav-item" data-page="dashboard">
-                    <i class="bi bi-speedometer2"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="inventory.html" class="nav-item" data-page="inventory">
-                    <i class="bi bi-box-seam"></i>
-                    <span>Inventory</span>
-                </a>
-                <a href="history.html" class="nav-item" data-page="history">
-                    <i class="bi bi-clock-history"></i>
-                    <span>History</span>
-                </a>
-                <a href="users.html" class="nav-item" data-page="users">
-                    <i class="bi bi-people"></i>
-                    <span>Users</span>
-                </a>
-                <a href="settings.html" class="nav-item" data-page="settings">
-                    <i class="bi bi-gear"></i>
-                    <span>Settings</span>
-                </a>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="avatar">A</div>
-                    <div class="user-info">
-                        <div class="user-name">Alice</div>
-                        <div class="user-role">Cashier</div>
-                    </div>
-                </div>
-                <a href="login.html" class="logout-btn" title="Logout">
-                    <i class="bi bi-box-arrow-right"></i>
-                </a>
-            </div>
-        </aside> -->
-
-        <!-- <nav class="bottom-navbar">
-            <a href="#" class="nav-item active" data-page="pos">
-                <i class="bi bi-shop"></i>
-                <span>POS</span>
-            </a>
-            <a href="dashboard.html" class="nav-item" data-page="dashboard">
-                <i class="bi bi-speedometer2"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="inventory.html" class="nav-item" data-page="inventory">
-                <i class="bi bi-box-seam"></i>
-                <span>Inventory</span>
-            </a>
-            <a href="history.html" class="nav-item" data-page="history">
-                <i class="bi bi-clock-history"></i>
-                <span>History</span>
-            </a>
-            <a href="users.html" class="nav-item" data-page="users">
-                <i class="bi bi-people"></i>
-                <span>Users</span>
-            </a>
-            <a href="settings.html" class="nav-item" data-page="settings">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-        </nav> -->
-
-        <!-- <div class="sidebar-footer">
-            <div class="user-profile">
-                <div class="avatar">A</div>
-                <div class="user-info">
-                    <div class="user-name">Alice</div>
-                    <div class="user-role">Cashier</div>
-                </div>
-            </div>
-            <a href="login.html" class="logout-btn" title="Logout">
-                <i class="bi bi-box-arrow-right"></i>
-            </a>
-        </div> -->
-
-
         <!-- Main Content -->
         <main class="main-content">
             <!-- Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <h1 class="page-title">Point of Sale</h1>
+                    <h1 class="page-title">POS</h1>
                 </div>
                 <div class="header-center">
                     <div class="search-box">
@@ -128,19 +500,19 @@
                     <div class="header-stats">
                         <div class="stat-item">
                             <span class="stat-label">Today's Sales</span>
-                            <span class="stat-value">$1,250.50</span>
+                            <span class="stat-value"></span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-label">Transactions</span>
-                            <span class="stat-value">55</span>
+                            <span class="stat-value"></span>
                         </div>
                         <div class="user-profile">
-                            <div class="avatar">A</div>
+                            <div class="avatar"></div>
                             <div class="user-info">
-                                <div class="user-name">Alice</div>
-                                <div class="user-role">Cashier</div>
+                                <div class="user-name"></div>
+                                <div class="user-role"></div>
                             </div>
-                            <a href="login.html" class="logout-btn" title="Logout">
+                            <a href="#" class="logout-btn" title="Logout">
                                 <i class="bi bi-box-arrow-right"></i>
                             </a>
                         </div>
@@ -154,33 +526,29 @@
                 <div class="products-section">
                     <!-- Search & Filter -->
                     <div class="products-header">
-                        <!-- <div class="search-box">
-                            <i class="bi bi-search"></i>
-                            <input type="text" id="product-search" placeholder="Search products...">
-                        </div> -->
-                        <div class="category-filter">
-                            <button class="filter-btn active" data-category="all">All</button>
-                            <button class="filter-btn" data-category="coffee">Coffee</button>
-                            <button class="filter-btn" data-category="food">Food</button>
-                            <button class="filter-btn" data-category="services">Services</button>
+                        <div class="category-filter" id="category-filter">
+                            <!-- Category buttons will be populated by JavaScript -->
                         </div>
                     </div>
 
                     <!-- Products Grid -->
                     <div class="products-grid" id="products-grid">
+                        <div class="loading-spinner" id="loading-spinner"
+                            style="grid-column: 1 / -1; text-align: center; padding: 120px 40px;">
+                            <div class="spinner"></div>
+                            <p>Loading inventory...</p>
+                        </div>
                         <!-- Products will be populated by JavaScript -->
                     </div>
                 </div>
-
-
             </div>
         </main>
         <!-- Right: Order Summary & Cart -->
         <aside class="order-panel">
             <!-- Order Header -->
             <div class="order-header">
-                <h2>Order #<span id="order-number">001</span></h2>
-                <div class="order-time" id="order-time">12:30 PM</div>
+                <h2>Order #<span id="order-number"></span></h2>
+                <div class="order-time" id="order-time"></div>
             </div>
 
             <!-- Order Items -->
@@ -197,10 +565,15 @@
                     <span>Subtotal</span>
                     <span id="subtotal">$0.00</span>
                 </div>
+                <div class="summary-row discount-breakdown text-success" id="discount-breakdown" style="display: none;">
+                    <span>Discounts</span>
+                    <span id="discount-list"></span>
+                </div>
                 <div class="summary-row">
-                    <span>Tax (8%)</span>
+                    <span id="tax-label">Sales Tax</span>
                     <span id="tax">$0.00</span>
                 </div>
+
                 <div class="summary-row total">
                     <span>Total</span>
                     <span id="total">$0.00</span>
@@ -208,20 +581,22 @@
             </div>
 
             <!-- Action Buttons -->
+            <!-- Update the order-actions div in index.html to include discount button -->
             <div class="order-actions">
                 <button class="btn-action btn-secondary" id="btn-cancel">
                     <i class="bi bi-x-circle"></i> Cancel
+                </button>
+                <button class="btn-action btn-info" id="btn-discount">
+                    <i class="bi bi-percent"></i> Discount
                 </button>
                 <button class="btn-action btn-primary" id="btn-payment">
                     <i class="bi bi-credit-card"></i> Payment
                 </button>
             </div>
         </aside>
-
-
     </div>
 
-
+    <!-- Bottom Navigation -->
     <nav class="bottom-navbar">
         <a href="#" class="nav-item active" data-page="pos">
             <i class="bi bi-shop"></i>
@@ -248,6 +623,7 @@
             <span>Settings</span>
         </a>
     </nav>
+
     <!-- Payment Modal -->
     <div class="modal fade" id="paymentModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -269,6 +645,9 @@
                         </button>
                         <button class="payment-method" data-method="card">
                             <i class="bi bi-credit-card"></i> Card
+                        </button>
+                        <button class="payment-method" data-method="wallet">
+                            <i class="bi bi-wallet"></i> Wallet
                         </button>
                     </div>
                     <div class="form-group">
@@ -313,9 +692,1647 @@
         </div>
     </div>
 
+    <!-- Discount Modal -->
+    <div class="modal fade" id="discountModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Apply Discount</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Active Discounts -->
+                    <div class="mb-4">
+                        <h6>Available Discounts</h6>
+                        <div id="available-discounts" class="mb-3" style="max-height: 300px; overflow-y: auto;">
+                            <!-- Discounts will be loaded here -->
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Loading discounts...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Applied Discounts -->
+                    <div class="mb-4">
+                        <h6>Applied Discounts</h6>
+                        <div id="applied-discounts" class="applied-discounts-container">
+                            <!-- Applied discounts will appear here -->
+                            <div class="empty-state">
+                                <i class="bi bi-percent"></i>
+                                <p>No discounts applied</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discount Summary -->
+                    <div class="discount-summary" id="discount-summary" style="display: none;">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Original Subtotal:</span>
+                            <span id="original-subtotal">$0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Total Discount:</span>
+                            <span id="total-discount" class="text-success">$0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between fw-bold">
+                            <span>Discounted Subtotal:</span>
+                            <span id="discounted-subtotal">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-action btn-primary" id="apply-discounts-btn">Apply
+                        Discounts</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script_new.js"></script>
+   <script>
+    // ============================================
+    // AUTHENTICATION & INITIALIZATION
+    // ============================================
+
+    const API_BASE_URL = 'http://localhost:3001/api';
+    let categories = [];
+    let inventory = [];
+    let cart = [];
+    let currentFilter = "all";
+    let availableDiscounts = [];
+    let appliedDiscounts = [];
+
+    function checkAuthentication() {
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user) {
+            showToast('Please login first', 'error');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+            return false;
+        }
+
+        updateUserInfo(user);
+        return true;
+    }
+
+    function updateUserInfo(user) {
+        const userNameEl = document.querySelector('.user-name');
+        const userRoleEl = document.querySelector('.user-role');
+        const avatarEl = document.querySelector('.avatar');
+
+        if (userNameEl) userNameEl.textContent = user.fullName || 'User';
+        if (userRoleEl) {
+            userRoleEl.textContent = user.role === 'admin' ? 'Administrator' :
+                user.role === 'cashier' ? 'Cashier' :
+                    user.role === 'manager' ? 'Manager' : 'User';
+        }
+        if (avatarEl && user.fullName) {
+            avatarEl.textContent = user.fullName.charAt(0).toUpperCase();
+        }
+    }
+
+    function setupLogout() {
+        document.querySelectorAll('.logout-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            });
+        });
+    }
+
+    // ============================================
+    // API HELPER FUNCTIONS
+    // ============================================
+
+    async function apiRequest(endpoint, options = {}) {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = 'login.html';
+            return null;
+        }
+
+        const url = `${API_BASE_URL}${endpoint}`;
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            ...options.headers
+        };
+
+        try {
+            const response = await fetch(url, { ...options, headers });
+            const data = await response.json();
+
+            if (!response.ok) {
+                return {
+                    success: false,
+                    status: response.status,
+                    message: data.message || data.error || `API request failed with status ${response.status}`,
+                    errors: data.errors
+                };
+            }
+
+            return data;
+        } catch (error) {
+            console.error('API request error:', error);
+            if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                showToast('Cannot connect to server. Please check your connection.', 'error');
+            } else {
+                showToast('Network error. Please check your connection.', 'error');
+            }
+
+            return {
+                success: false,
+                status: 0,
+                message: 'Network error',
+                errors: []
+            };
+        }
+    }
+
+    // ============================================
+    // CATEGORY MANAGEMENT
+    // ============================================
+
+    async function loadCategories() {
+        try {
+            const data = await apiRequest('/categories');
+
+            if (data && data.success) {
+                categories = data.categories || [];
+                updateCategoryFilter();
+                attachFilterEvents();
+                return categories;
+            }
+            return [];
+        } catch (error) {
+            console.error('Failed to load categories:', error);
+            showToast('Failed to load categories. Using empty list.', 'warning');
+            categories = [];
+            updateCategoryFilter();
+            return categories;
+        }
+    }
+
+    function updateCategoryFilter() {
+        const container = document.getElementById('category-filter');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        const allButton = document.createElement('button');
+        allButton.className = 'filter-btn active';
+        allButton.dataset.category = 'all';
+        allButton.textContent = 'All';
+        container.appendChild(allButton);
+
+        categories.forEach(category => {
+            const button = document.createElement('button');
+            button.className = 'filter-btn';
+            button.dataset.category = category._id || category.id || category.name.toLowerCase();
+            button.textContent = category.name;
+            container.appendChild(button);
+        });
+    }
+
+    function attachFilterEvents() {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                filterInventoryByCategory(this.dataset.category);
+            });
+        });
+    }
+
+    function filterInventoryByCategory(categoryId) {
+        currentFilter = categoryId;
+
+        if (categoryId === 'all') {
+            renderInventory(inventory);
+        } else {
+            const filteredInventory = inventory.filter(item => {
+                const itemCategoryId = item.category?._id || item.category;
+                return itemCategoryId === categoryId ||
+                    (item.category?.name && item.category.name.toLowerCase() === categoryId);
+            });
+            renderInventory(filteredInventory);
+        }
+    }
+
+    // ============================================
+    // INVENTORY MANAGEMENT
+    // ============================================
+
+    async function loadInventory() {
+        try {
+            showLoading();
+            const data = await apiRequest('/inventory');
+
+            if (!data) {
+                hideLoading();
+                renderEmptyState('Failed to load inventory');
+                return;
+            }
+
+            if (data.success) {
+                inventory = data.inventory || data.data || [];
+                inventory = inventory.filter(item => item.isActive !== false);
+                renderInventory(inventory);
+                hideLoading();
+            } else {
+                showToast(data.message || 'Failed to load inventory', 'error');
+                hideLoading();
+                renderEmptyState('No inventory available');
+            }
+        } catch (error) {
+            console.error('Unexpected error in loadInventory:', error);
+            hideLoading();
+            renderEmptyState('Error loading inventory');
+        }
+    }
+
+    function showLoading() {
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const productsGrid = document.getElementById("products-grid");
+
+        if (loadingSpinner) loadingSpinner.style.display = 'block';
+        if (productsGrid) productsGrid.style.display = 'none';
+    }
+
+    function hideLoading() {
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const productsGrid = document.getElementById("products-grid");
+
+        if (loadingSpinner) loadingSpinner.style.display = 'none';
+        if (productsGrid) productsGrid.style.display = 'grid';
+    }
+
+    function handleProductCardClick(event) {
+        const card = event.currentTarget;
+
+        if (card.classList.contains('disabled')) {
+            return;
+        }
+
+        try {
+            const itemData = JSON.parse(card.dataset.item);
+            addToCart(itemData);
+        } catch (error) {
+            console.error('Error parsing item data:', error);
+            showToast('Error adding product to cart', 'error');
+        }
+    }
+
+    function renderInventory(inventoryItems) {
+        const grid = document.getElementById("products-grid");
+        if (!grid) return;
+
+        grid.innerHTML = '';
+
+        if (!inventoryItems || inventoryItems.length === 0) {
+            renderEmptyState('No inventory items found');
+            return;
+        }
+
+        inventoryItems.forEach((item) => {
+            const inCartQuantity = cart.reduce((sum, cartItem) => {
+                if (cartItem._id === item._id) {
+                    return sum + cartItem.quantity;
+                }
+                return sum;
+            }, 0);
+
+            const availableQuantity = item.quantity - inCartQuantity;
+            if (availableQuantity <= 0) return;
+
+            const card = document.createElement("div");
+            card.className = "product-card";
+            card.setAttribute('data-id', item._id);
+
+            const isLowStock = availableQuantity <= (item.lowStockThreshold || 10);
+
+            card.innerHTML = `
+                <div class="product-name">${item.name}</div>
+                <div class="product-price">$${item.price.toFixed(2)}</div>
+                ${isLowStock ? `<div class="low-stock-badge">Low Stock</div>` : ''}
+                <div class="product-stock">Available: ${availableQuantity}</div>
+            `;
+
+            card.dataset.item = JSON.stringify({
+                _id: item._id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                lowStockThreshold: item.lowStockThreshold
+            });
+
+            card.addEventListener("click", handleProductCardClick);
+            grid.appendChild(card);
+        });
+    }
+
+    function renderEmptyState(message = 'No inventory available') {
+        const grid = document.getElementById("products-grid");
+        if (!grid) return;
+
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                <i class="bi bi-box" style="font-size: 48px; color: #6c757d; margin-bottom: 20px;"></i>
+                <h4>${message}</h4>
+                <p>Try refreshing or check your connection.</p>
+            </div>
+        `;
+    }
+
+    // ============================================
+    // TAX SETTINGS MANAGEMENT
+    // ============================================
+
+    let taxSettings = {
+        enabled: true,
+        rate: 8,
+        taxName: 'Sales Tax',
+        taxInclusive: true
+    };
+
+    async function loadTaxSettings() {
+        try {
+            const data = await apiRequest('/settings/business');
+
+            if (data && data.success && data.business && data.business.taxSettings) {
+                taxSettings = data.business.taxSettings;
+
+                if (taxSettings.taxInclusive === undefined) {
+                    taxSettings.taxInclusive = true;
+                }
+
+                console.log('Tax settings loaded:', taxSettings);
+                return taxSettings;
+            }
+            return taxSettings;
+        } catch (error) {
+            console.error('Failed to load tax settings:', error);
+            showToast('Failed to load tax settings. Using default.', 'warning');
+            return taxSettings;
+        }
+    }
+
+    function calculateTaxInclusive(subtotal) {
+        if (!taxSettings.enabled || !taxSettings.taxInclusive) {
+            return {
+                subtotal: subtotal,
+                tax: 0,
+                total: subtotal
+            };
+        }
+
+        const taxRate = taxSettings.rate;
+        const tax = subtotal * (taxRate / (100 + taxRate));
+        const baseAmount = subtotal - tax;
+
+        return {
+            subtotal: baseAmount,
+            tax: tax,
+            total: subtotal
+        };
+    }
+
+    function calculateTaxExclusive(subtotal) {
+        if (!taxSettings.enabled) {
+            return {
+                subtotal: subtotal,
+                tax: 0,
+                total: subtotal
+            };
+        }
+
+        const tax = subtotal * (taxSettings.rate / 100);
+
+        return {
+            subtotal: subtotal,
+            tax: tax,
+            total: subtotal + tax
+        };
+    }
+
+    // ============================================
+    // CART MANAGEMENT
+    // ============================================
+
+    function addToCart(item) {
+        const inventoryItem = inventory.find(inv => inv._id === item._id);
+
+        if (!inventoryItem) {
+            showToast('Product not found in inventory', 'error');
+            return;
+        }
+
+        if (inventoryItem.quantity <= 0) {
+            showToast(`${item.name} is out of stock`, 'error');
+            return;
+        }
+
+        const existingItem = cart.find(cartItem => cartItem._id === inventoryItem._id);
+        const currentCartQty = existingItem ? existingItem.quantity : 0;
+
+        if (currentCartQty >= inventoryItem.quantity) {
+            showToast(`Only ${inventoryItem.quantity} ${item.name} available`, 'warning');
+            return;
+        }
+
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({
+                _id: inventoryItem._id,
+                name: inventoryItem.name,
+                price: inventoryItem.price,
+                quantity: 1,
+            });
+        }
+
+        updateCart();
+        updateProductStockDisplay(inventoryItem._id);
+        
+        // Recalculate discounts when cart changes
+        if (appliedDiscounts.length > 0) {
+            loadAvailableDiscounts();
+            updateDiscountSummary();
+        }
+    }
+
+    function updateProductStockDisplay(productId) {
+        const inventoryItem = inventory.find(item => item._id === productId);
+        if (!inventoryItem) return;
+
+        const inCartQuantity = cart.reduce((sum, cartItem) => {
+            if (cartItem._id === productId) {
+                return sum + cartItem.quantity;
+            }
+            return sum;
+        }, 0);
+
+        const availableQuantity = inventoryItem.quantity - inCartQuantity;
+
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach(card => {
+            const cardId = card.getAttribute('data-id');
+            if (cardId === productId) {
+                const stockEl = card.querySelector('.product-stock');
+                if (stockEl) {
+                    stockEl.textContent = `Available: ${availableQuantity}`;
+                }
+
+                const isLowStock = availableQuantity <= (inventoryItem.lowStockThreshold || 10);
+                let lowStockBadge = card.querySelector('.low-stock-badge');
+
+                if (isLowStock && availableQuantity > 0) {
+                    if (!lowStockBadge) {
+                        lowStockBadge = document.createElement('div');
+                        lowStockBadge.className = 'low-stock-badge';
+                        lowStockBadge.textContent = 'Low Stock';
+                        card.appendChild(lowStockBadge);
+                    }
+                } else if (lowStockBadge) {
+                    lowStockBadge.remove();
+                }
+
+                if (availableQuantity <= 0) {
+                    card.classList.add('disabled');
+                    card.style.opacity = '0.6';
+                    card.style.cursor = 'not-allowed';
+                    card.style.pointerEvents = 'none';
+                } else {
+                    card.classList.remove('disabled');
+                    card.style.opacity = '1';
+                    card.style.cursor = 'pointer';
+                    card.style.pointerEvents = 'auto';
+                }
+            }
+        });
+    }
+
+    function removeFromCart(productId) {
+        const item = cart.find(item => item._id === productId);
+        cart = cart.filter((item) => item._id !== productId);
+        updateCart();
+
+        if (item) {
+            updateProductStockDisplay(item._id);
+        }
+        
+        // Recalculate discounts when cart changes
+        if (appliedDiscounts.length > 0) {
+            loadAvailableDiscounts();
+            updateDiscountSummary();
+        }
+    }
+
+    function updateItemQuantity(productId, newQuantity) {
+        const item = cart.find((item) => item._id === productId);
+
+        if (!item) return;
+
+        const inventoryItem = inventory.find(inv => inv._id === productId);
+
+        if (!inventoryItem) {
+            showToast('Product not found in inventory', 'error');
+            return;
+        }
+
+        if (newQuantity < 1) {
+            removeFromCart(productId);
+            return;
+        }
+
+        const totalInCart = cart.reduce((sum, cartItem) => {
+            if (cartItem._id === productId) {
+                return sum + cartItem.quantity;
+            }
+            return sum;
+        }, 0);
+
+        const otherItemsQty = totalInCart - item.quantity;
+        const newTotalInCart = otherItemsQty + newQuantity;
+
+        if (newTotalInCart > inventoryItem.quantity) {
+            showToast(`Only ${inventoryItem.quantity - otherItemsQty} ${inventoryItem.name} available`, 'warning');
+            newQuantity = Math.max(1, inventoryItem.quantity - otherItemsQty);
+
+            if (newQuantity < 1) {
+                removeFromCart(productId);
+                return;
+            }
+        }
+
+        item.quantity = newQuantity;
+        updateCart();
+        updateProductStockDisplay(productId);
+        
+        // Recalculate discounts when cart changes
+        if (appliedDiscounts.length > 0) {
+            loadAvailableDiscounts();
+            updateDiscountSummary();
+        }
+    }
+
+    function renderCartItems() {
+        const itemsContainer = document.getElementById("order-items");
+        if (!itemsContainer) return;
+
+        if (cart.length === 0) {
+            itemsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="bi bi-inbox"></i>
+                    <p>No items added</p>
+                </div>
+            `;
+            return;
+        }
+
+        itemsContainer.innerHTML = cart.map((item) => {
+            return `
+                <div class="order-item" data-id="${item._id}">
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">$${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="quantity-controls">
+                            <button class="quantity-btn minus" data-id="${item._id}">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn plus" data-id="${item._id}">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        </div>
+                        <div class="item-subtotal">$${(item.price * item.quantity).toFixed(2)}</div>
+                        <button class="remove-btn" data-id="${item._id}">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join("");
+
+        setTimeout(() => {
+            document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+                btn.onclick = (e) => {
+                    const productId = e.currentTarget.getAttribute('data-id');
+                    const item = cart.find(item => item._id === productId);
+                    if (item) {
+                        updateItemQuantity(productId, item.quantity - 1);
+                    }
+                };
+            });
+
+            document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+                btn.onclick = (e) => {
+                    const productId = e.currentTarget.getAttribute('data-id');
+                    const item = cart.find(item => item._id === productId);
+                    if (item) {
+                        updateItemQuantity(productId, item.quantity + 1);
+                    }
+                };
+            });
+
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.onclick = (e) => {
+                    const productId = e.currentTarget.getAttribute('data-id');
+                    removeFromCart(productId);
+                };
+            });
+        }, 0);
+    }
+
+    function updateButtonStates() {
+        const cancelBtn = document.getElementById('btn-cancel');
+        const paymentBtn = document.getElementById('btn-payment');
+        const isCartEmpty = cart.length === 0;
+
+        if (cancelBtn) {
+            if (isCartEmpty) {
+                cancelBtn.disabled = true;
+                cancelBtn.classList.add('disabled');
+            } else {
+                cancelBtn.disabled = false;
+                cancelBtn.classList.remove('disabled');
+            }
+        }
+
+        if (paymentBtn) {
+            if (isCartEmpty) {
+                paymentBtn.disabled = true;
+                paymentBtn.classList.add('disabled');
+            } else {
+                paymentBtn.disabled = false;
+                paymentBtn.classList.remove('disabled');
+            }
+        }
+    }
+
+    function updateCart() {
+        renderCartItems();
+        updateButtonStates();
+        updateTotals();
+    }
+
+    // ============================================
+    // BOGO DISCOUNT CALCULATION
+    // ============================================
+
+    function calculateBOGODiscountAmount(bogoDiscount, cartItems, applicableItems) {
+        if (!bogoDiscount.bogo) return 0;
+        
+        const buyQuantity = bogoDiscount.bogo.buyQuantity || 1;
+        const getQuantity = bogoDiscount.bogo.getQuantity || 1;
+        const sameProduct = bogoDiscount.bogo.sameProduct !== false;
+        const repeatable = bogoDiscount.bogo.repeatable !== false;
+        
+        // Get eligible products
+        let eligibleProducts = [];
+        
+        if (sameProduct) {
+            const buyProducts = bogoDiscount.bogo.buyProducts || [];
+            const getProducts = bogoDiscount.bogo.getProducts || [];
+            
+            if (buyProducts.length > 0 && getProducts.length > 0) {
+                const allProductIds = [...buyProducts, ...getProducts];
+                const hasValidProducts = applicableItems.every(item => 
+                    allProductIds.includes(item.productId)
+                );
+                
+                if (hasValidProducts) {
+                    eligibleProducts = applicableItems;
+                }
+            } else if (buyProducts.length > 0) {
+                eligibleProducts = applicableItems.filter(item => 
+                    buyProducts.includes(item.productId)
+                );
+            } else {
+                eligibleProducts = applicableItems;
+            }
+        } else {
+            eligibleProducts = applicableItems;
+        }
+        
+        if (eligibleProducts.length === 0) return 0;
+        
+        // Calculate total items count
+        const totalItems = eligibleProducts.reduce((sum, item) => sum + item.quantity, 0);
+        
+        // Calculate how many free items we can give
+        const eligibleSets = Math.floor(totalItems / (buyQuantity + getQuantity));
+        const freeItemsCount = eligibleSets * getQuantity;
+        
+        if (freeItemsCount === 0) return 0;
+        
+        // Sort eligible items by price (lowest first for maximum discount)
+        const allItemsWithPrices = [];
+        eligibleProducts.forEach(product => {
+            for (let i = 0; i < product.quantity; i++) {
+                allItemsWithPrices.push(product.price);
+            }
+        });
+        
+        allItemsWithPrices.sort((a, b) => a - b);
+        
+        // Take the cheapest items as free
+        const freeItems = allItemsWithPrices.slice(0, freeItemsCount);
+        const discountAmount = freeItems.reduce((sum, price) => sum + price, 0);
+        
+        // If repeatable is false, limit to one set
+        if (!repeatable) {
+            const oneSetDiscount = Math.min(...allItemsWithPrices) * getQuantity;
+            return Math.min(discountAmount, oneSetDiscount);
+        }
+        
+        return discountAmount;
+    }
+
+    // ============================================
+    // DISCOUNT MANAGEMENT
+    // ============================================
+
+    async function loadAvailableDiscounts() {
+        try {
+            const itemsForDiscount = cart.map(item => ({
+                productId: item._id,
+                product: item._id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                unitPrice: item.price
+            }));
+
+            const orderTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            const data = await apiRequest('/discounts/applicable', {
+                method: 'POST',
+                body: JSON.stringify({
+                    items: itemsForDiscount,
+                    orderTotal: orderTotal,
+                    customerId: null
+                })
+            });
+
+            if (data && data.success) {
+                availableDiscounts = data.applicableDiscounts.map(discount => {
+                    let calculatedAmount = discount.amount;
+                    
+                    if (discount.discount.type === 'bogo') {
+                        calculatedAmount = calculateBOGODiscountAmount(
+                            discount.discount,
+                            cart,
+                            discount.applicableItems || []
+                        );
+                    }
+                    
+                    return {
+                        discount: discount.discount,
+                        amount: calculatedAmount,
+                        applicableItems: discount.applicableItems || []
+                    };
+                });
+
+                console.log("Loaded discounts:", availableDiscounts);
+                renderAvailableDiscounts();
+            } else {
+                availableDiscounts = [];
+                renderAvailableDiscounts();
+            }
+        } catch (error) {
+            console.error('Error loading discounts:', error);
+            availableDiscounts = [];
+            renderAvailableDiscounts();
+        }
+    }
+
+    function getDiscountConditionsText(discount) {
+        const conditions = [];
+
+        if (discount.type === 'bogo' && discount.bogo) {
+            conditions.push(`Buy ${discount.bogo.buyQuantity || 1} Get ${discount.bogo.getQuantity || 1} Free`);
+            if (!discount.bogo.sameProduct) {
+                conditions.push('Any product');
+            }
+            if (!discount.bogo.repeatable) {
+                conditions.push('One time only');
+            }
+        }
+
+        if (discount.conditions?.minAmount) {
+            conditions.push(`Min: $${discount.conditions.minAmount.amount}`);
+        }
+
+        if (discount.conditions?.days?.length > 0) {
+            const days = discount.conditions.days
+                .map(day => day.substring(0, 3))
+                .join(', ');
+            conditions.push(`Days: ${days}`);
+        }
+
+        if (discount.conditions?.timeRange?.enabled) {
+            conditions.push(`Time: ${discount.conditions.timeRange.start} - ${discount.conditions.timeRange.end}`);
+        }
+
+        if (discount.validUntil) {
+            const date = new Date(discount.validUntil).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
+            });
+            conditions.push(`Exp: ${date}`);
+        }
+
+        if (discount.maxUses) {
+            conditions.push(`Uses: ${discount.usedCount || 0}/${discount.maxUses}`);
+        }
+
+        return conditions.join(' • ');
+    }
+
+    function toggleDiscount(discount) {
+        console.log("Toggling discount:", discount);
+        
+        if (discount.discount.type === 'bogo') {
+            const calculatedAmount = calculateBOGODiscountAmount(
+                discount.discount,
+                cart,
+                discount.applicableItems || []
+            );
+            
+            if (calculatedAmount === 0) {
+                showToast('BOGO discount conditions not met', 'warning');
+                return;
+            }
+            
+            discount.amount = calculatedAmount;
+        }
+
+        const index = appliedDiscounts.findIndex(applied =>
+            applied.discount._id === discount.discount._id);
+
+        if (index > -1) {
+            appliedDiscounts.splice(index, 1);
+            console.log("Removed discount. Applied now:", appliedDiscounts);
+        } else {
+            appliedDiscounts.push({
+                discount: discount.discount,
+                amount: discount.amount,
+                applicableItems: discount.applicableItems || []
+            });
+            console.log("Added discount. Applied now:", appliedDiscounts);
+        }
+
+        renderAppliedDiscounts();
+        renderAvailableDiscounts();
+        updateDiscountSummary();
+        updateTotals();
+    }
+
+    function renderAvailableDiscounts() {
+        const container = document.getElementById('available-discounts');
+        if (!container) return;
+
+        if (availableDiscounts.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="bi bi-percent"></i>
+                    <p>No discounts available</p>
+                    <small class="text-muted">Discounts will appear here when applicable</small>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = availableDiscounts.map(discount => {
+            const isApplied = appliedDiscounts.some(applied =>
+                applied.discount._id === discount.discount._id);
+
+            let discountAmount = '';
+            let discountDetails = '';
+            
+            if (discount.discount.type === 'percentage') {
+                discountAmount = `${discount.discount.value}% OFF`;
+                discountDetails = `Save ${discount.discount.value}% on eligible items`;
+            } else if (discount.discount.type === 'fixed') {
+                discountAmount = `$${discount.discount.value} OFF`;
+                discountDetails = `Save $${discount.discount.value} on eligible items`;
+            } else if (discount.discount.type === 'bogo') {
+                const bogo = discount.discount.bogo;
+                const buyQty = bogo?.buyQuantity || 1;
+                const getQty = bogo?.getQuantity || 1;
+                discountAmount = `Buy ${buyQty} Get ${getQty} Free`;
+                
+                if (discount.amount > 0) {
+                    discountDetails = `Potential savings: $${discount.amount.toFixed(2)}`;
+                } else {
+                    discountDetails = `Add more items to qualify for this offer`;
+                }
+            }
+
+            return `
+                <div class="discount-card ${isApplied ? 'active' : ''} ${discount.amount === 0 && discount.discount.type === 'bogo' ? 'disabled' : ''}" 
+                     data-discount-id="${discount.discount._id}"
+                     style="${discount.amount === 0 && discount.discount.type === 'bogo' ? 'opacity: 0.6;' : ''}">
+                    <div class="discount-header">
+                        <div class="discount-name">${discount.discount.name}</div>
+                        <span class="discount-type ${discount.discount.type}">
+                            ${discount.discount.type.toUpperCase()}
+                        </span>
+                    </div>
+                    <div class="discount-details">
+                        ${discountAmount}
+                        ${discountDetails ? `<div class="discount-savings text-success">${discountDetails}</div>` : ''}
+                    </div>
+                    <div class="discount-conditions">
+                        ${getDiscountConditionsText(discount.discount)}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        container.querySelectorAll('.discount-card:not(.disabled)').forEach(card => {
+            card.addEventListener('click', function () {
+                const discountId = this.dataset.discountId;
+                const discount = availableDiscounts.find(d => d.discount._id === discountId);
+                if (discount) {
+                    toggleDiscount(discount);
+                }
+            });
+        });
+    }
+
+    function renderAppliedDiscounts() {
+        const container = document.getElementById('applied-discounts');
+        if (!container) return;
+
+        if (appliedDiscounts.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="bi bi-percent"></i>
+                    <p>No discounts applied</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = appliedDiscounts.map(discount => {
+            let typeDisplay = '';
+            let discountDescription = '';
+            
+            if (discount.discount.type === 'percentage') {
+                typeDisplay = `${discount.discount.value}% OFF`;
+                discountDescription = `Save ${discount.discount.value}%`;
+            } else if (discount.discount.type === 'fixed') {
+                typeDisplay = `$${discount.discount.value} OFF`;
+                discountDescription = `Save $${discount.discount.value}`;
+            } else if (discount.discount.type === 'bogo') {
+                const bogo = discount.discount.bogo;
+                const buyQty = bogo?.buyQuantity || 1;
+                const getQty = bogo?.getQuantity || 1;
+                typeDisplay = `Buy ${buyQty} Get ${getQty} Free`;
+                discountDescription = `Get ${getQty} item(s) free`;
+            }
+
+            return `
+                <div class="applied-discount-item">
+                    <div class="applied-discount-info">
+                        <div class="applied-discount-name">
+                            ${discount.discount.name}
+                            <span class="discount-type-badge">${typeDisplay}</span>
+                        </div>
+                        <div class="applied-discount-amount">-$${discount.amount.toFixed(2)}</div>
+                        <div class="applied-discount-description text-muted small">${discountDescription}</div>
+                    </div>
+                    <button class="remove-discount-btn" data-discount-id="${discount.discount._id}">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+            `;
+        }).join('');
+
+        container.querySelectorAll('.remove-discount-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const discountId = this.dataset.discountId;
+                appliedDiscounts = appliedDiscounts.filter(d =>
+                    d.discount._id !== discountId);
+                renderAppliedDiscounts();
+                renderAvailableDiscounts();
+                updateDiscountSummary();
+                updateTotals();
+            });
+        });
+    }
+
+    function updateDiscountSummary() {
+        const summaryContainer = document.getElementById('discount-summary');
+        const originalSubtotalEl = document.getElementById('original-subtotal');
+        const totalDiscountEl = document.getElementById('total-discount');
+        const discountedSubtotalEl = document.getElementById('discounted-subtotal');
+
+        if (!summaryContainer) return;
+
+        const originalSubtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        // Recalculate BOGO discounts to ensure accuracy
+        let totalDiscount = 0;
+        appliedDiscounts.forEach(discount => {
+            if (discount.discount.type === 'bogo') {
+                const recalculatedAmount = calculateBOGODiscountAmount(
+                    discount.discount,
+                    cart,
+                    discount.applicableItems || []
+                );
+                discount.amount = recalculatedAmount;
+                totalDiscount += recalculatedAmount;
+            } else {
+                totalDiscount += discount.amount;
+            }
+        });
+        
+        const discountedSubtotal = Math.max(0, originalSubtotal - totalDiscount);
+
+        if (appliedDiscounts.length > 0 && totalDiscount > 0) {
+            summaryContainer.style.display = 'block';
+            if (originalSubtotalEl) originalSubtotalEl.textContent = `$${originalSubtotal.toFixed(2)}`;
+            if (totalDiscountEl) totalDiscountEl.textContent = `-$${totalDiscount.toFixed(2)}`;
+            if (discountedSubtotalEl) discountedSubtotalEl.textContent = `$${discountedSubtotal.toFixed(2)}`;
+        } else {
+            summaryContainer.style.display = 'none';
+        }
+    }
+
+    function openDiscountModal() {
+        if (cart.length === 0) {
+            showToast("Please add items to the cart first", 'error');
+            return;
+        }
+
+        loadAvailableDiscounts();
+        updateDiscountSummary();
+
+        const discountModal = new bootstrap.Modal(
+            document.getElementById("discountModal")
+        );
+        discountModal.show();
+    }
+
+    function applyDiscounts() {
+        const discountModal = bootstrap.Modal.getInstance(document.getElementById('discountModal'));
+        if (discountModal) {
+            discountModal.hide();
+        }
+        updateTotals();
+    }
+
+    // ============================================
+    // ORDER SUMMARY & TOTALS
+    // ============================================
+
+    function updateTotals() {
+        const rawSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        
+        // Recalculate all applied discounts (especially BOGO)
+        let totalDiscount = 0;
+        appliedDiscounts.forEach(discount => {
+            if (discount.discount.type === 'bogo') {
+                const recalculatedAmount = calculateBOGODiscountAmount(
+                    discount.discount,
+                    cart,
+                    discount.applicableItems || []
+                );
+                discount.amount = recalculatedAmount;
+                totalDiscount += recalculatedAmount;
+            } else {
+                totalDiscount += discount.amount;
+            }
+        });
+        
+        const discountedSubtotal = Math.max(0, rawSubtotal - totalDiscount);
+
+        const discountBreakdownDiv = document.getElementById('discount-breakdown');
+        const discountListSpan = document.getElementById('discount-list');
+
+        if (appliedDiscounts.length > 0 && totalDiscount > 0) {
+            const discountText = appliedDiscounts.map(d => {
+                let typeText = '';
+                if (d.discount.type === 'percentage') typeText = `${d.discount.value}% OFF`;
+                else if (d.discount.type === 'fixed') typeText = `$${d.discount.value} OFF`;
+                else if (d.discount.type === 'bogo') {
+                    const bogo = d.discount.bogo;
+                    typeText = `Buy ${bogo?.buyQuantity || 1} Get ${bogo?.getQuantity || 1} Free`;
+                }
+                return `${d.discount.name} (${typeText}): -$${d.amount.toFixed(2)}`;
+            }).join(', ');
+
+            discountListSpan.textContent = discountText;
+            discountBreakdownDiv.style.display = 'flex';
+        } else {
+            discountBreakdownDiv.style.display = 'none';
+        }
+
+        let calculations;
+        if (taxSettings.taxInclusive) {
+            calculations = calculateTaxInclusive(discountedSubtotal);
+        } else {
+            calculations = calculateTaxExclusive(discountedSubtotal);
+        }
+
+        const subtotalEl = document.getElementById("subtotal");
+        const taxEl = document.getElementById("tax");
+        const totalEl = document.getElementById("total");
+        const modalTotalEl = document.getElementById("modal-total");
+        const taxLabelEl = document.getElementById("tax-label");
+
+        if (subtotalEl) {
+            if (totalDiscount > 0) {
+                subtotalEl.innerHTML = `
+                    $${rawSubtotal.toFixed(2)}
+                    
+                `;
+            } else {
+                subtotalEl.textContent = `$${rawSubtotal.toFixed(2)}`;
+            }
+        }
+
+        if (taxEl) {
+            if (taxSettings.enabled && !taxSettings.taxInclusive) {
+                taxEl.textContent = `$${calculations.tax.toFixed(2)}`;
+                if (taxLabelEl) {
+                    taxLabelEl.textContent = `${taxSettings.taxName || 'Tax'} (${taxSettings.rate}%)`;
+                }
+            } else if (taxSettings.taxInclusive && taxSettings.enabled) {
+                taxEl.textContent = `$${calculations.tax.toFixed(2)}`;
+                if (taxLabelEl) taxLabelEl.textContent = `${taxSettings.taxName || 'Tax'} (${taxSettings.rate}% Included)`;
+
+            } else {
+                taxEl.textContent = '$0.00';
+                if (taxLabelEl) taxLabelEl.textContent = 'Tax (Disabled)';
+            }
+        }
+
+        if (totalEl) totalEl.textContent = `$${calculations.total.toFixed(2)}`;
+        if (modalTotalEl) modalTotalEl.textContent = `$${calculations.total.toFixed(2)}`;
+    }
+
+    // ============================================
+    // ORDER MANAGEMENT
+    // ============================================
+
+    function cancelOrder() {
+        if (cart.length === 0) {
+            showToast("No items to cancel", 'error');
+            updateButtonStates();
+            return;
+        } else {
+            const productIds = cart.map(item => item._id);
+            cart = [];
+            appliedDiscounts = [];
+            updateCart();
+
+            productIds.forEach(productId => {
+                updateProductStockDisplay(productId);
+            });
+
+            showToast('Order cancelled', 'info');
+            
+            // Reset discounts
+            loadAvailableDiscounts();
+            updateDiscountSummary();
+        }
+    }
+
+    function updateOrderTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+        });
+
+        const year = now.getFullYear().toString().slice(-2);
+        const day = now.getDate().toString().padStart(2, '0');
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const dateString = `${day}-${month}-${year}`;
+
+        const orderTimeEl = document.querySelector(".order-time");
+        if (orderTimeEl) {
+            orderTimeEl.innerHTML = `
+                <div style="color: var(--primary); font-weight: 500;">
+                    ${dateString}
+                </div>
+                <div>
+                    ${timeString}
+                </div>
+            `;
+        }
+    }
+
+    // ============================================
+    // PAYMENT MANAGEMENT
+    // ============================================
+
+    function openPaymentModal() {
+        if (cart.length === 0) {
+            showToast("Please add items to the cart first", 'error');
+            updateButtonStates();
+            return;
+        }
+
+        document.getElementById("amount-received").value = "";
+        document.getElementById("change-display").style.display = "none";
+
+        const paymentModal = new bootstrap.Modal(
+            document.getElementById("paymentModal")
+        );
+        paymentModal.show();
+    }
+
+    function setupPaymentListeners() {
+        const amountInput = document.getElementById("amount-received");
+        const changeDisplay = document.getElementById("change-display");
+        const changeAmount = document.getElementById("change-amount");
+
+        amountInput.addEventListener("input", () => {
+            const totalAmount = parseFloat(
+                document.getElementById("total").textContent.replace("$", "")
+            );
+            const amount = parseFloat(amountInput.value) || 0;
+
+            if (amount >= totalAmount) {
+                const change = amount - totalAmount;
+                changeAmount.textContent = `$${change.toFixed(2)}`;
+                changeDisplay.style.display = "flex";
+            } else {
+                changeDisplay.style.display = "none";
+            }
+        });
+    }
+
+    async function completePayment() {
+        const result = await postTransaction();
+
+        if (result) {
+            const amountInput = document.getElementById("amount-received");
+            amountInput.value = "";
+
+            await loadInventory();
+            await loadTodaySummary();
+            await loadNextOrderNumber();
+
+            const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+            if (paymentModal) {
+                paymentModal.hide();
+            }
+        }
+    }
+
+    async function postTransaction() {
+        try {
+            console.log("=== Starting Transaction ===");
+            console.log("Cart items:", cart);
+            console.log("Applied discounts before mapping:", JSON.stringify(appliedDiscounts, null, 2));
+
+            if (cart.length === 0) {
+                showToast('Cart is empty', 'warning');
+                return null;
+            }
+
+            const totalAmount = parseFloat(
+                document.getElementById("total").textContent.replace("$", "")
+            );
+            const amountReceived = parseFloat(document.getElementById("amount-received").value) || 0;
+            const paymentMethod = document.querySelector('.payment-method.active')?.dataset.method || 'cash';
+
+            if (amountReceived < totalAmount) {
+                showToast('Insufficient payment amount', 'error');
+                return null;
+            }
+
+            const rawSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            const totalDiscount = appliedDiscounts.reduce((sum, discount) => sum + discount.amount, 0);
+            const discountedSubtotal = Math.max(0, rawSubtotal - totalDiscount);
+
+            let taxAmount = 0;
+            if (taxSettings.enabled) {
+                if (taxSettings.taxInclusive) {
+                    taxAmount = discountedSubtotal * (taxSettings.rate / (100 + taxSettings.rate));
+                } else {
+                    taxAmount = discountedSubtotal * (taxSettings.rate / 100);
+                }
+            }
+
+            const formattedDiscounts = appliedDiscounts.map(d => {
+                console.log("Formatting discount:", d);
+                return {
+                    discountId: d.discount._id,
+                    discountName: d.discount.name,
+                    discountType: d.discount.type,
+                    discountValue: d.discount.type === 'percentage' ? d.discount.value : d.discount.value,
+                    discountedAmount: d.amount
+                };
+            });
+
+            console.log("Formatted discounts to send:", JSON.stringify(formattedDiscounts, null, 2));
+
+            const transactionData = {
+                items: cart.map(item => ({
+                    productId: item._id,
+                    quantity: item.quantity,
+                    price: item.price,
+                    subtotal: item.price * item.quantity
+                })),
+                subtotal: Number(rawSubtotal.toFixed(2)),
+                tax: Number(taxAmount.toFixed(2)),
+                total: Number(totalAmount.toFixed(2)),
+                paymentMethod: paymentMethod,
+                amountPaid: amountReceived,
+                change: amountReceived - totalAmount,
+                taxRate: taxSettings.rate || 8,
+                taxName: taxSettings.taxName || 'Sales Tax',
+                taxInclusive: taxSettings.taxInclusive !== undefined ? taxSettings.taxInclusive : true,
+                discount: totalDiscount,
+                appliedDiscounts: formattedDiscounts,
+                notes: `POS transaction - ${new Date().toLocaleString()}`,
+                customer: {
+                    name: 'Walk-in Customer'
+                }
+            };
+
+            console.log("Final transaction data:", JSON.stringify(transactionData, null, 2));
+
+            const response = await apiRequest('/transactions', {
+                method: 'POST',
+                body: JSON.stringify(transactionData)
+            });
+
+            console.log("Transaction API response:", response);
+
+            if (response && response.success) {
+                showToast('Transaction completed successfully!', 'success');
+
+                if (appliedDiscounts.length > 0) {
+                    await incrementMultipleDiscountUsage(appliedDiscounts);
+                }
+
+                const productIds = cart.map(item => item._id);
+                cart = [];
+                appliedDiscounts = [];
+                updateCart();
+                renderAppliedDiscounts();
+
+                productIds.forEach(productId => {
+                    updateProductStockDisplay(productId);
+                });
+
+                const completeModal = new bootstrap.Modal(document.getElementById("completeModal"));
+                completeModal.show();
+
+                const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                if (paymentModal) {
+                    paymentModal.hide();
+                }
+
+                return response;
+            } else {
+                showToast(response?.message || 'Transaction failed', 'error');
+                return null;
+            }
+        } catch (error) {
+            console.error('Transaction error:', error);
+            showToast('Transaction processing error: ' + error.message, 'error');
+            return null;
+        }
+    }
+
+    async function incrementMultipleDiscountUsage(appliedDiscounts) {
+        try {
+            console.log("Incrementing multiple discount usage");
+
+            const discountIds = appliedDiscounts.map(discount => discount.discount._id);
+
+            const response = await apiRequest('/discounts/increment-usage-batch', {
+                method: 'POST',
+                body: JSON.stringify({
+                    discountIds: discountIds,
+                    incrementBy: 1
+                })
+            });
+
+            if (response && response.success) {
+                console.log(`Successfully incremented usage for ${response.modifiedCount} discounts`);
+                return true;
+            } else {
+                console.error('Failed to increment discount usage:', response);
+                showToast('Failed to update discount usage count', 'error');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error incrementing discount usage:', error);
+            showToast('Failed to update discount usage count', 'warning');
+            return false;
+        }
+    }
+
+    // ============================================
+    // LOAD TODAY SUMMARY & ORDER NUMBER
+    // ============================================
+
+    async function loadTodaySummary() {
+        try {
+            const summaryData = await apiRequest('/transactions/summary/today');
+            if (summaryData && summaryData.success) {
+                const { totalSales, transactionCount } = summaryData.summary;
+
+                const todaySalesEl = document.querySelector('.stat-item:nth-child(1) .stat-value');
+                const transactionsEl = document.querySelector('.stat-item:nth-child(2) .stat-value');
+
+                if (todaySalesEl) {
+                    todaySalesEl.textContent = `$${totalSales}`;
+                }
+                if (transactionsEl) {
+                    transactionsEl.textContent = transactionCount;
+                }
+            }
+        } catch (error) {
+            console.error('Failed to load today summary:', error);
+        }
+    }
+
+    async function loadNextOrderNumber() {
+        try {
+            const orderData = await apiRequest('/transactions/next-order-number');
+            const orderNumberEl = document.getElementById('order-number');
+
+            if (!orderNumberEl) return;
+
+            if (orderData && orderData.success) {
+                orderNumberEl.textContent = orderData.displayNumber;
+                orderNumberEl.dataset.fullNumber = orderData.nextOrderNumber;
+                orderNumberEl.title = `Full: ${orderData.nextOrderNumber}`;
+            } else {
+                orderNumberEl.textContent = "0001";
+            }
+        } catch (error) {
+            console.error('Failed to load next order number:', error);
+            const orderNumberEl = document.getElementById('order-number');
+            if (orderNumberEl) {
+                orderNumberEl.textContent = "0001";
+            }
+        }
+    }
+
+    // ============================================
+    // TOAST NOTIFICATION
+    // ============================================
+
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container') || createToastContainer();
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+
+        const icon = type === 'success' ? 'bi-check-circle-fill' :
+            type === 'error' ? 'bi-exclamation-circle-fill' :
+                type === 'warning' ? 'bi-exclamation-triangle-fill' :
+                    'bi-info-circle-fill';
+
+        toast.innerHTML = `
+            <i class="bi ${icon} toast-icon"></i>
+            <div class="toast-content">
+                <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                <div class="toast-message">${message}</div>
+            </div>
+        `;
+
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('fade-out');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 5000);
+
+        toast.addEventListener('click', () => {
+            toast.classList.add('fade-out');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        });
+    }
+
+    function createToastContainer() {
+        const container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+        return container;
+    }
+
+    // ============================================
+    // POS EVENT LISTENERS
+    // ============================================
+
+    function setupPosEventListeners() {
+        if (document.getElementById("product-search")) {
+            document.getElementById("product-search").addEventListener("input", (e) => {
+                const query = e.target.value.toLowerCase().trim();
+
+                if (query === '') {
+                    filterInventoryByCategory(currentFilter);
+                    return;
+                }
+
+                const filtered = inventory.filter((item) => {
+                    const matchesName = item.name.toLowerCase().includes(query);
+                    const matchesCategory = currentFilter === "all" ||
+                        (item.category &&
+                            (item.category._id === currentFilter ||
+                                item.category === currentFilter ||
+                                (item.category?.name && item.category.name.toLowerCase().includes(currentFilter))));
+
+                    return matchesName && matchesCategory;
+                });
+
+                renderInventory(filtered);
+            });
+
+            document.getElementById("btn-cancel")?.addEventListener("click", cancelOrder);
+            document.getElementById("btn-payment")?.addEventListener("click", openPaymentModal);
+        }
+
+        if (document.getElementById("btn-complete-payment")) {
+            document.getElementById("btn-complete-payment").addEventListener("click", completePayment);
+            setupPaymentListeners();
+        }
+
+        document.querySelectorAll(".payment-method").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                document.querySelectorAll(".payment-method").forEach((b) => b.classList.remove("active"));
+                e.currentTarget.classList.add("active");
+            });
+        });
+
+        document.getElementById('btn-discount')?.addEventListener('click', openDiscountModal);
+        document.getElementById('apply-discounts-btn')?.addEventListener('click', applyDiscounts);
+    }
+
+    // ============================================
+    // APP INITIALIZATION
+    // ============================================
+
+    async function initializeApp() {
+        if (!checkAuthentication()) {
+            return;
+        }
+
+        await loadCategories();
+        await loadInventory();
+        await loadTaxSettings();
+        await loadTodaySummary();
+        await loadNextOrderNumber();
+
+        setupPosEventListeners();
+        setupLogout();
+        updateTotals();
+
+        availableDiscounts = [];
+        appliedDiscounts = [];
+    }
+
+    // ============================================
+    // DOM READY INITIALIZATION
+    // ============================================
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (document.getElementById("products-grid")) {
+            initializeApp();
+            updateOrderTime();
+            setInterval(updateOrderTime, 1000);
+        }
+    });
+</script>
+
 </body>
 
 </html>

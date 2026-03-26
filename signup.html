@@ -22,6 +22,7 @@
             --text-secondary: #7F8C8D;
             --border-color: #E0E0E0;
             --bg-light: #FAFBFC;
+            --bg-white: #FFFFFF;
         } */
 
         * {
@@ -35,8 +36,9 @@
             height: 100%;
             font-family: 'Inter', sans-serif;
             background: var(--bg-light);
+            overflow: hidden;
         }
-        
+
         .overlay {
             position: relative;
             top: 0;
@@ -53,45 +55,44 @@
         }
 
         .login-card {
-            padding: 20px 40px;
-            /* Reduced top/bottom padding */
-            justify-content: flex-start;
-            /* Align content to the top */
-            overflow-y: auto;
-            /* Allow scrolling for long forms */
-
+            padding: 30px 40px;
             background-color: var(--bg-white);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             height: 100vh;
+            overflow-y: auto;
         }
 
         .login-header {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 25px;
+            position: sticky;
+            top: 0;
+            background: var(--bg-white);
+            padding-top: 10px;
+            padding-bottom: 10px;
+            z-index: 10;
         }
 
         .logo-icon {
             font-size: 48px;
             color: var(--primary);
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
 
         .logo-text {
             font-size: 28px;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .logo-subtitle {
             font-size: 13px;
             color: var(--text-secondary);
+            margin-bottom: 5px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
@@ -99,10 +100,11 @@
             font-size: 13px;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 12px 16px;
             border: 1px solid var(--border-color);
@@ -110,12 +112,45 @@
             font-family: 'Inter', sans-serif;
             font-size: 14px;
             transition: all 0.3s ease;
+            background-color: var(--bg-light);
         }
 
-        .form-group input:focus {
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%237F8C8D' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 12px;
+            padding-right: 40px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(91, 75, 158, 0.1);
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            font-size: 16px;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary);
         }
 
         .remember-forgot {
@@ -176,6 +211,8 @@
             text-align: center;
             font-size: 13px;
             color: var(--text-secondary);
+            margin-top: 10px;
+            padding-bottom: 20px;
         }
 
         .login-footer a {
@@ -217,7 +254,6 @@
             font-size: 128px;
             color: var(--primary);
             font-weight: 700;
-
         }
 
         .hero-title {
@@ -226,6 +262,83 @@
             color: var(--text-primary);
             margin: 0;
             line-height: 1.2;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 20px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        /* Scrollbar styling */
+        .login-card::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .login-card::-webkit-scrollbar-track {
+            background: var(--secondary);
+        }
+
+        .login-card::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .login-card::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 20px;
+                height: 100vh;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .hero-container h1 {
+                font-size: 80px;
+            }
+
+            .hero-title {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-height: 800px) {
+            .login-header {
+                position: relative;
+                margin-bottom: 15px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-section-title {
+                margin: 15px 0 12px 0;
+            }
         }
     </style>
 </head>
@@ -239,69 +352,654 @@
                         <h1>“</h1>
                         <h2 class="hero-title">Turn your checkout into a growth engine. Get the tools to sell smarter
                             and manage effortlessly."</h2>
-
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 p-0">
                 <div class="login-card">
+                    <!-- Fixed header that stays visible -->
                     <div class="login-header">
                         <div class="logo-icon"><i class="bi bi-lightning-fill"></i></div>
                         <div class="logo-text">Orion POS</div>
-                        <div class="logo-subtitle">Modern Point of Sale System</div>
+                        <div class="logo-subtitle">Create Your Business Account</div>
                     </div>
 
-                    <form>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" placeholder="your.email@example.com" required>
-                        </div>
+                    <!-- Scrollable form content -->
+                    <div class="form-content">
+                        <form id="signupForm">
+                            <!-- Personal Information Section -->
+                            <div class="form-section-title">Account Information</div>
 
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <div class="password-container">
-                                <input type="password" id="password" placeholder="••••••••" required>
-                                <button type="button" class="toggle-password" aria-label="Show password">
-                                    <i class="bi bi-eye"></i>
-                                </button>
+                            <div class="form-group">
+                                <label for="full-name">Owner's Full Name *</label>
+                                <input type="text" id="full-name" name="fullName" placeholder="John Smith" required>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="password">Confirm Password</label>
-                            <div class="password-container">
-                                <input type="password" class="password" id="confirm-password" placeholder="••••••••"
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" placeholder="your.email@example.com"
                                     required>
-                                <button type="button" class="toggle-password" aria-label="Show password">
-                                    <i class="bi bi-eye"></i>
-                                </button>
                             </div>
-                        </div>
 
-                        <div class="remember-forgot">
-                            <div class="form-check">
-                                <input type="checkbox" id="remember" checked>
-                                <label for="remember">Remember me</label>
+                            <div class="form-group">
+                                <label for="password">Password *</label>
+                                <div class="password-container">
+                                    <input type="password" id="password" name="password" placeholder="••••••••"
+                                        required>
+                                    <button type="button" class="toggle-password" aria-label="Show password">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <a href="#">Forgot password?</a>
+
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm Password *</label>
+                                <div class="password-container">
+                                    <input type="password" id="confirm-password" name="confirmPassword"
+                                        placeholder="••••••••" required>
+                                    <button type="button" class="toggle-password" aria-label="Show password">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Business Information Section -->
+                            <div class="form-section-title">Business Information</div>
+
+                            <div class="form-group">
+                                <label for="business-name">Business Name *</label>
+                                <input type="text" id="business-name" name="businessName"
+                                    placeholder="Your Business Inc." required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="business-type">Business Type *</label>
+                                    <select id="business-type" name="businessType" required>
+                                        <option value="" disabled selected>Select business type</option>
+                                        <option value="retail">Retail Store</option>
+                                        <option value="restaurant">Restaurant/Cafe</option>
+                                        <option value="service">Service Business</option>
+                                        <option value="ecommerce">E-commerce</option>
+                                        <option value="wholesale">Wholesale/Distribution</option>
+                                        <option value="salon">Salon/Spa</option>
+                                        <option value="grocery">Grocery/Supermarket</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Business Phone *</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="(123) 456-7890" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address">Business Address *</label>
+                                <input type="text" id="address" name="address"
+                                    placeholder="123 Main Street, City, State, ZIP" required>
+                            </div>
+
+                            <div class="remember-forgot">
+                                <div class="form-check">
+                                    <input type="checkbox" id="terms" name="terms" value="true" required>
+                                    <label for="terms">I agree to the <a href="#" style="display: inline;">Terms &
+                                            Conditions</a></label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-login" id="signup-btn">
+                                Create Account
+                            </button>
+                        </form>
+
+                        <div class="login-footer">
+                            Already have an account? <a href="login.html">Login here</a>
                         </div>
-
-                        <button type="button" class="btn-login" id="signup-btn">
-                            Sign Up
-                        </button>
-                    </form>
-
-                    <div class="login-footer">
-                        Already have an account? <a href="login.html">Login</a>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script_new.js"></script>
+    <script>
+        // Signup-specific JavaScript
+        document.addEventListener("DOMContentLoaded", function () {
+            const signupBtn = document.getElementById("signup-btn");
+            const signupForm = document.getElementById('signupForm');
+
+            // Common validation functions (copied from shared code)
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function isValidPhone(phone) {
+                // Basic phone validation - allows various formats
+                const phoneRegex = /^[\+]?[1-9][\d]{0,15}$|^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+                return phoneRegex.test(phone.replace(/[\s\(\)\-]/g, ''));
+            }
+
+            function showError(fieldId, message) {
+                clearErrorForField(fieldId);
+
+                const field = document.getElementById(fieldId);
+                if (!field) return;
+
+                const formGroup = field.closest(".form-group") || field.closest(".form-check");
+                if (!formGroup) return;
+
+                const errorElement = document.createElement("div");
+                errorElement.className = "error-message";
+                errorElement.setAttribute("data-field", fieldId);
+                errorElement.innerHTML = message;
+                errorElement.style.color = "#BE3E3F";
+                errorElement.style.fontSize = "0.875rem";
+                errorElement.style.marginTop = "0.25rem";
+                errorElement.style.fontWeight = "400";
+
+                formGroup.appendChild(errorElement);
+                field.style.borderColor = "#BE3E3F";
+            }
+
+            function showSuccess(message) {
+                const existingSuccess = document.querySelector(".success-message");
+                if (existingSuccess) existingSuccess.remove();
+
+                const successElement = document.createElement("div");
+                successElement.className = "success-message";
+                successElement.textContent = message;
+                successElement.style.color = "#02CA3A";
+                successElement.style.backgroundColor = "#d4edda";
+                successElement.style.border = "1px solid #c3e6cb";
+                successElement.style.borderRadius = "0.25rem";
+                successElement.style.padding = "0.75rem";
+                successElement.style.margin = "1rem 0";
+                successElement.style.fontSize = "0.875rem";
+
+                const form = document.querySelector("form");
+                if (form) form.parentNode.insertBefore(successElement, form.nextSibling);
+            }
+
+            function clearErrors() {
+                document.querySelectorAll(".error-message").forEach(error => error.remove());
+                document.querySelectorAll(".success-message").forEach(msg => msg.remove());
+
+                // Reset border colors for all form fields
+                const formFields = document.querySelectorAll(".form-group input, .form-group select");
+                formFields.forEach(field => {
+                    field.style.borderColor = "";
+                });
+            }
+
+            function clearErrorForField(fieldId) {
+                const field = document.getElementById(fieldId);
+                if (!field) return;
+
+                const formGroup = field.closest(".form-group") || field.closest(".form-check");
+                if (!formGroup) return;
+
+                const errorMessage = formGroup.querySelector(`.error-message[data-field="${fieldId}"]`) ||
+                    formGroup.querySelector(".error-message");
+                if (errorMessage) errorMessage.remove();
+
+                field.style.borderColor = "";
+            }
+
+            function initPasswordToggle() {
+                document.querySelectorAll(".toggle-password").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const passwordInput = this.parentElement.querySelector("input");
+                        const icon = this.querySelector("i");
+
+                        if (passwordInput.type === "password") {
+                            passwordInput.type = "text";
+                            icon.classList.replace("bi-eye", "bi-eye-slash");
+                            this.setAttribute("aria-label", "Hide password");
+                        } else {
+                            passwordInput.type = "password";
+                            icon.classList.replace("bi-eye-slash", "bi-eye");
+                            this.setAttribute("aria-label", "Show password");
+                        }
+                    });
+                });
+            }
+
+            function validatePassword(password) {
+                const errors = [];
+
+                if (password.length < 8) {
+                    errors.push("• At least 8 characters long");
+                }
+
+                if (!/(?=.*[a-z])/.test(password)) {
+                    errors.push("• At least one lowercase letter");
+                }
+
+                if (!/(?=.*[A-Z])/.test(password)) {
+                    errors.push("• At least one uppercase letter");
+                }
+
+                if (!/(?=.*\d)/.test(password)) {
+                    errors.push("• At least one number");
+                }
+
+                if (!/(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/.test(password)) {
+                    errors.push("• At least one special character");
+                }
+
+                return errors;
+            }
+
+            async function makeRequest(url, method, data) {
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    return await response.json();
+                } catch (error) {
+                    console.error('Request failed:', error);
+                    return {
+                        success: false,
+                        message: 'Network error. Please check if the server is running.'
+                    };
+                }
+            }
+
+            // Function to validate all signup fields
+            function validateSignupFields() {
+                let isValid = true;
+
+                // Get all required fields
+                const fullName = document.getElementById("full-name")?.value.trim();
+                const email = document.getElementById("email")?.value.trim();
+                const password = document.getElementById("password")?.value;
+                const confirmPassword = document.getElementById("confirm-password")?.value;
+                const businessName = document.getElementById("business-name")?.value.trim();
+                const businessType = document.getElementById("business-type")?.value;
+                const phone = document.getElementById("phone")?.value.trim();
+                const address = document.getElementById("address")?.value.trim();
+                const terms = document.getElementById("terms")?.checked;
+
+                // Validate Full Name
+                if (!fullName) {
+                    showError("full-name", "Owner's full name is required.");
+                    isValid = false;
+                } else if (fullName.length < 2) {
+                    showError("full-name", "Full name must be at least 2 characters.");
+                    isValid = false;
+                }
+
+                // Validate Email
+                if (!email) {
+                    showError("email", "Email address is required.");
+                    isValid = false;
+                } else if (!isValidEmail(email)) {
+                    showError("email", "Please enter a valid email address.");
+                    isValid = false;
+                }
+
+                // Validate Password
+                if (!password) {
+                    showError("password", "Password is required.");
+                    isValid = false;
+                } else {
+                    const passwordErrors = validatePassword(password);
+                    if (passwordErrors.length > 0) {
+                        showError("password", "Password requirements:<br>" + passwordErrors.join("<br>"));
+                        isValid = false;
+                    }
+                }
+
+                // Validate Confirm Password
+                if (!confirmPassword) {
+                    showError("confirm-password", "Please confirm your password.");
+                    isValid = false;
+                } else if (password !== confirmPassword) {
+                    showError("confirm-password", "Passwords do not match.");
+                    isValid = false;
+                }
+
+                // Validate Business Name
+                if (!businessName) {
+                    showError("business-name", "Business name is required.");
+                    isValid = false;
+                }
+
+                // Validate Business Type
+                if (!businessType) {
+                    showError("business-type", "Please select a business type.");
+                    isValid = false;
+                }
+
+                // Validate Phone
+                if (!phone) {
+                    showError("phone", "Business phone is required.");
+                    isValid = false;
+                } else if (!isValidPhone(phone)) {
+                    showError("phone", "Please enter a valid phone number.");
+                    isValid = false;
+                }
+
+                // Validate Address
+                if (!address) {
+                    showError("address", "Business address is required.");
+                    isValid = false;
+                } else if (address.length < 10) {
+                    showError("address", "Please enter a complete address.");
+                    isValid = false;
+                }
+
+                // Validate Terms & Conditions
+                if (!terms) {
+                    const termsGroup = document.getElementById("terms")?.closest(".form-check");
+                    if (termsGroup && !termsGroup.querySelector(".error-message")) {
+                        const errorElement = document.createElement("div");
+                        errorElement.className = "error-message";
+                        errorElement.setAttribute("data-field", "terms");
+                        errorElement.textContent = "You must agree to the Terms & Conditions.";
+                        errorElement.style.color = "#BE3E3F";
+                        errorElement.style.fontSize = "0.875rem";
+                        errorElement.style.marginTop = "0.25rem";
+                        termsGroup.appendChild(errorElement);
+                    }
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // Function to add real-time validation for all fields
+            function initRealTimeValidation() {
+                // Full Name validation
+                const fullNameField = document.getElementById("full-name");
+                if (fullNameField) {
+                    fullNameField.addEventListener("blur", function () {
+                        clearErrorForField("full-name");
+                        const value = this.value.trim();
+                        if (!value) {
+                            showError("full-name", "Owner's full name is required.");
+                        } else if (value.length < 2) {
+                            showError("full-name", "Full name must be at least 2 characters.");
+                        }
+                    });
+
+                    fullNameField.addEventListener("input", function () {
+                        clearErrorForField("full-name");
+                        const value = this.value.trim();
+                        if (value.length > 0 && value.length < 2) {
+                            showError("full-name", "Full name must be at least 2 characters.");
+                        }
+                    });
+                }
+
+                // Email validation
+                const emailField = document.getElementById("email");
+                if (emailField) {
+                    emailField.addEventListener("blur", function () {
+                        clearErrorForField("email");
+                        const email = this.value.trim();
+                        if (!email) {
+                            showError("email", "Email address is required.");
+                        } else if (!isValidEmail(email)) {
+                            showError("email", "Please enter a valid email address.");
+                        }
+                    });
+
+                    emailField.addEventListener("input", function () {
+                        clearErrorForField("email");
+                        const email = this.value.trim();
+                        if (email && !isValidEmail(email)) {
+                            showError("email", "Please enter a valid email address.");
+                        }
+                    });
+                }
+
+                // Password validation
+                const passwordField = document.getElementById("password");
+                if (passwordField) {
+                    passwordField.addEventListener("blur", function () {
+                        clearErrorForField("password");
+                        const password = this.value;
+                        if (!password) {
+                            showError("password", "Password is required.");
+                        } else {
+                            const passwordErrors = validatePassword(password);
+                            if (passwordErrors.length > 0) {
+                                showError("password", "Password requirements:<br>" + passwordErrors.join("<br>"));
+                            }
+                        }
+                    });
+
+                    passwordField.addEventListener("input", function () {
+                        clearErrorForField("password");
+                        clearErrorForField("confirm-password");
+
+                        const password = this.value;
+                        if (password) {
+                            const passwordErrors = validatePassword(password);
+                            if (passwordErrors.length > 0) {
+                                showError("password", "Password requirements:<br>" + passwordErrors.join("<br>"));
+                            }
+
+                            const confirmPassword = document.getElementById("confirm-password")?.value;
+                            if (confirmPassword && password !== confirmPassword) {
+                                showError("confirm-password", "Passwords do not match.");
+                            }
+                        }
+                    });
+                }
+
+                // Confirm Password validation
+                const confirmPasswordField = document.getElementById("confirm-password");
+                if (confirmPasswordField) {
+                    confirmPasswordField.addEventListener("blur", function () {
+                        clearErrorForField("confirm-password");
+                        const password = document.getElementById("password")?.value;
+                        const confirmPassword = this.value;
+                        if (!confirmPassword) {
+                            showError("confirm-password", "Please confirm your password.");
+                        } else if (password && password !== confirmPassword) {
+                            showError("confirm-password", "Passwords do not match.");
+                        }
+                    });
+
+                    confirmPasswordField.addEventListener("input", function () {
+                        clearErrorForField("confirm-password");
+                        const password = document.getElementById("password")?.value;
+                        if (password && this.value && password !== this.value) {
+                            showError("confirm-password", "Passwords do not match.");
+                        }
+                    });
+                }
+
+                // Business Name validation
+                const businessNameField = document.getElementById("business-name");
+                if (businessNameField) {
+                    businessNameField.addEventListener("blur", function () {
+                        clearErrorForField("business-name");
+                        if (!this.value.trim()) {
+                            showError("business-name", "Business name is required.");
+                        }
+                    });
+
+                    businessNameField.addEventListener("input", () => clearErrorForField("business-name"));
+                }
+
+                // Business Type validation
+                const businessTypeField = document.getElementById("business-type");
+                if (businessTypeField) {
+                    businessTypeField.addEventListener("change", function () {
+                        clearErrorForField("business-type");
+                        if (!this.value) {
+                            showError("business-type", "Please select a business type.");
+                        }
+                    });
+                }
+
+                // Phone validation
+                const phoneField = document.getElementById("phone");
+                if (phoneField) {
+                    phoneField.addEventListener("blur", function () {
+                        clearErrorForField("phone");
+                        const phone = this.value.trim();
+                        if (!phone) {
+                            showError("phone", "Business phone is required.");
+                        } else if (!isValidPhone(phone)) {
+                            showError("phone", "Please enter a valid phone number.");
+                        }
+                    });
+
+                    phoneField.addEventListener("input", function () {
+                        clearErrorForField("phone");
+                        const phone = this.value.trim();
+                        if (phone && !isValidPhone(phone)) {
+                            showError("phone", "Please enter a valid phone number.");
+                        }
+                    });
+                }
+
+                // Address validation
+                const addressField = document.getElementById("address");
+                if (addressField) {
+                    addressField.addEventListener("blur", function () {
+                        clearErrorForField("address");
+                        const address = this.value.trim();
+                        if (!address) {
+                            showError("address", "Business address is required.");
+                        } else if (address.length < 10) {
+                            showError("address", "Please enter a complete address.");
+                        }
+                    });
+
+                    addressField.addEventListener("input", function () {
+                        clearErrorForField("address");
+                        const address = this.value.trim();
+                        if (address && address.length < 10) {
+                            showError("address", "Please enter a complete address.");
+                        }
+                    });
+                }
+
+                // Terms validation
+                const termsField = document.getElementById("terms");
+                if (termsField) {
+                    termsField.addEventListener("change", function () {
+                        clearErrorForField("terms");
+                    });
+                }
+            }
+
+            // Initialize signup functionality
+            if (signupBtn && signupForm) {
+                // Initialize real-time validation immediately
+                initRealTimeValidation();
+
+                // Handle form submission
+                signupForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+
+                    // Clear all previous errors
+                    clearErrors();
+
+                    // Validate all fields
+                    const isValid = validateSignupFields();
+
+                    if (isValid) {
+                        // Disable button and show loading state
+                        signupBtn.disabled = true;
+                        signupBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating Account...';
+
+                        try {
+                            // Collect form data
+                            const formData = {
+                                fullName: document.getElementById('full-name').value.trim(),
+                                email: document.getElementById('email').value.trim(),
+                                password: document.getElementById('password').value,
+                                confirmPassword: document.getElementById('confirm-password').value,
+                                businessName: document.getElementById('business-name').value.trim(),
+                                businessType: document.getElementById('business-type').value,
+                                phone: document.getElementById('phone').value.trim(),
+                                address: document.getElementById('address').value.trim(),
+                                terms: document.getElementById('terms').checked ? 'true' : 'false'
+                            };
+
+                            // Send to backend API
+                            const result = await makeRequest('http://localhost:3001/api/auth/signup', 'POST', formData);
+
+                            if (result.success) {
+                                showSuccess("Account created successfully! Redirecting to POS...");
+
+                                // Save token and user data
+                                localStorage.setItem('token', result.token);
+                                localStorage.setItem('user', JSON.stringify(result.user));
+
+                                // Redirect after delay
+                                setTimeout(() => {
+                                    window.location.href = "index.html";
+                                }, 1500);
+                            } else {
+                                // Handle backend validation errors
+                                if (result.errors && result.errors.length > 0) {
+                                    result.errors.forEach(error => {
+                                        showError(error.field, error.message);
+                                    });
+
+                                    // Scroll to first error
+                                    const firstError = document.querySelector('.error-message');
+                                    if (firstError) {
+                                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    }
+                                } else {
+                                    showError('general', result.message || 'Signup failed');
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Signup error:', error);
+                            showError('general', 'An error occurred during signup. Please try again.');
+                        } finally {
+                            // Re-enable button
+                            signupBtn.disabled = false;
+                            signupBtn.textContent = 'Create Account';
+                        }
+                    } else {
+                        // Scroll to first error if validation fails
+                        const firstError = document.querySelector('.error-message');
+                        if (firstError) {
+                            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                });
+            }
+
+            // Initialize on page load
+            initPasswordToggle();
+
+            // Clear errors when user starts typing in any field
+            document.querySelectorAll("input, select").forEach(field => {
+                field.addEventListener("input", function () {
+                    const fieldId = this.id;
+                    if (fieldId) {
+                        clearErrorForField(fieldId);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        // Ensure form is scrolled to top on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginCard = document.querySelector('.login-card');
+            if (loginCard) {
+                loginCard.scrollTop = 0;
+            }
+        });
+    </script>
 </body>
 
 </html>

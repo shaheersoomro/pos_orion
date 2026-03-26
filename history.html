@@ -56,7 +56,8 @@
         }
 
         .filter-group input,
-        .filter-group select {
+        .filter-group select,
+        .filter-btn {
             background-color: var(--bg-light);
             color: var(--text-secondary);
             padding: var(--spacing-md);
@@ -65,7 +66,7 @@
             font-family: 'Inter', sans-serif;
             font-size: 13px;
         }
-        
+
         .table-container {
             background: var(--bg-white);
             border-radius: var(--radius-lg);
@@ -101,7 +102,7 @@
         }
 
         .table td {
-            padding: var(--spacing-lg);
+            padding: var(--spacing-md);
             border-color: var(--border-color);
         }
 
@@ -121,61 +122,127 @@
             background: rgba(46, 204, 113, 0.1);
             color: var(--success);
         }
+
+        /* Add these styles to your existing CSS */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-completed {
+            background: rgba(46, 204, 113, 0.15);
+            color: #27ae60;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .status-pending {
+            background: rgba(241, 196, 15, 0.15);
+            color: #f39c12;
+            border: 1px solid rgba(241, 196, 15, 0.3);
+        }
+
+        .status-cancelled {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .status-refunded {
+            background: rgba(155, 89, 182, 0.15);
+            color: #9b59b6;
+            border: 1px solid rgba(155, 89, 182, 0.3);
+        }
+
+        .action-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 6px 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-btn:hover {
+            background: var(--secondary);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--border-color);
+        }
+
+        .pagination-container {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pagination .page-link {
+            color: var(--primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: var(--text-secondary);
+        }
+
+        .items-count {
+            font-size: 11px;
+            color: var(--text-secondary);
+            background: var(--bg-light);
+            padding: 2px 8px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        /* Discount styles */
+        .discount-badge {
+            background: rgba(91, 75, 158, 0.1);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .discount-item {
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-sm);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .discount-amount {
+            color: var(--success);
+            font-weight: 600;
+        }
     </style>
 </head>
 
 <body>
     <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <!-- <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="bi bi-lightning-fill"></i>
-                    <span>Orion</span>
-                </div>
-            </div>
-
-            <nav class="sidebar-nav">
-                <a href="index.html" class="nav-item">
-                    <i class="bi bi-shop"></i>
-                    <span>POS</span>
-                </a>
-                <a href="dashboard.html" class="nav-item">
-                    <i class="bi bi-speedometer2"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="inventory.html" class="nav-item">
-                    <i class="bi bi-box-seam"></i>
-                    <span>Inventory</span>
-                </a>
-                <a href="#" class="nav-item active">
-                    <i class="bi bi-clock-history"></i>
-                    <span>History</span>
-                </a>
-                <a href="users.html" class="nav-item">
-                    <i class="bi bi-people"></i>
-                    <span>Users</span>
-                </a>
-                <a href="settings.html" class="nav-item">
-                    <i class="bi bi-gear"></i>
-                    <span>Settings</span>
-                </a>
-            </nav>
-
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="avatar">A</div>
-                    <div class="user-info">
-                        <div class="user-name">Alice</div>
-                        <div class="user-role">Admin</div>
-                    </div>
-                </div>
-                <a href="login.html" class="logout-btn">
-                    <i class="bi bi-box-arrow-right"></i>
-                </a>
-            </div>
-        </aside> -->
-
         <!-- Main Content -->
         <div class="admin-main">
             <header class="top-header">
@@ -184,10 +251,10 @@
                 </div>
                 <div class="header-right">
                     <div class="user-profile">
-                        <div class="avatar">A</div>
+                        <div class="avatar"></div>
                         <div class="user-info">
-                            <div class="user-name">Alice</div>
-                            <div class="user-role">Cashier</div>
+                            <div class="user-name"></div>
+                            <div class="user-role"></div>
                         </div>
                         <a href="login.html" class="logout-btn" title="Logout">
                             <i class="bi bi-box-arrow-right"></i>
@@ -200,56 +267,80 @@
                 <div class="filter-bar">
                     <div class="filter-group">
                         <label>Date From</label>
-                        <input type="date">
+                        <input type="date" id="date-from">
                     </div>
                     <div class="filter-group">
                         <label>Date To</label>
-                        <input type="date">
+                        <input type="date" id="date-to">
                     </div>
                     <div class="filter-group">
                         <label>Payment Method</label>
-                        <select>
-                            <option>All</option>
-                            <option>Cash</option>
-                            <option>Card</option>
+                        <select id="payment-method">
+                            <option value="">All</option>
+                            <option value="cash">Cash</option>
+                            <option value="card">Card</option>
+                            <option value="wallet">Wallet</option>
+                            <option value="refund">Refund</option>
                         </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Status</label>
+                        <select id="status-filter">
+                            <option value="">All</option>
+                            <option value="completed">Completed</option>
+                            <option value="refunded">Refunded</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        
+                        <button class="btn-action btn-secondary" class="filter-btn" id="apply-filters">
+                            <i class="bi bi-funnel"></i> Apply Filters
+                        </button>
                     </div>
                 </div>
 
+                <!-- Transaction Table -->
                 <div class="table-container">
-                    <table class="table">
+                    <table class="table" id="transactions-table">
                         <thead>
                             <tr>
-                                <th>Order ID</th>
+                                <th>Transaction ID</th>
                                 <th>Date/Time</th>
                                 <th>Items</th>
+                                <th>Customer</th>
+                                <th>Subtotal</th>
+                                <th>Discount</th>
+                                <th>Tax</th>
                                 <th>Total</th>
                                 <th>Payment</th>
                                 <th>Cashier</th>
                                 <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>#001</td>
-                                <td>Nov 6, 12:30 PM</td>
-                                <td>3 items</td>
-                                <td>$18.50</td>
-                                <td>Cash</td>
-                                <td>Alice</td>
-                                <td><span class="badge badge-success">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>#002</td>
-                                <td>Nov 6, 1:15 PM</td>
-                                <td>5 items</td>
-                                <td>$45.99</td>
-                                <td>Card</td>
-                                <td>Alice</td>
-                                <td><span class="badge badge-success">Completed</span></td>
+                        <tbody id="transactions-body">
+                            <!-- Transactions will be loaded here -->
+                            <tr id="loading-row">
+                                <td colspan="12" class="text-center py-5">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-2">Loading transactions...</p>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+
+                    <!-- Pagination -->
+                    <div class="pagination-container" id="pagination-container" style="display: none;">
+                        <nav aria-label="Transaction pagination">
+                            <ul class="pagination justify-content-center" id="pagination">
+                                <!-- Pagination buttons will be added here -->
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
             <nav class="bottom-navbar">
@@ -281,7 +372,901 @@
         </div>
     </div>
 
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3001/api';
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+
+        // Format date to readable string
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        // Format time to readable string
+        function formatTime(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Format date and time together
+        function formatDateTime(dateString) {
+            if (!dateString) return 'N/A';
+            return `${formatDate(dateString)} ${formatTime(dateString)}`;
+        }
+
+        // Get top items for display
+        function getTopItems(items) {
+            if (!items || items.length === 0) return 'No items';
+
+            const topItems = items.slice(0, 2).map(item => item.name);
+            return topItems.join(', ') + (items.length > 2 ? ` +${items.length - 2} more` : '');
+        }
+
+        // Get payment method display text
+        function getPaymentMethodDisplay(method) {
+            if (!method) return 'N/A';
+            return method.charAt(0).toUpperCase() + method.slice(1);
+        }
+
+        // Get status badge class
+        function getStatusClass(status) {
+            if (!status) return 'status-completed';
+            switch (status.toLowerCase()) {
+                case 'completed': return 'status-completed';
+                case 'pending': return 'status-pending';
+                case 'cancelled': return 'status-cancelled';
+                case 'refunded': return 'status-refunded';
+                case 'partial_refund': return 'status-refunded';
+                default: return 'status-completed';
+            }
+        }
+
+        // Get status display text
+        function getStatusDisplay(status) {
+            if (!status) return 'Completed';
+            return status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ');
+        }
+
+        // ============================================
+        // TOAST NOTIFICATION
+        // ============================================
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container') || createToastContainer();
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const icon = type === 'success' ? 'bi-check-circle-fill' :
+                type === 'error' ? 'bi-exclamation-circle-fill' :
+                    type === 'warning' ? 'bi-exclamation-triangle-fill' :
+                        'bi-info-circle-fill';
+
+            toast.innerHTML = `
+                <i class="bi ${icon} toast-icon"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 5000);
+
+            toast.addEventListener('click', () => {
+                toast.classList.add('fade-out');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            });
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+            return container;
+        }
+
+        // ============================================
+        // AUTHENTICATION & USER MANAGEMENT
+        // ============================================
+
+        function checkAuthentication() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (!token || !user) {
+                showToast('Please login first', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return false;
+            }
+
+            updateUserInfo(user);
+            return true;
+        }
+
+        function updateUserInfo(user) {
+            const userNameEl = document.querySelector('.user-name');
+            const userRoleEl = document.querySelector('.user-role');
+            const avatarEl = document.querySelector('.avatar');
+
+            if (userNameEl) userNameEl.textContent = user.fullName || 'User';
+            if (userRoleEl) {
+                userRoleEl.textContent = user.role === 'admin' ? 'Administrator' :
+                    user.role === 'cashier' ? 'Cashier' :
+                        user.role === 'manager' ? 'Manager' : 'User';
+            }
+            if (avatarEl && user.fullName) {
+                avatarEl.textContent = user.fullName.charAt(0).toUpperCase();
+            }
+        }
+
+        function setupLogout() {
+            document.querySelectorAll('.logout-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                });
+            });
+        }
+
+        // ============================================
+        // API HELPER FUNCTIONS
+        // ============================================
+
+        async function apiRequest(endpoint, options = {}) {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                window.location.href = 'login.html';
+                return null;
+            }
+
+            const url = `${API_BASE_URL}${endpoint}`;
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...options.headers
+            };
+
+            try {
+                const response = await fetch(url, { ...options, headers });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    return {
+                        success: false,
+                        status: response.status,
+                        message: data.message || data.error || `API request failed with status ${response.status}`,
+                        errors: data.errors
+                    };
+                }
+
+                return data;
+            } catch (error) {
+                console.error('API request error:', error);
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    showToast('Cannot connect to server. Please check your connection.', 'error');
+                } else {
+                    showToast('Network error. Please check your connection.', 'error');
+                }
+
+                return {
+                    success: false,
+                    status: 0,
+                    message: 'Network error',
+                    errors: []
+                };
+            }
+        }
+
+        // ============================================
+        // TRANSACTION MANAGEMENT
+        // ============================================
+
+        let allTransactions = [];
+        let currentPage = 1;
+        let totalPages = 1;
+        const itemsPerPage = 20;
+
+        async function loadTransactions(page = 1) {
+            try {
+                showTransactionLoading();
+
+                // Build query parameters
+                const params = new URLSearchParams({
+                    page: page,
+                    limit: itemsPerPage
+                });
+
+                // Add filter parameters if they exist
+                const dateFrom = document.getElementById('date-from')?.value;
+                const dateTo = document.getElementById('date-to')?.value;
+                const paymentMethod = document.getElementById('payment-method')?.value;
+                const status = document.getElementById('status-filter')?.value;
+
+                if (dateFrom) params.append('startDate', dateFrom);
+                if (dateTo) params.append('endDate', dateTo);
+                if (paymentMethod) {
+                    params.append('paymentMethod', paymentMethod.toLowerCase());
+                }
+                if (status) {
+                    params.append('status', status);
+                }
+
+                const data = await apiRequest(`/transactions?${params.toString()}`);
+
+                if (!data) {
+                    showTransactionError('Failed to connect to server');
+                    return;
+                }
+
+                if (data.success) {
+                    allTransactions = data.transactions || [];
+                    currentPage = data.pagination?.page || page;
+                    totalPages = data.pagination?.pages || 1;
+
+                    renderTransactions(allTransactions);
+                    renderPagination();
+
+                    // Update counts
+                    updateTransactionCounts(data.pagination?.total || allTransactions.length);
+
+                } else {
+                    showTransactionError(data.message || 'Failed to load transactions');
+                }
+
+            } catch (error) {
+                console.error('Error loading transactions:', error);
+                showTransactionError('Error loading transactions');
+            }
+        }
+
+        function showTransactionLoading() {
+            const tbody = document.getElementById('transactions-body');
+            if (tbody) {
+                tbody.innerHTML = `
+                    <tr id="loading-row">
+                        <td colspan="12" class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading transactions...</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function showTransactionError(message) {
+            const tbody = document.getElementById('transactions-body');
+            if (tbody) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="12" class="text-center py-5">
+                            <div class="empty-state">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <h4>${message}</h4>
+                                <p>Please try again later</p>
+                                <button class="action-btn mt-3" onclick="loadTransactions()">
+                                    <i class="bi bi-arrow-clockwise"></i> Retry
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+            document.getElementById('pagination-container').style.display = 'none';
+        }
+
+        function renderTransactions(transactions) {
+            const tbody = document.getElementById('transactions-body');
+            if (!tbody) return;
+
+            if (!transactions || transactions.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="12" class="text-center py-5">
+                            <div class="empty-state">
+                                <i class="bi bi-receipt"></i>
+                                <h4>No transactions found</h4>
+                                <p>No transactions match your criteria</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('pagination-container').style.display = 'none';
+                return;
+            }
+
+            tbody.innerHTML = transactions.map(transaction => {
+                // Calculate discount percentage if available
+                const discountPercentage = transaction.discount > 0 && transaction.subtotal > 0
+                    ? ((transaction.discount / transaction.subtotal) * 100).toFixed(0)
+                    : null;
+
+                return `
+                    <tr data-transaction-id="${transaction._id}" style="cursor: pointer;">
+                        <td>
+                            <div class="fw-semibold">${transaction.transactionId || 'N/A'}</div>
+                            ${transaction.discountsApplied?.length > 0 ?
+                        `<span class="discount-badge">
+                                    <i class="bi bi-percent"></i> ${transaction.discountsApplied.length} discount(s)
+                                </span>` : ''
+                    }
+                        </td>
+                        <td>
+                            <div>${formatDate(transaction.createdAt)}</div>
+                            <small class="text-muted">${formatTime(transaction.createdAt)}</small>
+                        </td>
+                        <td>
+                            <div>${transaction.items?.length || 0} items</div>
+                            <small class="text-muted">${getTopItems(transaction.items)}</small>
+                        </td>
+                        <td>
+                            ${transaction.customer?.name || 'Walk-in'}
+                            ${transaction.customer?.phone ? `<br><small class="text-muted">${transaction.customer.phone}</small>` : ''}
+                        </td>
+                        <td>$${transaction.subtotal?.toFixed(2) || '0.00'}</td>
+                        <td>
+                            ${transaction.discount > 0 ? `
+                                <div class="text-success fw-semibold">-$${transaction.discount?.toFixed(2)}</div>
+                                ${discountPercentage ? `<small class="text-muted">(${discountPercentage}%)</small>` : ''}
+                                ${transaction.discountsApplied?.length > 0 ?
+                            `<small class="text-muted d-block">
+                                        ${transaction.discountsApplied.map(d => d.discountName).join(', ')}
+                                    </small>` : ''
+                        }
+                            ` : '<span class="text-muted">None</span>'}
+                        </td>
+                        <td>$${transaction.tax?.toFixed(2) || '0.00'}</td>
+                        <td class="fw-bold">$${transaction.total?.toFixed(2) || '0.00'}</td>
+                        <td>
+                            <span class="text-capitalize">${getPaymentMethodDisplay(transaction.paymentMethod)}</span>
+                            ${transaction.isRefund ? '<br><small class="text-danger">Refund</small>' : ''}
+                        </td>
+                        <td>
+                            ${transaction.cashier?.fullName || 'System'}
+                            ${transaction.cashier?.email ? `<br><small class="text-muted">${transaction.cashier.email}</small>` : ''}
+                        </td>
+                        <td>
+                            <span class="status-badge ${getStatusClass(transaction.status)}">
+                                ${getStatusDisplay(transaction.status)}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="action-btn view-btn" data-id="${transaction._id}" title="View Details">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            ${transaction.status === 'completed' && !transaction.isRefund ? `
+                                <button class="action-btn refund-btn" data-id="${transaction._id}" title="Refund">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                </button>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            attachTransactionEventListeners();
+        }
+
+        function updateTransactionCounts(total) {
+            // You can add a counter display if needed
+            console.log(`Total transactions: ${total}`);
+        }
+
+        function renderPagination() {
+            const container = document.getElementById('pagination-container');
+            const paginationEl = document.getElementById('pagination');
+
+            if (totalPages <= 1) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+
+            let paginationHTML = '';
+
+            // Previous button
+            paginationHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage - 1}" ${currentPage === 1 ? 'tabindex="-1"' : ''}>
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+
+            // Page numbers
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            // First page
+            if (startPage > 1) {
+                paginationHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" data-page="1">1</a>
+                    </li>
+                    ${startPage > 2 ? '<li class="page-item disabled"><span class="page-link">...</span></li>' : ''}
+                `;
+            }
+
+            // Page range
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" data-page="${i}">${i}</a>
+                    </li>
+                `;
+            }
+
+            // Last page
+            if (endPage < totalPages) {
+                paginationHTML += `
+                    ${endPage < totalPages - 1 ? '<li class="page-item disabled"><span class="page-link">...</span></li>' : ''}
+                    <li class="page-item">
+                        <a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a>
+                    </li>
+                `;
+            }
+
+            // Next button
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'tabindex="-1"' : ''}>
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+
+            paginationEl.innerHTML = paginationHTML;
+
+            // Add event listeners
+            paginationEl.querySelectorAll('.page-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if (this.parentElement.classList.contains('disabled')) return;
+
+                    const page = parseInt(this.dataset.page);
+                    if (page && page !== currentPage) {
+                        loadTransactions(page);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        function attachTransactionEventListeners() {
+            // Row click - view details
+            document.querySelectorAll('#transactions-body tr[data-transaction-id]').forEach(row => {
+                row.addEventListener('click', function (e) {
+                    // Don't trigger if clicking on action buttons
+                    if (e.target.closest('.action-btn')) return;
+
+                    const transactionId = this.dataset.transactionId;
+                    viewTransactionDetails(transactionId);
+                });
+            });
+
+            // View button click
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const transactionId = this.dataset.id;
+                    viewTransactionDetails(transactionId);
+                });
+            });
+
+            // Refund button click
+            document.querySelectorAll('.refund-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const transactionId = this.dataset.id;
+                    initiateRefund(transactionId);
+                });
+            });
+        }
+
+        async function viewTransactionDetails(transactionId) {
+            try {
+                const data = await apiRequest(`/transactions/${transactionId}`);
+
+                if (data && data.success) {
+                    showTransactionModal(data.transaction);
+                } else {
+                    showToast('Failed to load transaction details', 'error');
+                }
+            } catch (error) {
+                console.error('Error viewing transaction:', error);
+                showToast('Error loading transaction details', 'error');
+            }
+        }
+
+        function showTransactionModal(transaction) {
+            // Create modal HTML
+            const modalHTML = `
+                <div class="modal fade" id="transactionModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Transaction Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <h6>Transaction Info</h6>
+                                        <p><strong>ID:</strong> ${transaction.transactionId || 'N/A'}</p>
+                                        <p><strong>Date:</strong> ${formatDateTime(transaction.createdAt)}</p>
+                                        <p><strong>Status:</strong> <span class="status-badge ${getStatusClass(transaction.status)}">${getStatusDisplay(transaction.status)}</span></p>
+                                        ${transaction.isRefund ? `<p><strong>Type:</strong> <span class="text-danger">Refund</span></p>` : ''}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Customer Info</h6>
+                                        <p><strong>Name:</strong> ${transaction.customer?.name || 'Walk-in'}</p>
+                                        ${transaction.customer?.phone ? `<p><strong>Phone:</strong> ${transaction.customer.phone}</p>` : ''}
+                                        ${transaction.customer?.email ? `<p><strong>Email:</strong> ${transaction.customer.email}</p>` : ''}
+                                    </div>
+                                </div>
+                                
+                                ${transaction.discountsApplied?.length > 0 ? `
+                                    <div class="mb-4">
+                                        <h6>Discounts Applied</h6>
+                                        <div class="discounts-list">
+                                            ${transaction.discountsApplied.map(discount => `
+                                                <div class="discount-item mb-2 p-2 border rounded">
+                                                    <div class="d-flex justify-content-between">
+                                                        <strong>${discount.discountName}</strong>
+                                                        <span class="discount-amount">-$${transaction.discount?.toFixed(2) || discount.discountedAmount?.toFixed(2) || '0.00'}</span>
+                                                    </div>
+                                                    <small class="text-muted">
+                                                        Type: ${discount.discountType} | 
+                                                        ${discount.discountType === 'percentage' ? discount.discountValue + '%' : '$' + discount.discountValue}
+                                                    </small>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                
+                                <h6>Items</h6>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Qty</th>
+                                            <th>Price</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${transaction.items?.map(item => `
+                                            <tr>
+                                                <td>${item.name}</td>
+                                                <td>${item.quantity}</td>
+                                                <td>$${item.price?.toFixed(2)}</td>
+                                                <td>$${item.subtotal?.toFixed(2)}</td>
+                                            </tr>
+                                        `).join('') || '<tr><td colspan="4">No items</td></tr>'}
+                                    </tbody>
+                                </table>
+                                
+                                <div class="row mt-4">
+                                    <div class="col-md-6 offset-md-6">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Subtotal:</span>
+                                            <span>$${transaction.subtotal?.toFixed(2)}</span>
+                                        </div>
+                                        ${transaction.discount > 0 ? `
+                                            <div class="d-flex justify-content-between mb-2 text-success">
+                                                <span>Discount:</span>
+                                                <span>-$${transaction.discount?.toFixed(2)}</span>
+                                            </div>
+                                        ` : ''}
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Tax (${transaction.taxRate || 8}%):</span>
+                                            <span>$${transaction.tax?.toFixed(2)}</span>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-between fw-bold">
+                                            <span>Total:</span>
+                                            <span>$${transaction.total?.toFixed(2)}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <span>Paid (${getPaymentMethodDisplay(transaction.paymentMethod)}):</span>
+                                            <span>$${transaction.amountPaid?.toFixed(2)}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <span>Change:</span>
+                                            <span>$${transaction.change?.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                ${transaction.notes ? `
+                                    <div class="mt-4">
+                                        <h6>Notes</h6>
+                                        <p>${transaction.notes}</p>
+                                    </div>
+                                ` : ''}
+                                
+                                ${transaction.refundReason ? `
+                                    <div class="mt-4">
+                                        <h6>Refund Reason</h6>
+                                        <p>${transaction.refundReason}</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="printReceipt('${transaction._id}')">
+                                    <i class="bi bi-printer"></i> Print Receipt
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add modal to body
+            const modalContainer = document.getElementById('modal-container') || createModalContainer();
+            modalContainer.innerHTML = modalHTML;
+
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('transactionModal'));
+            modal.show();
+        }
+
+        function createModalContainer() {
+            const container = document.createElement('div');
+            container.id = 'modal-container';
+            document.body.appendChild(container);
+            return container;
+        }
+
+        async function initiateRefund(transactionId) {
+            try {
+                // Load transaction details first
+                const data = await apiRequest(`/transactions/${transactionId}`);
+
+                if (!data || !data.success) {
+                    showToast('Failed to load transaction details', 'error');
+                    return;
+                }
+
+                const transaction = data.transaction;
+
+                // Check if already refunded
+                if (transaction.status === 'refunded' || transaction.status === 'partial_refund') {
+                    showToast('Transaction already refunded', 'warning');
+                    return;
+                }
+
+                if (transaction.status === 'cancelled') {
+                    showToast('Cannot refund a cancelled transaction', 'warning');
+                    return;
+                }
+
+                // Show refund dialog
+                showRefundDialog(transaction);
+
+            } catch (error) {
+                console.error('Error initiating refund:', error);
+                showToast('Error loading transaction details', 'error');
+            }
+        }
+
+        function showRefundDialog(transaction) {
+            // Create modal HTML
+            const modalHTML = `
+                <div class="modal fade" id="refundModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Process Refund</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> 
+                                    Original Transaction: <strong>${transaction.transactionId}</strong> | 
+                                    Total: <strong>$${transaction.total?.toFixed(2)}</strong> |
+                                    Date: <strong>${formatDate(transaction.createdAt)}</strong>
+                                </div>
+                                
+                                <!-- Refund form will go here -->
+                                <div class="mb-3">
+                                    <label for="refundReason" class="form-label">Refund Reason</label>
+                                    <select class="form-select" id="refundReason">
+                                        <option value="">Select a reason</option>
+                                        <option value="Customer changed mind">Customer changed mind</option>
+                                        <option value="Defective product">Defective product</option>
+                                        <option value="Wrong item received">Wrong item received</option>
+                                        <option value="Price mismatch">Price mismatch</option>
+                                        <option value="Duplicate transaction">Duplicate transaction</option>
+                                        <option value="Customer dissatisfaction">Customer dissatisfaction</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3" id="otherReasonSection" style="display: none;">
+                                    <label for="otherReason" class="form-label">Specify Reason</label>
+                                    <input type="text" class="form-control" id="otherReason" placeholder="Enter refund reason">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="refundNotes" class="form-label">Additional Notes</label>
+                                    <textarea class="form-control" id="refundNotes" rows="2" placeholder="Any additional notes..."></textarea>
+                                </div>
+                                
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    <strong>Note:</strong> Refunding will update inventory stock and create a refund record.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="processRefundBtn" onclick="processRefund('${transaction._id}')">
+                                    <i class="bi bi-arrow-counterclockwise"></i> Process Full Refund
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add modal to body
+            const modalContainer = document.getElementById('modal-container');
+            modalContainer.innerHTML = modalHTML;
+
+            // Show modal
+            const refundModal = new bootstrap.Modal(document.getElementById('refundModal'));
+            refundModal.show();
+
+            // Add event listeners
+            document.getElementById('refundReason').addEventListener('change', function () {
+                const otherSection = document.getElementById('otherReasonSection');
+                otherSection.style.display = this.value === 'other' ? 'block' : 'none';
+            });
+        }
+
+        async function processRefund(transactionId) {
+            try {
+                const reasonSelect = document.getElementById('refundReason');
+                const otherReason = document.getElementById('otherReason');
+                const notes = document.getElementById('refundNotes').value;
+
+                let reason = reasonSelect.value;
+                if (reason === 'other') {
+                    reason = otherReason.value;
+                }
+
+                if (!reason) {
+                    showToast('Please select a refund reason', 'error');
+                    return;
+                }
+
+                const refundData = {
+                    reason: reason
+                };
+
+                if (notes.trim()) {
+                    refundData.notes = notes;
+                }
+
+                const response = await apiRequest(`/transactions/${transactionId}/refund`, {
+                    method: 'POST',
+                    body: JSON.stringify(refundData)
+                });
+
+                const modal = bootstrap.Modal.getInstance(document.getElementById('refundModal'));
+                if (modal) {
+                    modal.hide();
+                }
+
+                if (response && response.success) {
+                    showToast(`Refund processed successfully!`, 'success');
+                    loadTransactions(currentPage);
+                } else {
+                    showToast(response?.message || 'Failed to process refund', 'error');
+                }
+
+            } catch (error) {
+                console.error('Error processing refund:', error);
+                showToast('Error processing refund', 'error');
+            }
+        }
+
+        function printReceipt(transactionId) {
+            showToast('Print receipt feature coming soon!', 'info');
+            // You can implement thermal printer integration here
+        }
+
+        // ============================================
+        // FILTER MANAGEMENT
+        // ============================================
+
+        function setupFilters() {
+            // Set default dates (last 30 days)
+            const today = new Date();
+            const lastMonth = new Date();
+            lastMonth.setDate(today.getDate() - 30);
+
+            document.getElementById('date-from').valueAsDate = lastMonth;
+            document.getElementById('date-to').valueAsDate = today;
+
+            // Apply filters button
+            document.getElementById('apply-filters').addEventListener('click', () => {
+                loadTransactions(1);
+            });
+
+            // Enter key in date inputs
+            document.querySelectorAll('#date-from, #date-to, #payment-method, #status-filter').forEach(input => {
+                input.addEventListener('change', () => {
+                    loadTransactions(1);
+                });
+            });
+        }
+
+        // ============================================
+        // APP INITIALIZATION
+        // ============================================
+
+        async function initializeApp() {
+            if (!checkAuthentication()) {
+                return;
+            }
+            setupLogout();
+            setupFilters();
+            await loadTransactions();
+        }
+
+        // ============================================
+        // DOM READY INITIALIZATION
+        // ============================================
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeApp();
+        });
+    </script>
 </body>
 
 </html>

@@ -14,8 +14,10 @@
 
     /* Accent Colors */
     --success: #02CA3A;
+    --success-dark: #028A24;
     --warning: #BE3E3F;
     --info: #025CCA;
+    --info-dark: #024A9D;
     --danger: #E74C3C;
 
     /* Neutral Colors */
@@ -509,7 +511,7 @@ body {
 .products-grid {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(164.5px, 1fr));
     gap: var(--spacing-md);
     padding: var(--spacing-lg);
     overflow-y: auto;
@@ -518,13 +520,13 @@ body {
 .product-card {
     background: var(--secondary);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-md);
     cursor: pointer;
     transition: var(--transition);
     border: 2px solid transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
     height: 164.5px
 }
@@ -740,6 +742,10 @@ body {
 
 .modal-footer {
     border-top: 1px solid var(--border-color);
+}
+
+.modal .btn-action {
+    font-size: 16px;
 }
 
 .payment-info {
@@ -964,6 +970,10 @@ body {
 
 input.error {
     border-color: var(--warning) !important;
+}
+
+.text-muted {
+    color: var(--text-secondary) !important;
 }
 
 /* ============================================

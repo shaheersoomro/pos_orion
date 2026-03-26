@@ -56,6 +56,32 @@
             background: var(--primary-dark);
         }
 
+        .btn-add-category {
+            background: var(--success);
+        }
+        
+        .btn-add-category:hover {
+            background: var(--success-dark);
+        }
+
+        .btn-manage {
+            background: var(--info);
+            color: white;
+            border: none;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            transition: var(--transition);
+        }
+
+        .btn-manage:hover {
+            background: var(--info-dark);
+        }
+
         .table-container {
             background: var(--bg-white);
             border-radius: var(--radius-lg);
@@ -118,6 +144,21 @@
             color: var(--warning);
         }
 
+        .badge-danger {
+            background: rgba(255, 71, 87, 0.1);
+            color: #ff4757;
+        }
+
+        .badge-info {
+            background: rgba(53, 162, 235, 0.1);
+            color: #35a2eb;
+        }
+
+        .badge-secondary {
+            background: rgba(116, 127, 141, 0.1);
+            color: #747f8d;
+        }
+
         .action-buttons {
             display: flex;
             gap: var(--spacing-md);
@@ -141,61 +182,203 @@
             background: var(--secondary-dark);
             color: var(--primary);
         }
+
+        .btn-icon:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-icon:disabled:hover {
+            background: var(--secondary);
+            color: var(--text-secondary);
+        }
+
+        .btn-icon-danger {
+            background: rgba(255, 71, 87, 0.1) !important;
+            color: #ff4757 !important;
+        }
+
+        .btn-icon-danger:hover {
+            background: rgba(255, 71, 87, 0.2) !important;
+            color: #ff4757 !important;
+        }
+
+        .btn-icon-danger:disabled {
+            opacity: 0.5 !important;
+            cursor: not-allowed !important;
+        }
+
+        .btn-icon-danger:disabled:hover {
+            background: rgba(255, 71, 87, 0.1) !important;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 3px solid var(--secondary);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Toast Container */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast:not(.show) {
+            display: block;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: white;
+            min-width: 300px;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transform: translateX(100%);
+            opacity: 0;
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        .toast.success {
+            background-color: #10b981;
+            border-left: 4px solid #059669;
+        }
+
+        .toast.error {
+            background-color: #ef4444;
+            border-left: 4px solid #dc2626;
+        }
+
+        .toast.info {
+            background-color: #3b82f6;
+            border-left: 4px solid #1d4ed8;
+        }
+
+        .toast.warning {
+            background-color: #f59e0b;
+            border-left: 4px solid #d97706;
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.fade-out {
+            animation: slideOut 0.3s ease forwards;
+        }
+
+        @keyframes slideOut {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .product-cell {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .product-icon-small {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-icon-small img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .form-control-plaintext {
+            color: var(--text-secondary);
+        }
+
+        .default-category-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            margin-left: 8px;
+            background: var(--info) !important;
+            color: white !important;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: var(--spacing-lg);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .category-type-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
 <body>
     <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <!-- <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="bi bi-lightning-fill"></i>
-                    <span>Orion</span>
-                </div>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <a href="index.html" class="nav-item">
-                    <i class="bi bi-shop"></i>
-                    <span>POS</span>
-                </a>
-                <a href="dashboard.html" class="nav-item">
-                    <i class="bi bi-speedometer2"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="#" class="nav-item active">
-                    <i class="bi bi-box-seam"></i>
-                    <span>Inventory</span>
-                </a>
-                <a href="history.html" class="nav-item">
-                    <i class="bi bi-clock-history"></i>
-                    <span>History</span>
-                </a>
-                <a href="users.html" class="nav-item">
-                    <i class="bi bi-people"></i>
-                    <span>Users</span>
-                </a>
-                <a href="settings.html" class="nav-item">
-                    <i class="bi bi-gear"></i>
-                    <span>Settings</span>
-                </a>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="avatar">A</div>
-                    <div class="user-info">
-                        <div class="user-name">Alice</div>
-                        <div class="user-role">Admin</div>
-                    </div>
-                </div>
-                <a href="login.html" class="logout-btn">
-                    <i class="bi bi-box-arrow-right"></i>
-                </a>
-            </div>
-        </aside> -->
-
         <!-- Main Content -->
         <div class="admin-main">
             <header class="top-header">
@@ -204,12 +387,12 @@
                 </div>
                 <div class="header-right">
                     <div class="user-profile">
-                        <div class="avatar">A</div>
+                        <div class="avatar"></div>
                         <div class="user-info">
-                            <div class="user-name">Alice</div>
-                            <div class="user-role">Cashier</div>
+                            <div class="user-name"></div>
+                            <div class="user-role"></div>
                         </div>
-                        <a href="login.html" class="logout-btn" title="Logout">
+                        <a href="#" class="logout-btn" title="Logout">
                             <i class="bi bi-box-arrow-right"></i>
                         </a>
                     </div>
@@ -219,13 +402,26 @@
             <div class="admin-content">
                 <div class="content-header">
                     <div></div>
-                    <button class="btn-add" id="btn-add-product">
-                        <i class="bi bi-plus-circle"></i> Add Product
-                    </button>
+                    <div style="display: flex; gap: var(--spacing-md);">
+                        <button class="btn-manage" id="btn-manage-categories">
+                            <i class="bi bi-gear"></i> Manage Categories
+                        </button>
+                        <button class="btn-add btn-add-category" id="btn-add-category" style="background: var(--success);">
+                            <i class="bi bi-plus-circle"></i> Add Category
+                        </button>
+                        <button class="btn-add" id="btn-add-product">
+                            <i class="bi bi-plus-circle"></i> Add Product
+                        </button>
+                    </div>
                 </div>
 
-                <div class="table-container">
-                    <table class="table">
+                <div class="loading-spinner" id="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading inventory...</p>
+                </div>
+
+                <div class="table-container" id="inventory-container" style="display: none;">
+                    <table class="table" id="inventory-table">
                         <thead>
                             <tr>
                                 <th>Product Name</th>
@@ -236,62 +432,13 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Espresso</td>
-                                <td>Coffee</td>
-                                <td>$3.50</td>
-                                <td>120</td>
-                                <td><span class="badge badge-success">In Stock</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-icon" title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn-icon" title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Latte</td>
-                                <td>Coffee</td>
-                                <td>$4.50</td>
-                                <td>85</td>
-                                <td><span class="badge badge-success">In Stock</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-icon" title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn-icon" title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Sandwich</td>
-                                <td>Food</td>
-                                <td>$7.99</td>
-                                <td>15</td>
-                                <td><span class="badge badge-warning">Low Stock</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-icon" title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn-icon" title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tbody id="inventory-table-body">
+                            <!-- Inventory items will be loaded here -->
                         </tbody>
                     </table>
                 </div>
             </div>
+
             <nav class="bottom-navbar">
                 <a href="index.html" class="nav-item" data-page="pos">
                     <i class="bi bi-shop"></i>
@@ -331,27 +478,68 @@
                 </div>
                 <div class="modal-body">
                     <form id="add-product-form">
+                        <input type="hidden" id="product-id">
                         <div class="mb-3 form-group">
-                            <label class="form-label">Product Name</label>
-                            <input type="text" class="form-control" id="product-name" placeholder="Product Name" required>
+                            <label class="form-label">Product Name *</label>
+                            <input type="text" class="form-control" id="product-name" placeholder="Enter product name"
+                                required>
                         </div>
                         <div class="mb-3 form-group">
-                            <label class="form-label">Price</label>
-                            <input type="number" class="form-control" id="product-price" step="0.01" min="0" placeholder="0.0" required>
+                            <label class="form-label">Price *</label>
+                            <input type="number" class="form-control" id="product-price" step="0.01" min="0"
+                                placeholder="0.00" required>
                         </div>
                         <div class="mb-3 form-group">
-                            <label class="form-label">Category</label>
-                            <select class="form-control" id="product-category">
-                                <option value="coffee">Coffee</option>
-                                <option value="food">Food</option>
-                                <option value="services">Services</option>
+                            <label class="form-label">Category *</label>
+                            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                                <select class="form-control" id="product-category" required style="flex: 1;">
+                                    <option value="">Select category</option>
+                                </select>
+                                <button type="button" class="btn btn-success" id="btn-add-category-inline"
+                                    style="padding: 8px 12px; font-size: 12px;">
+                                    <i class="bi bi-plus"></i> New
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Quantity *</label>
+                            <input type="number" class="form-control" id="product-quantity" min="0" value="0" required>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Cost Price (Optional)</label>
+                            <input type="number" class="form-control" id="product-cost" step="0.01" min="0"
+                                placeholder="Cost price">
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Supplier (Optional)</label>
+                            <input type="text" class="form-control" id="product-supplier" placeholder="Supplier name">
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Barcode (Optional)</label>
+                            <input type="text" class="form-control" id="product-barcode" placeholder="Barcode">
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Unit</label>
+                            <select class="form-control" id="product-unit">
+                                <option value="pcs">Pieces</option>
+                                <option value="kg">Kilogram</option>
+                                <option value="g">Gram</option>
+                                <option value="l">Liter</option>
+                                <option value="ml">Milliliter</option>
+                                <option value="box">Box</option>
+                                <option value="pack">Pack</option>
                             </select>
                         </div>
                         <div class="mb-3 form-group">
-                            <label class="form-label">Icon URL (optional)</label>
-                            <input type="text" class="form-control" id="product-icon" placeholder="images/product.png">
+                            <label class="form-label">Low Stock Threshold</label>
+                            <input type="number" class="form-control" id="low-stock-threshold" min="1" value="10">
+                            <small class="--text-secondary">Alert when stock falls below this number</small>
                         </div>
-                        <div id="product-validation" class="alert alert-warning" style="display: none;"></div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Description (Optional)</label>
+                            <textarea class="form-control" id="product-description" rows="2"
+                                placeholder="Product description"></textarea>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -367,7 +555,6 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <!-- <h5 class="modal-title">Success</h5> -->
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -375,7 +562,7 @@
                         <i class="bi bi-check"></i>
                     </div>
                     <div class="Successfull-info">
-                        <h1>Product Added Successfull!</h1>
+                        <h1>Product Added Successfully!</h1>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -385,8 +572,1294 @@
         </div>
     </div>
 
+    <!-- Restock Modal -->
+    <div class="modal fade" id="restockProductModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Restock Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="restock-form">
+                        <input type="hidden" id="restock-product-id">
+                        <div class="mb-3">
+                            <label class="form-label">Product</label>
+                            <p class="form-control-plaintext" id="restock-product-name"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Quantity to Add *</label>
+                            <input type="number" class="form-control" id="restock-quantity" min="1" value="1" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn-action btn-primary" form="restock-form">Restock</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-category-form">
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Category Name *</label>
+                            <input type="text" class="form-control" id="category-name" placeholder="Enter category name"
+                                required>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Description (Optional)</label>
+                            <textarea class="form-control" id="category-description" rows="2"
+                                placeholder="Category description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-action btn-primary" id="btn-save-category">Save Category</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Categories Modal -->
+    <div class="modal fade" id="manageCategoriesModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Manage Categories</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-success" id="btn-new-category">
+                            <i class="bi bi-plus"></i> New Category
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="categories-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categories-table-body">
+                                <!-- Categories will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Category Modal -->
+    <div class="modal fade" id="editCategoryModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-category-form">
+                        <input type="hidden" id="edit-category-id">
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Category Name *</label>
+                            <input type="text" class="form-control" id="edit-category-name"
+                                placeholder="Enter category name" required>
+                            <small id="edit-category-help" class="form-text text-muted" style="display: none;">
+                                Default categories cannot be renamed
+                            </small>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Description (Optional)</label>
+                            <textarea class="form-control" id="edit-category-description" rows="2"
+                                placeholder="Category description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-action btn-primary" id="btn-update-category">Update
+                        Category</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Category Modal -->
+    <div class="modal fade" id="deleteCategoryModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="delete-category-id">
+                    <div id="delete-category-message">
+                        <!-- Message will be loaded dynamically -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="btn-confirm-delete">Delete Category</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Product Modal -->
+    <div class="modal fade" id="deleteProductModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="delete-product-id">
+                    <div id="delete-product-message">
+                        <!-- Message will be loaded dynamically -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="btn-confirm-delete-product">Delete Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script_new.js"></script>
+
+    <script>
+        // ============================================
+        // AUTHENTICATION & INITIALIZATION
+        // ============================================
+
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:3001/api';
+
+        // Global variables
+        let categories = [];
+
+        // Check authentication
+        function checkAuthentication() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (!token || !user) {
+                showToast('Please login first', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return false;
+            }
+
+            // Update user info in header
+            updateUserInfo(user);
+            return true;
+        }
+
+        function updateUserInfo(user) {
+            const userNameEl = document.querySelector('.user-name');
+            const userRoleEl = document.querySelector('.user-role');
+            const avatarEl = document.querySelector('.avatar');
+
+            if (userNameEl) userNameEl.textContent = user.fullName || 'User';
+            if (userRoleEl) {
+                userRoleEl.textContent = user.role === 'admin' ? 'Administrator' :
+                    user.role === 'cashier' ? 'Cashier' :
+                        user.role === 'manager' ? 'Manager' : 'User';
+            }
+            if (avatarEl && user.fullName) {
+                avatarEl.textContent = user.fullName.charAt(0).toUpperCase();
+            }
+        }
+
+        // ============================================
+        // TOAST NOTIFICATION SYSTEM
+        // ============================================
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container') || createToastContainer();
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const icon = type === 'success' ? 'bi-check-circle-fill' :
+                type === 'error' ? 'bi-exclamation-circle-fill' :
+                    type === 'warning' ? 'bi-exclamation-triangle-fill' :
+                        'bi-info-circle-fill';
+
+            toast.innerHTML = `
+                <i class="bi ${icon} toast-icon"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 5000);
+
+            toast.addEventListener('click', () => {
+                toast.classList.add('fade-out');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            });
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+            return container;
+        }
+
+        // ============================================
+        // API HELPER FUNCTIONS
+        // ============================================
+
+        async function apiRequest(endpoint, options = {}) {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                window.location.href = 'login.html';
+                return null;
+            }
+
+            const url = `${API_BASE_URL}${endpoint}`;
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...options.headers
+            };
+
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    headers
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // Return the error data instead of throwing
+                    // This allows the calling function to handle specific error messages
+                    return {
+                        success: false,
+                        status: response.status,
+                        message: data.message || data.error || `API request failed with status ${response.status}`,
+                        errors: data.errors
+                    };
+                }
+
+                return data;
+            } catch (error) {
+                console.error('API request error:', error);
+
+                // Handle network errors
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    showToast('Cannot connect to server. Please check your connection.', 'error');
+                } else {
+                    showToast('Network error. Please check your connection.', 'error');
+                }
+
+                return {
+                    success: false,
+                    status: 0,
+                    message: 'Network error',
+                    errors: []
+                };
+            }
+        }
+
+        // ============================================
+        // CATEGORY MANAGEMENT
+        // ============================================
+
+        // Load categories
+        async function loadCategories() {
+            try {
+                const data = await apiRequest('/categories');
+
+                if (data && data.success) {
+                    categories = data.categories || [];
+                    updateCategoryDropdown();
+                    return categories;
+                }
+                return [];
+            } catch (error) {
+                console.error('Failed to load categories:', error);
+                showToast('Failed to load categories. Using empty list.', 'warning');
+                categories = [];
+                updateCategoryDropdown();
+                return categories;
+            }
+        }
+
+        function updateCategoryDropdown() {
+            const categorySelect = document.getElementById('product-category');
+            if (!categorySelect) return;
+
+            // Clear existing options except the first one
+            while (categorySelect.options.length > 1) {
+                categorySelect.remove(1);
+            }
+
+            // Add categories to dropdown
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category._id;
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
+            });
+        }
+
+        // Open Add Category Modal
+        function openAddCategoryModal() {
+            // Reset form
+            const form = document.getElementById('add-category-form');
+            if (form) form.reset();
+
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
+            modal.show();
+        }
+
+        // Create new category
+        async function createCategory(categoryData) {
+            try {
+                const data = await apiRequest('/categories', {
+                    method: 'POST',
+                    body: JSON.stringify(categoryData)
+                });
+
+                if (!data) {
+                    // Network error already handled by apiRequest
+                    return false;
+                }
+
+                if (data.success) {
+                    showToast('Category created successfully!', 'success');
+
+                    // Add the new category to the local list
+                    if (data.category) {
+                        categories.push(data.category);
+                        updateCategoryDropdown();
+
+                        // Auto-select the new category in product form
+                        const categorySelect = document.getElementById('product-category');
+                        if (categorySelect) {
+                            categorySelect.value = data.category._id;
+                        }
+                    }
+
+                    return true;
+                } else {
+                    // Handle API error response
+                    if (data.errors && data.errors.length > 0) {
+                        // Show validation errors from server
+                        data.errors.forEach(error => {
+                            showToast(`${error.field}: ${error.message}`, 'error');
+                        });
+                    } else {
+                        // Show generic error message
+                        showToast(data.message || 'Failed to create category', 'error');
+                    }
+                    return false;
+                }
+            } catch (error) {
+                console.error('Failed to create category:', error);
+                // Don't show toast here since apiRequest already handles it
+                return false;
+            }
+        }
+
+        // Update category
+        async function updateCategory(categoryId, categoryData) {
+            try {
+                const data = await apiRequest(`/categories/${categoryId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(categoryData)
+                });
+
+                if (data && data.success) {
+                    showToast('Category updated successfully!', 'success');
+
+                    // Update local categories array
+                    const index = categories.findIndex(cat => cat._id === categoryId);
+                    if (index !== -1) {
+                        categories[index] = { ...categories[index], ...categoryData };
+                        updateCategoryDropdown();
+                    }
+
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.error('Failed to update category:', error);
+                showToast(error.message || 'Failed to update category', 'error');
+                return false;
+            }
+        }
+
+        // Delete category (HARD DELETE - only if unused)
+        async function deleteCategory(categoryId) {
+            try {
+                const data = await apiRequest(`/categories/${categoryId}`, {
+                    method: 'DELETE'
+                });
+
+                if (data && data.success) {
+                    showToast(data.message || 'Category deleted permanently!', 'success');
+
+                    // Remove from local categories array
+                    categories = categories.filter(cat => cat._id !== categoryId);
+                    updateCategoryDropdown();
+                    renderCategoriesInManageModal(); // Refresh the manage modal
+
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.error('Failed to delete category:', error);
+
+                // Handle specific error cases
+                if (error.message && error.message.includes('associated products')) {
+                    showToast('Cannot delete category with products. Please reassign or delete products first.', 'error');
+                } else if (error.message && error.message.includes('default categories')) {
+                    showToast('Default categories cannot be deleted.', 'error');
+                } else {
+                    showToast(error.message || 'Failed to delete category', 'error');
+                }
+                return false;
+            }
+        }
+
+        // Handle category form submission
+        async function handleCategoryFormSubmit(event) {
+            event.preventDefault();
+
+            const categoryData = {
+                name: document.getElementById('category-name').value.trim(),
+                description: document.getElementById('category-description').value.trim() || ''
+            };
+
+            // Validation
+            if (!categoryData.name || categoryData.name.length < 2) {
+                showToast('Category name must be at least 2 characters', 'error');
+                return;
+            }
+
+            const success = await createCategory(categoryData);
+
+            if (success) {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
+                modal.hide();
+            }
+        }
+
+        // Open Edit Category Modal
+        function openEditCategoryModal(categoryId) {
+            const category = categories.find(cat => cat._id === categoryId);
+
+            if (!category) {
+                showToast('Category not found', 'error');
+                return;
+            }
+
+            // Fill form with category data
+            document.getElementById('edit-category-id').value = category._id;
+            document.getElementById('edit-category-name').value = category.name;
+            document.getElementById('edit-category-description').value = category.description || '';
+
+            // Disable name field if it's a default category
+            const nameInput = document.getElementById('edit-category-name');
+            const helpText = document.getElementById('edit-category-help');
+            if (category.isDefault) {
+                nameInput.disabled = true;
+                helpText.style.display = 'block';
+            } else {
+                nameInput.disabled = false;
+                helpText.style.display = 'none';
+            }
+
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+            modal.show();
+        }
+
+        // Open Delete Category Modal with product count check
+        async function openDeleteCategoryModal(categoryId) {
+            const category = categories.find(cat => cat._id === categoryId);
+
+            if (!category) {
+                showToast('Category not found', 'error');
+                return;
+            }
+
+            document.getElementById('delete-category-id').value = category._id;
+
+            // Show loading message initially
+            document.getElementById('delete-category-message').innerHTML = `
+                <div class="text-center py-3">
+                    <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                    <span>Checking category usage...</span>
+                </div>
+            `;
+
+            const modal = new bootstrap.Modal(document.getElementById('deleteCategoryModal'));
+            modal.show();
+
+            try {
+                // Try to fetch category details with product count
+                const data = await apiRequest(`/categories/${categoryId}/products-count`);
+
+                let message = '';
+                let disableButton = false;
+
+                if (category.isDefault) {
+                    message = `
+                        <div class="text-center">
+                            <i class="bi bi-shield-lock mb-3" style="font-size: 2.5rem; color: #3b82f6;"></i>
+                            <h5 class="mb-2">Default Category</h5>
+                            <p class="text-muted mb-0">"${category.name}" is a default category and cannot be deleted.</p>
+                            <small class="text-muted">System categories are required for proper functionality.</small>
+                        </div>
+                    `;
+                    disableButton = true;
+                } else if (data.productCount > 0) {
+                    message = `
+                        <div class="text-center">
+                            <i class="bi bi-exclamation-triangle mb-3" style="font-size: 2.5rem; color: #f59e0b;"></i>
+                            <h5 class="mb-2">Cannot Delete Category</h5>
+                            <p class="mb-1">"${category.name}" has <strong>${data.productCount} product(s)</strong> assigned to it.</p>
+                            <p class="text-muted mb-3">To delete this category, first reassign or delete all products in this category.</p>
+                            <div class="alert alert-info p-2 mb-0">
+                                <i class="bi bi-info-circle"></i>
+                                <small>Go to Inventory → Edit each product → Change category</small>
+                            </div>
+                        </div>
+                    `;
+                    disableButton = true;
+                } else {
+                    message = `
+                        <div class="text-center">
+                            <i class="bi bi-trash3 mb-3" style="font-size: 2.5rem; color: #ef4444;"></i>
+                            <h5 class="mb-2">Delete "${category.name}"?</h5>
+                            <p class="text-muted mb-3">This category has no products and will be permanently deleted.</p>
+                            <div class="alert alert-warning p-2 mb-0">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <small>This action cannot be undone. You can create a new category with the same name later.</small>
+                            </div>
+                        </div>
+                    `;
+                    disableButton = false;
+                }
+
+                document.getElementById('delete-category-message').innerHTML = message;
+                document.getElementById('btn-confirm-delete').disabled = disableButton;
+
+            } catch (error) {
+                console.error('Failed to fetch category details:', error);
+                // If API endpoint doesn't exist, show generic message
+                document.getElementById('delete-category-message').innerHTML = `
+                    <div class="text-center">
+                        <i class="bi bi-exclamation-triangle mb-3" style="font-size: 2.5rem; color: #ef4444;"></i>
+                        <h5 class="mb-2">Delete "${category.name}"?</h5>
+                        <p class="text-muted mb-3">This category will be permanently deleted.</p>
+                        <div class="alert alert-warning p-2 mb-0">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <small>Note: Category can only be deleted if it has no products. If it has products, deletion will fail.</small>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('btn-confirm-delete').disabled = false;
+            }
+        }
+
+        // Handle edit category form submission
+        async function handleEditCategoryFormSubmit() {
+            const categoryId = document.getElementById('edit-category-id').value;
+            const categoryData = {
+                name: document.getElementById('edit-category-name').value.trim(),
+                description: document.getElementById('edit-category-description').value.trim() || ''
+            };
+
+            // Validation
+            if (!categoryData.name || categoryData.name.length < 2) {
+                showToast('Category name must be at least 2 characters', 'error');
+                return;
+            }
+
+            const success = await updateCategory(categoryId, categoryData);
+
+            if (success) {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
+                modal.hide();
+            }
+        }
+
+        // Handle delete category confirmation
+        async function handleDeleteCategory() {
+            const categoryId = document.getElementById('delete-category-id').value;
+            const category = categories.find(cat => cat._id === categoryId);
+
+            if (!category) {
+                showToast('Category not found', 'error');
+                return;
+            }
+
+            // Show loading state
+            const deleteBtn = document.getElementById('btn-confirm-delete');
+            const originalText = deleteBtn.innerHTML;
+            deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
+            deleteBtn.disabled = true;
+
+            const success = await deleteCategory(categoryId);
+
+            // Restore button state
+            deleteBtn.innerHTML = originalText;
+            deleteBtn.disabled = false;
+
+            if (success) {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('deleteCategoryModal'));
+                modal.hide();
+            }
+        }
+
+        // Render categories in manage modal
+        function renderCategoriesInManageModal() {
+            const tbody = document.getElementById('categories-table-body');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            if (categories.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center py-4">
+                            <i class="bi bi-folder2-open" style="font-size: 2rem; color: #6c757d; margin-bottom: 10px;"></i>
+                            <p>No categories found. Add your first category.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            categories.forEach(category => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">          
+                            <div>
+                                <div>${category.name}</div>                  
+                            </div>
+                        </div>
+                    </td>
+                    <td>${category.description || '-'}</td>
+                    <td>
+                        ${category.isDefault ?
+                        '<span class="badge category-type-badge bg-info">Default</span>' :
+                        '<span class="badge category-type-badge bg-secondary">Custom</span>'
+                    }
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-icon" title="Edit" onclick="openEditCategoryModal('${category._id}')"
+                                    ${category.isDefault ? 'disabled' : ''}>
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn-icon btn-icon-danger" title="Delete" onclick="openDeleteCategoryModal('${category._id}')"
+                                    ${category.isDefault ? 'disabled' : ''}>
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // Open Manage Categories Modal
+        function openManageCategoriesModal() {
+            renderCategoriesInManageModal();
+            const modal = new bootstrap.Modal(document.getElementById('manageCategoriesModal'));
+            modal.show();
+        }
+
+        // ============================================
+        // INVENTORY MANAGEMENT
+        // ============================================
+
+        async function loadInventory() {
+            try {
+                showLoading();
+                const data = await apiRequest('/inventory');
+
+                if (!data) {
+                    // Network error already handled by apiRequest
+                    hideLoading();
+                    renderEmptyState();
+                    return;
+                }
+
+                if (data.success) {
+                    renderInventoryTable(data.inventory || []);
+                    hideLoading();
+                } else {
+                    // Show API error
+                    showToast(data.message || 'Failed to load inventory', 'error');
+                    hideLoading();
+                    renderEmptyState();
+                }
+            } catch (error) {
+                console.error('Unexpected error in loadInventory:', error);
+                hideLoading();
+                renderEmptyState();
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loading-spinner').style.display = 'block';
+            document.getElementById('inventory-container').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-spinner').style.display = 'none';
+            document.getElementById('inventory-container').style.display = 'block';
+        }
+
+        function renderInventoryTable(inventory) {
+            const tableBody = document.getElementById('inventory-table-body');
+
+            if (!tableBody) return;
+
+            tableBody.innerHTML = '';
+
+            if (inventory.length === 0) {
+                renderEmptyState();
+                return;
+            }
+
+            inventory.forEach(item => {
+                const row = document.createElement('tr');
+                const stockStatus = getStockStatus(item.quantity, item.category);
+                const statusClass = getStockStatusClass(item.quantity, item.category);
+                const statusText = formatStockStatus(stockStatus);
+
+                // Find category name
+                const category = categories.find(cat => cat._id === item.category);
+                const categoryName = category ? category.name : item.category;
+
+                row.innerHTML = `
+                    <td>
+                        <div class="product-cell">
+                            <div class="product-icon-small">
+                                <i class="bi bi-box"></i>
+                            </div>
+                            <div>
+                                <div>${item.name}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${categoryName}</td>
+                    <td>$${item.price.toFixed(2)}</td>
+                    <td>${item.quantity} ${item.unit || 'pcs'}</td>
+                    <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-icon" title="Edit" onclick="openEditProductModal('${item._id}')">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn-icon" title="Restock" onclick="openRestockModal('${item._id}', '${item.name}')">
+                                <i class="bi bi-arrow-up-circle"></i>
+                            </button>
+                            <button class="btn-icon btn-icon-danger" title="Delete" onclick="openDeleteProductModal('${item._id}', '${item.name}')"><i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function renderEmptyState() {
+            const tableBody = document.getElementById('inventory-table-body');
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 40px;">
+                        <i class="bi bi-box" style="font-size: 48px; color: #6c757d; margin-bottom: 20px;"></i>
+                        <h4>No Products Found</h4>
+                        <p>Add your first product to get started.</p>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // ============================================
+        // STOCK STATUS HELPERS
+        // ============================================
+
+        function getStockStatus(quantity, category) {
+            if (category === 'services') return 'service';
+            if (quantity <= 0) return 'out_of_stock';
+            if (quantity <= 10) return 'low_stock';
+            if (quantity <= 30) return 'medium_stock';
+            return 'in_stock';
+        }
+
+        function getStockStatusClass(quantity, category) {
+            if (category === 'services') return 'badge-info';
+            if (quantity <= 0) return 'badge-danger';
+            if (quantity <= 10) return 'badge-warning';
+            if (quantity <= 30) return 'badge-secondary';
+            return 'badge-success';
+        }
+
+        function formatStockStatus(status) {
+            const statusMap = {
+                'service': 'Service',
+                'out_of_stock': 'Out of Stock',
+                'low_stock': 'Low Stock',
+                'medium_stock': 'Medium Stock',
+                'in_stock': 'In Stock'
+            };
+            return statusMap[status] || status;
+        }
+
+        // ============================================
+        // PRODUCT CRUD OPERATIONS
+        // ============================================
+
+        async function addNewProduct(productData) {
+            try {
+                // Log the data being sent for debugging
+                console.log('Sending product data:', productData);
+
+                const data = await apiRequest('/inventory', {
+                    method: 'POST',
+                    body: JSON.stringify(productData)
+                });
+
+                if (!data) {
+                    // Network error already handled by apiRequest
+                    return false;
+                }
+
+                if (data.success) {
+                    showToast('Product added successfully!', 'success');
+                    loadInventory();
+
+                    // Show success modal
+                    const successModal = new bootstrap.Modal(document.getElementById('addProductSuccessModal'));
+                    successModal.show();
+
+                    return true;
+                } else {
+                    // Handle API error response
+                    if (data.errors && data.errors.length > 0) {
+                        // Show validation errors from server
+                        data.errors.forEach(error => {
+                            showToast(`${error.field}: ${error.message}`, 'error');
+                        });
+                    } else {
+                        // Show generic error message
+                        showToast(data.message || 'Failed to add product', 'error');
+                    }
+                    return false;
+                }
+            } catch (error) {
+                console.error('Failed to add product:', error);
+                // Don't show toast here since apiRequest already handles network errors
+                // Only show toast for unexpected errors
+                if (error.message && !error.message.includes('NetworkError') && !error.message.includes('Failed to fetch')) {
+                    showToast(error.message || 'Failed to add product. Please try again.', 'error');
+                }
+                return false;
+            }
+        }
+        async function updateProduct(productId, productData) {
+            const data = await apiRequest(`/inventory/${productId}`, {
+                method: 'PUT',
+                body: JSON.stringify(productData)
+            });
+
+            if (data && data.success) {
+                showToast('Product updated successfully!', 'success');
+                loadInventory();
+                return true;
+            } else if (data && data.errors) {
+                // Handle validation errors from server
+                data.errors.forEach(error => {
+                    showToast(`${error.field}: ${error.message}`, 'error');
+                });
+                return false;
+            }
+            // Error already shown by apiRequest
+            return false;
+        }
+
+        async function deleteProduct(productId) {
+            const deleteBtn = document.getElementById('btn-confirm-delete-product');
+            const originalText = deleteBtn.innerHTML;
+
+            // Show loading state
+            deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
+            deleteBtn.disabled = true;
+
+            try {
+                const data = await apiRequest(`/inventory/${productId}`, {
+                    method: 'DELETE'
+                });
+
+                if (data && data.success) {
+                    showToast('Product deleted successfully!', 'success');
+                    loadInventory();
+
+                    // Close the modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('deleteProductModal'));
+                    modal.hide();
+                } else if (data && data.errors) {
+                    // Handle validation errors from server
+                    data.errors.forEach(error => {
+                        showToast(`${error.field}: ${error.message}`, 'error');
+                    });
+
+                    // Restore button state
+                    deleteBtn.innerHTML = originalText;
+                    deleteBtn.disabled = false;
+                } else {
+                    // Error already shown by apiRequest
+                    // Restore button state
+                    deleteBtn.innerHTML = originalText;
+                    deleteBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Failed to delete product:', error);
+                // Restore button state
+                deleteBtn.innerHTML = originalText;
+                deleteBtn.disabled = false;
+            }
+        }
+
+        async function restockProduct(productId, quantity) {
+            const data = await apiRequest(`/inventory/${productId}/stock`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    quantity: quantity,
+                    type: 'restock',
+                    reason: 'Manual restock'
+                })
+            });
+
+            if (data && data.success) {
+                showToast('Product restocked successfully!', 'success');
+                loadInventory();
+                return true;
+            } else if (data && data.errors) {
+                // Handle validation errors from server
+                data.errors.forEach(error => {
+                    showToast(`${error.field}: ${error.message}`, 'error');
+                });
+                return false;
+            }
+            // Error already shown by apiRequest
+            return false;
+        }
+
+        // ============================================
+        // MODAL FUNCTIONS
+        // ============================================
+
+        function openAddProductModal() {
+            // Reset form
+            const form = document.getElementById('add-product-form');
+            if (form) form.reset();
+
+            // Set default values
+            document.getElementById('product-id').value = '';
+            document.getElementById('product-unit').value = 'pcs';
+            document.getElementById('low-stock-threshold').value = 10;
+
+            // Set modal title
+            document.querySelector('#addProductModal .modal-title').textContent = 'Add New Product';
+            document.getElementById('btn-save-product').textContent = 'Save Product';
+
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('addProductModal'));
+            modal.show();
+        }
+
+        async function openEditProductModal(productId) {
+            try {
+                showToast('Loading product details...', 'info');
+                const data = await apiRequest(`/inventory/${productId}`);
+
+                if (data && data.success && data.inventory) {
+                    const product = data.inventory;
+
+                    // Fill form with product data
+                    document.getElementById('product-id').value = product._id;
+                    document.getElementById('product-name').value = product.name;
+                    document.getElementById('product-price').value = product.price;
+                    document.getElementById('product-category').value = product.category;
+                    document.getElementById('product-quantity').value = product.quantity;
+                    document.getElementById('product-cost').value = product.cost || '';
+                    document.getElementById('product-supplier').value = product.supplier || '';
+                    document.getElementById('product-description').value = product.description || '';
+                    document.getElementById('product-barcode').value = product.barcode || '';
+                    document.getElementById('product-unit').value = product.unit || 'pcs';
+                    document.getElementById('low-stock-threshold').value = product.lowStockThreshold || 10;
+
+                    // Update modal title
+                    document.querySelector('#addProductModal .modal-title').textContent = 'Edit Product';
+                    document.getElementById('btn-save-product').textContent = 'Update Product';
+
+                    // Show modal
+                    const modal = new bootstrap.Modal(document.getElementById('addProductModal'));
+                    modal.show();
+                }
+            } catch (error) {
+                console.error('Failed to load product for editing:', error);
+                showToast('Failed to load product details', 'error');
+            }
+        }
+
+        function openRestockModal(productId, productName) {
+            document.getElementById('restock-product-id').value = productId;
+            document.getElementById('restock-product-name').textContent = productName;
+            document.getElementById('restock-quantity').value = 1;
+
+            const modal = new bootstrap.Modal(document.getElementById('restockProductModal'));
+            modal.show();
+        }
+
+        // Open Delete Product Modal
+        function openDeleteProductModal(productId, productName) {
+            document.getElementById('delete-product-id').value = productId;
+
+            // Set the message with product name
+            document.getElementById('delete-product-message').innerHTML = `
+        <div class="text-center">
+            <i class="bi bi-trash3 mb-3" style="font-size: 2.5rem; color: #ef4444;"></i>
+            <h5 class="mb-2">Delete "${productName}"?</h5>
+            <p class="text-muted mb-3">This product will be permanently deleted from your inventory.</p>
+            <div class="alert alert-warning p-2 mb-0">
+                <i class="bi bi-exclamation-triangle"></i>
+                <small>This action cannot be undone. All sales history for this product will be preserved.</small>
+            </div>
+        </div>
+    `;
+
+            // Enable the delete button
+            document.getElementById('btn-confirm-delete-product').disabled = false;
+
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('deleteProductModal'));
+            modal.show();
+        }
+
+        // ============================================
+        // FORM HANDLING
+        // ============================================
+
+        async function handleProductFormSubmit(event) {
+            event.preventDefault();
+
+            const productId = document.getElementById('product-id').value;
+            const productData = {
+                name: document.getElementById('product-name').value.trim(),
+                price: parseFloat(document.getElementById('product-price').value),
+                category: document.getElementById('product-category').value,
+                quantity: parseInt(document.getElementById('product-quantity').value) || 0,
+                cost: document.getElementById('product-cost').value ?
+                    parseFloat(document.getElementById('product-cost').value) : undefined,
+                supplier: document.getElementById('product-supplier').value.trim() || undefined,
+                description: document.getElementById('product-description').value.trim() || undefined,
+                barcode: document.getElementById('product-barcode').value.trim() || undefined,
+                unit: document.getElementById('product-unit').value,
+                lowStockThreshold: parseInt(document.getElementById('low-stock-threshold').value) || 10
+            };
+
+            // Validation
+            if (!productData.name || productData.name.length < 2) {
+                showToast('Product name must be at least 2 characters', 'error');
+                return;
+            }
+
+            if (!productData.price || productData.price <= 0) {
+                showToast('Price must be greater than 0', 'error');
+                return;
+            }
+
+            if (productData.quantity < 0) {
+                showToast('Quantity cannot be negative', 'error');
+                return;
+            }
+
+            if (!productData.category) {
+                showToast('Please select a category', 'error');
+                return;
+            }
+
+            let success;
+            if (productId) {
+                success = await updateProduct(productId, productData);
+            } else {
+                success = await addNewProduct(productData);
+            }
+
+            if (success) {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+                modal.hide();
+            }
+        }
+
+        async function handleRestockFormSubmit(event) {
+            event.preventDefault();
+
+            const productId = document.getElementById('restock-product-id').value;
+            const quantity = parseInt(document.getElementById('restock-quantity').value);
+
+            if (!quantity || quantity <= 0) {
+                showToast('Please enter a valid quantity', 'error');
+                return;
+            }
+
+            const success = await restockProduct(productId, quantity);
+
+            if (success) {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('restockProductModal'));
+                modal.hide();
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS & INITIALIZATION
+        // ============================================
+
+        function setupEventListeners() {
+            // Add product button
+            document.getElementById('btn-add-product')?.addEventListener('click', openAddProductModal);
+
+            // Delete product button
+            document.getElementById('btn-confirm-delete-product')?.addEventListener('click', function () {
+                const productId = document.getElementById('delete-product-id').value;
+                deleteProduct(productId);
+            });
+
+            // Manage categories button
+            document.getElementById('btn-manage-categories')?.addEventListener('click', openManageCategoriesModal);
+
+            // Add category buttons
+            document.getElementById('btn-add-category')?.addEventListener('click', openAddCategoryModal);
+            document.getElementById('btn-add-category-inline')?.addEventListener('click', openAddCategoryModal);
+
+            // New category button in manage modal
+            document.getElementById('btn-new-category')?.addEventListener('click', () => {
+                const manageModal = bootstrap.Modal.getInstance(document.getElementById('manageCategoriesModal'));
+                manageModal.hide();
+                openAddCategoryModal();
+            });
+
+            // Save category button
+            document.getElementById('btn-save-category')?.addEventListener('click', handleCategoryFormSubmit);
+
+            // Save product button
+            document.getElementById('btn-save-product')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                handleProductFormSubmit(e);
+            });
+
+            // Restock form
+            document.getElementById('restock-form')?.addEventListener('submit', handleRestockFormSubmit);
+
+            // Edit category button
+            document.getElementById('btn-update-category')?.addEventListener('click', handleEditCategoryFormSubmit);
+
+            // Delete category button
+            document.getElementById('btn-confirm-delete')?.addEventListener('click', handleDeleteCategory);
+
+            // Logout button
+            document.querySelector('.logout-btn')?.addEventListener('click', function (e) {
+                e.preventDefault();
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            });
+
+            // Initialize Bootstrap tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+
+        // Initialize everything
+        async function initializeApp() {
+            // First check authentication
+            if (!checkAuthentication()) {
+                return; // Stop if not authenticated
+            }
+
+            // Load categories first
+            await loadCategories();
+
+            // Now load inventory
+            await loadInventory();
+
+            // Setup event listeners
+            setupEventListeners();
+        }
+
+        // Initialize on DOM loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        // Make functions available globally for onclick attributes
+        window.openEditProductModal = openEditProductModal;
+        window.deleteProduct = deleteProduct;
+        window.openRestockModal = openRestockModal;
+        window.openAddProductModal = openAddProductModal;
+        window.openEditCategoryModal = openEditCategoryModal;
+        window.openDeleteCategoryModal = openDeleteCategoryModal;
+        window.openManageCategoriesModal = openManageCategoriesModal;
+    </script>
 </body>
 
 </html>

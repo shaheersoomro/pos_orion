@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style_new.css">
     <style>
-    
         * {
             margin: 0;
             padding: 0;
@@ -28,7 +27,7 @@
             background: var(--bg-light);
         }
 
-     
+
 
 
         .overlay {
@@ -47,16 +46,19 @@
         }
 
         .login-card {
-                        padding: 20px 40px; /* Reduced top/bottom padding */
-            justify-content: flex-start; /* Align content to the top */
-            overflow-y: auto; /* Allow scrolling for long forms */
-            
+            padding: 20px 40px;
+            /* Reduced top/bottom padding */
+            justify-content: flex-start;
+            /* Align content to the top */
+            overflow-y: auto;
+            /* Allow scrolling for long forms */
+
             background-color: var(--bg-white);
             display: flex;
             flex-direction: column;
             justify-content: center;
             height: 100vh;
-           
+
         }
 
         .login-header {
@@ -219,7 +221,6 @@
             margin: 0;
             line-height: 1.2;
         }
-
     </style>
 </head>
 
@@ -244,7 +245,7 @@
                         <div class="logo-subtitle">Modern Point of Sale System</div>
                     </div>
 
-                    <form>
+                    <form id="loginForm">
                         <div class="form-group">
                             <label for="email">Email Address</label>
                             <input type="email" id="email" placeholder="your.email@example.com" required>
@@ -269,7 +270,7 @@
                             <a href="#">Forgot password?</a>
                         </div>
 
-                        <button type="button" class="btn-login" id="login-btn">
+                        <button type="submit" class="btn-login" id="login-btn">
                             Sign In
                         </button>
                     </form>
@@ -284,7 +285,308 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script_new.js"></script>
+    <script>
+        // Login-specific JavaScript
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginBtn = document.getElementById("login-btn");
+            const loginForm = document.getElementById('loginForm');
+
+            // Common validation functions (copied from shared code)
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function showError(fieldId, message) {
+                clearErrorForField(fieldId);
+
+                const field = document.getElementById(fieldId);
+                if (!field) return;
+
+                const formGroup = field.closest(".form-group") || field.closest(".form-check");
+                if (!formGroup) return;
+
+                const errorElement = document.createElement("div");
+                errorElement.className = "error-message";
+                errorElement.setAttribute("data-field", fieldId);
+                errorElement.innerHTML = message;
+                errorElement.style.color = "#BE3E3F";
+                errorElement.style.fontSize = "0.875rem";
+                errorElement.style.marginTop = "0.25rem";
+                errorElement.style.fontWeight = "400";
+
+                formGroup.appendChild(errorElement);
+                field.style.borderColor = "#BE3E3F";
+            }
+
+            function showSuccess(message) {
+                const existingSuccess = document.querySelector(".success-message");
+                if (existingSuccess) existingSuccess.remove();
+
+                const successElement = document.createElement("div");
+                successElement.className = "success-message";
+                successElement.textContent = message;
+                successElement.style.color = "#02CA3A";
+                successElement.style.backgroundColor = "#d4edda";
+                successElement.style.border = "1px solid #c3e6cb";
+                successElement.style.borderRadius = "0.25rem";
+                successElement.style.padding = "0.75rem";
+                successElement.style.margin = "1rem 0";
+                successElement.style.fontSize = "0.875rem";
+
+                const form = document.querySelector("form");
+                if (form) form.parentNode.insertBefore(successElement, form.nextSibling);
+            }
+
+            function clearErrors() {
+                document.querySelectorAll(".error-message").forEach(error => error.remove());
+                document.querySelectorAll(".success-message").forEach(msg => msg.remove());
+
+                // Reset border colors for all form fields
+                const formFields = document.querySelectorAll(".form-group input, .form-group select");
+                formFields.forEach(field => {
+                    field.style.borderColor = "";
+                });
+            }
+
+            function clearErrorForField(fieldId) {
+                const field = document.getElementById(fieldId);
+                if (!field) return;
+
+                const formGroup = field.closest(".form-group") || field.closest(".form-check");
+                if (!formGroup) return;
+
+                const errorMessage = formGroup.querySelector(`.error-message[data-field="${fieldId}"]`) ||
+                    formGroup.querySelector(".error-message");
+                if (errorMessage) errorMessage.remove();
+
+                field.style.borderColor = "";
+            }
+
+            function initPasswordToggle() {
+                document.querySelectorAll(".toggle-password").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const passwordInput = this.parentElement.querySelector("input");
+                        const icon = this.querySelector("i");
+
+                        if (passwordInput.type === "password") {
+                            passwordInput.type = "text";
+                            icon.classList.replace("bi-eye", "bi-eye-slash");
+                            this.setAttribute("aria-label", "Hide password");
+                        } else {
+                            passwordInput.type = "password";
+                            icon.classList.replace("bi-eye-slash", "bi-eye");
+                            this.setAttribute("aria-label", "Show password");
+                        }
+                    });
+                });
+            }
+
+            async function makeRequest(url, method, data) {
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    return await response.json();
+                } catch (error) {
+                    console.error('Request failed:', error);
+                    return {
+                        success: false,
+                        message: 'Network error. Please check if the server is running.'
+                    };
+                }
+            }
+
+            function initDemoCredentials() {
+                const demoCredentials = document.getElementById('demoCredentials');
+                if (demoCredentials) {
+                    demoCredentials.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        const emailField = document.getElementById('email');
+                        const passwordField = document.getElementById('password');
+                        const rememberCheckbox = document.getElementById('remember');
+
+                        if (emailField && passwordField) {
+                            emailField.value = 'admin@orionpos.com';
+                            passwordField.value = 'Admin@123';
+                            if (rememberCheckbox) rememberCheckbox.checked = true;
+
+                            // Clear any errors
+                            clearErrorForField('email');
+                            clearErrorForField('password');
+
+                            // Show success message
+                            const existingMsg = document.querySelector('.demo-fill-message');
+                            if (existingMsg) existingMsg.remove();
+
+                            const message = document.createElement('div');
+                            message.className = 'success-message demo-fill-message';
+                            message.textContent = 'Demo credentials filled. Click Sign In to login.';
+                            message.style.marginTop = '10px';
+
+                            demoCredentials.parentNode.insertBefore(message, demoCredentials.nextSibling);
+                        }
+                    });
+                }
+            }
+
+            // Initialize login functionality
+            if (loginBtn && loginForm) {
+                // Real-time validation for login fields
+                const loginEmail = document.getElementById("email");
+                const loginPassword = document.getElementById("password");
+
+                if (loginEmail) {
+                    loginEmail.addEventListener("blur", function () {
+                        clearErrorForField("email");
+                        const email = this.value.trim();
+                        if (!email) {
+                            showError("email", "Email is required.");
+                        } else if (!isValidEmail(email)) {
+                            showError("email", "Please enter a valid email address.");
+                        }
+                    });
+                    loginEmail.addEventListener("input", () => clearErrorForField("email"));
+                }
+
+                if (loginPassword) {
+                    loginPassword.addEventListener("blur", function () {
+                        clearErrorForField("password");
+                        if (!this.value) {
+                            showError("password", "Password is required.");
+                        }
+                    });
+                    loginPassword.addEventListener("input", () => clearErrorForField("password"));
+                }
+
+                // Handle form submission
+                loginForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+
+                    const email = document.getElementById("email").value.trim();
+                    const password = document.getElementById("password").value;
+                    const rememberMe = document.getElementById("remember")?.checked;
+
+                    // Clear previous errors
+                    clearErrors();
+
+                    let isValid = true;
+
+                    // Validate email
+                    if (!email) {
+                        showError("email", "Email is required.");
+                        isValid = false;
+                    } else if (!isValidEmail(email)) {
+                        showError("email", "Please enter a valid email address.");
+                        isValid = false;
+                    }
+
+                    // Validate password
+                    if (!password) {
+                        showError("password", "Password is required.");
+                        isValid = false;
+                    }
+
+                    if (isValid) {
+                        // Disable button and show loading state
+                        loginBtn.disabled = true;
+                        loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Signing In...';
+
+                        try {
+                            // Prepare data for API
+                            const loginData = {
+                                email: email,
+                                password: password
+                            };
+
+                            console.log('Sending login request with data:', loginData);
+                            // Send login request to backend
+                            const result = await makeRequest('http://localhost:3001/api/auth/login', 'POST', loginData);
+
+                            if (result.success) {
+                                showSuccess("Login successful! Redirecting to POS...");
+
+                                // Save token and user data to localStorage
+                                localStorage.setItem('token', result.token);
+                                localStorage.setItem('user', JSON.stringify(result.user));
+
+                                // Save remember me preference
+                                if (rememberMe) {
+                                    localStorage.setItem('rememberEmail', email);
+                                } else {
+                                    localStorage.removeItem('rememberEmail');
+                                }
+
+                                // Redirect after delay
+                                setTimeout(() => {
+                                    window.location.href = "index.html";
+                                }, 1500);
+                            } else {
+                                // Handle login errors
+                                if (result.errors && result.errors.length > 0) {
+                                    result.errors.forEach(error => {
+                                        showError(error.field, error.message);
+                                    });
+                                } else {
+                                    showError('general', result.message || 'Login failed. Please check your credentials.');
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Login error:', error);
+                            showError('general', 'An error occurred during login. Please try again.');
+                        } finally {
+                            // Re-enable button
+                            loginBtn.disabled = false;
+                            loginBtn.textContent = 'Sign In';
+                        }
+                    }
+                });
+            }
+
+            // Initialize on page load
+            initPasswordToggle();
+            initDemoCredentials();
+
+            // Check if there's a remembered email
+            const rememberedEmail = localStorage.getItem('rememberEmail');
+            if (rememberedEmail) {
+                const emailField = document.getElementById('email');
+                const rememberCheckbox = document.getElementById('remember');
+
+                if (emailField) {
+                    emailField.value = rememberedEmail;
+                }
+                if (rememberCheckbox) {
+                    rememberCheckbox.checked = true;
+                }
+            }
+
+            // Clear errors when user starts typing in any field
+            document.querySelectorAll("input, select").forEach(field => {
+                field.addEventListener("input", function () {
+                    const fieldId = this.id;
+                    if (fieldId) {
+                        clearErrorForField(fieldId);
+                    }
+                });
+            });
+
+            // Handle forgot password link
+            const forgotPasswordLink = document.getElementById('forgot-password');
+            if (forgotPasswordLink) {
+                forgotPasswordLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    showSuccess('Password reset link has been sent to your email.');
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

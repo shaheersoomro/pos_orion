@@ -104,6 +104,23 @@
             margin-bottom: var(--spacing-lg);
         }
 
+        .user-email {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+            word-break: break-all;
+        }
+
+        .user-created-date {
+            font-size: 11px;
+            color: #6c757d;
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
         .user-actions {
             display: flex;
             gap: var(--spacing-md);
@@ -128,126 +145,11 @@
             color: var(--primary);
         }
 
-        /* Validation styles */
-        .validation-message {
-            font-size: 12px;
-            margin-top: 4px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            min-height: 24px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .btn-icon:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
-        .validation-message.show {
-            opacity: 1;
-        }
-
-        .validation-message.error {
-            color: var(--warning);
-        }
-
-        .validation-message.success {
-            color: var(--success);
-        }
-
-        .validation-message.info {
-            color: var(--info);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-control.error {
-            border-color: var(--warning);
-        }
-
-        .form-control.success {
-            border-color: var(--success)
-        }
-
-        .password-container {
-            position: relative;
-        }
-
-        .password-container .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #6c757d;
-            cursor: pointer;
-            padding: 0;
-            font-size: 16px;
-            z-index: 2;
-        }
-
-        .password-container .toggle-password:hover {
-            color: #495057;
-        }
-
-        .password-requirements {
-            font-size: 12px;
-            color: #6c757d;
-            margin-top: 4px;
-            margin-bottom: 8px;
-        }
-
-        .requirement {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2px;
-        }
-
-        .requirement i {
-            font-size: 10px;
-            margin-right: 4px;
-        }
-
-        .requirement.met {
-            color: #198754;
-        }
-
-        .requirement.unmet {
-            color: #6c757d;
-        }
-
-        .password-strength {
-            height: 4px;
-            border-radius: 2px;
-            margin-top: 8px;
-            overflow: hidden;
-            background-color: #e9ecef;
-        }
-
-        .strength-0 {
-            width: 25%;
-            background-color: #dc3545;
-            height: 100%;
-        }
-
-        .strength-1 {
-            width: 50%;
-            background-color: #ffc107;
-            height: 100%;
-        }
-
-        .strength-2 {
-            width: 75%;
-            background-color: #ffc107;
-            height: 100%;
-        }
-
-        .strength-3 {
-            width: 100%;
-            background-color: #198754;
-            height: 100%;
-        }
-
-        /* Restricted view styles */
         .restricted-view {
             background: var(--bg-white);
             border-radius: var(--radius-lg);
@@ -262,26 +164,6 @@
             text-align: center;
         }
 
-        .restricted-view i {
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-lg);
-            font-size: 64px;
-        }
-
-        .restricted-view h3 {
-            margin-bottom: var(--spacing-md);
-            color: var(--text-primary);
-        }
-
-        .restricted-view p {
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: var(--spacing-xl);
-            line-height: 1.5;
-            max-width: 400px;
-        }
-
-        /* Toast Container */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -290,10 +172,6 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-        }
-
-        .toast:not(.show) {
-            display: block;
         }
 
         .toast {
@@ -369,18 +247,6 @@
             }
         }
 
-        /* Add to existing styles */
-        .btn-danger {
-            background: var(--warning);
-            color: white;
-            border: none;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-            color: white;
-        }
-
         .btn-action {
             padding: var(--spacing-md) var(--spacing-lg);
             border-radius: var(--radius-md);
@@ -396,27 +262,14 @@
             border-color: var(--border-color);
         }
 
-        .btn-action.btn-secondary:hover {
-            background: var(--secondary-dark);
-            border-color: var(--border-color);
-        }
-
         .btn-action.btn-primary {
             background: var(--primary);
             color: white;
         }
 
-        .btn-action.btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
         .btn-action.btn-danger {
-            background: var(--warning);
+            background: #dc3545;
             color: white;
-        }
-
-        .btn-action.btn-danger:hover {
-            background: #dc2626;
         }
 
         .btn-action:disabled {
@@ -424,22 +277,57 @@
             cursor: not-allowed;
         }
 
-        /* Loading spinner for delete modal */
-        .text-center {
-            text-align: center;
+        .validation-message {
+            font-size: 12px;
+            margin-top: 4px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            min-height: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .py-3 {
-            padding-top: 1rem !important;
-            padding-bottom: 1rem !important;
+        .validation-message.show {
+            opacity: 1;
         }
 
-        .text-primary {
-            color: var(--primary) !important;
+        .validation-message.error {
+            color: #dc3545;
         }
 
-        .me-2 {
-            margin-right: 0.5rem !important;
+        .validation-message.success {
+            color: #198754;
+        }
+
+        .validation-message.info {
+            color: #0dcaf0;
+        }
+
+        .validation-message.warning {
+            color: #ffc107;
+        }
+
+        .form-control.error {
+            border-color: #dc3545;
+        }
+
+        .form-control.success {
+            border-color: #198754;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
         }
 
         .spinner-border-sm {
@@ -447,12 +335,36 @@
             height: 1rem;
             border-width: 0.2em;
         }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .py-5 {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+
+        .mt-3 {
+            margin-top: 1rem;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border-color: #ffecb5;
+            color: #856404;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+        }
     </style>
 </head>
 
 <body>
     <div class="admin-wrapper">
-        <!-- Main Content -->
         <div class="admin-main">
             <header class="top-header">
                 <div class="header-left">
@@ -475,40 +387,27 @@
             <div class="admin-content">
                 <div class="content-header">
                     <div></div>
-                    <button class="btn-add" id="btn-add-user">
+                    <button class="btn-add" id="btn-add-user" style="display: none;">
                         <i class="bi bi-plus-circle"></i> Add User
                     </button>
                 </div>
 
                 <div class="users-grid" id="users-grid">
-                    <!-- Users will be loaded here -->
+                    <div class="text-center py-5">Loading users...</div>
                 </div>
             </div>
             <nav class="bottom-navbar">
-                <a href="index.html" class="nav-item" data-page="pos">
-                    <i class="bi bi-shop"></i>
-                    <span>POS</span>
-                </a>
-                <a href="dashboard.html" class="nav-item" data-page="dashboard">
-                    <i class="bi bi-speedometer2"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="inventory.html" class="nav-item" data-page="inventory">
-                    <i class="bi bi-box-seam"></i>
-                    <span>Inventory</span>
-                </a>
-                <a href="history.html" class="nav-item" data-page="history">
-                    <i class="bi bi-clock-history"></i>
-                    <span>History</span>
-                </a>
-                <a href="users.html" class="nav-item active" data-page="users">
-                    <i class="bi bi-people"></i>
-                    <span>Users</span>
-                </a>
-                <a href="settings.html" class="nav-item" data-page="settings">
-                    <i class="bi bi-gear"></i>
-                    <span>Settings</span>
-                </a>
+                <a href="index.html" class="nav-item" data-page="pos"><i class="bi bi-shop"></i><span>POS</span></a>
+                <a href="dashboard.html" class="nav-item" data-page="dashboard"><i
+                        class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+                <a href="inventory.html" class="nav-item" data-page="inventory"><i
+                        class="bi bi-box-seam"></i><span>Inventory</span></a>
+                <a href="history.html" class="nav-item" data-page="history"><i
+                        class="bi bi-clock-history"></i><span>History</span></a>
+                <a href="users.html" class="nav-item active" data-page="users"><i
+                        class="bi bi-people"></i><span>Users</span></a>
+                <a href="settings.html" class="nav-item" data-page="settings"><i
+                        class="bi bi-gear"></i><span>Settings</span></a>
             </nav>
         </div>
     </div>
@@ -523,99 +422,88 @@
                 </div>
                 <div class="modal-body">
                     <form id="add-user-form">
-                        <div class="mb-3 form-group">
+                        <div class="mb-3">
                             <label class="form-label">User Name</label>
-                            <input type="text" class="form-control" id="user-name" placeholder="Enter User Name">
+                            <input type="text" class="form-control" id="user-name" required>
                             <div class="validation-message" id="user-name-validation"></div>
                         </div>
-
-                        <div class="mb-3 form-group">
+                        <div class="mb-3">
                             <label class="form-label">Role</label>
                             <select class="form-control" id="user-role">
-                                <option value="Admin">Admin</option>
-                                <option value="Manager">Manager</option>
-                                <option value="Cashier">Cashier</option>
+                                <option value="admin">Admin</option>
+                                <option value="manager">Manager</option>
+                                <option value="cashier">Cashier</option>
                             </select>
                         </div>
-
-                        <div class="mb-3 form-group">
+                        <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" id="user-email" placeholder="Enter Email Address">
+                            <input type="email" class="form-control" id="user-email" required>
                             <div class="validation-message" id="user-email-validation"></div>
                         </div>
-
-                        <div class="mb-3 form-group">
+                        <div class="mb-3">
                             <label class="form-label">Password</label>
-                            <div class="password-container">
-                                <input type="password" class="form-control" id="user-password" placeholder="••••••••">
-                                <button type="button" class="toggle-password" id="toggle-password"
-                                    aria-label="Show password">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                            <!-- Password requirements -->
-                            <div class="password-requirements" id="password-requirements">
-                                <div class="requirement" id="req-length">
-                                    <i class="bi bi-circle"></i>
-                                    <span>At least 8 characters</span>
-                                </div>
-                                <div class="requirement" id="req-uppercase">
-                                    <i class="bi bi-circle"></i>
-                                    <span>At least one uppercase letter</span>
-                                </div>
-                                <div class="requirement" id="req-number">
-                                    <i class="bi bi-circle"></i>
-                                    <span>At least one number</span>
-                                </div>
-                                <div class="requirement" id="req-special">
-                                    <i class="bi bi-circle"></i>
-                                    <span>At least one special character</span>
-                                </div>
-                            </div>
-                            <!-- Password strength indicator -->
-                            <div class="password-strength" id="password-strength"></div>
+                            <input type="password" class="form-control" id="user-password" required>
                             <div class="validation-message" id="user-password-validation"></div>
                         </div>
-
-                        <div class="mb-3 form-group">
+                        <div class="mb-3">
                             <label class="form-label">Confirm Password</label>
-                            <div class="password-container">
-                                <input type="password" class="form-control" id="confirm-password"
-                                    placeholder="••••••••">
-                                <button type="button" class="toggle-password" id="toggle-confirm-password"
-                                    aria-label="Show password">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
+                            <input type="password" class="form-control" id="confirm-password" required>
                             <div class="validation-message" id="confirm-password-validation"></div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn-action btn-primary" id="btn-save-user" disabled>Save</button>
+                    <button type="button" class="btn-action btn-primary" id="btn-save-user">Save</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Success Modal -->
-    <div class="modal fade success-modal" id="addUserSuccessModal" tabindex="-1">
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h5 class="modal-title">Edit User</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="successfull-badge">
-                        <i class="bi bi-check"></i>
-                    </div>
-                    <div class="Successfull-info">
-                        <h1>User Added Successfully!</h1>
-                    </div>
+                    <form id="edit-user-form">
+                        <input type="hidden" id="edit-user-id">
+                        <div class="mb-3 form-group">
+                            <label class="form-label">User Name</label>
+                            <input type="text" class="form-control" id="edit-user-name" required>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Role</label>
+                            <select class="form-control" id="edit-user-role">
+                                <option value="admin">Admin</option>
+                                <option value="manager">Manager</option>
+                                <option value="cashier">Cashier</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="edit-user-email" required>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">Status</label>
+                            <select class="form-control" id="edit-user-status">
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">New Password (optional)</label>
+                            <input type="password" class="form-control" id="edit-user-password"
+                                placeholder="Leave blank to keep current">
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-action btn-primary" data-bs-dismiss="modal">OK</button>
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-action btn-primary" id="btn-update-user">Update User</button>
                 </div>
             </div>
         </div>
@@ -631,9 +519,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="delete-user-id">
-                    <div id="delete-user-message">
-                        <!-- Message will be loaded dynamically -->
-                    </div>
+                    <div id="delete-user-message"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -644,309 +530,98 @@
         </div>
     </div>
 
-    <!-- Toast Container -->
     <div class="toast-container" id="toast-container"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // ============================================
-        // VALIDATION STATE MANAGEMENT
-        // ============================================
-
-        // Track which fields have been interacted with
-        const fieldInteracted = {
-            'user-name': false,
-            'user-email': false,
-            'user-password': false,
-            'confirm-password': false
+        // Global variables
+        let currentUserPermissions = {
+            canManageUsers: false
         };
 
-        // Track validation states
-        const validationStates = {
-            'user-name': false,
-            'user-email': false,
-            'user-password': false,
-            'confirm-password': false
-        };
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'bi-check-circle-fill' :
+                type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill';
+            toast.innerHTML = `
+                <i class="bi ${icon} toast-icon"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
 
-        function showValidationMessage(elementId, message, type = 'error') {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.textContent = message;
-                element.className = `validation-message ${type}`;
-                element.classList.add('show');
+        // Load current user
+        function loadCurrentUser() {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData) {
+                document.querySelectorAll('.user-name').forEach(el => {
+                    el.textContent = userData.fullName || userData.email || 'User';
+                });
+                document.querySelectorAll('.user-role').forEach(el => {
+                    el.textContent = userData.role === 'admin' ? 'Administrator' :
+                        userData.role === 'cashier' ? 'Cashier' :
+                            userData.role === 'manager' ? 'Manager' : userData.role || 'User';
+                });
+                document.querySelectorAll('.avatar').forEach(el => {
+                    el.textContent = userData.fullName ? userData.fullName.charAt(0).toUpperCase() : 'U';
+                });
+                return userData;
             }
+            window.location.href = 'login.html';
+            return null;
         }
 
-        function hideValidationMessage(elementId) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.classList.remove('show');
-            }
-        }
+        // Fetch user permissions from API
+        async function fetchUserPermissions() {
+            const userData = JSON.parse(localStorage.getItem('user'));
 
-        function updateFieldInteraction(fieldId) {
-            if (!fieldInteracted[fieldId]) {
-                fieldInteracted[fieldId] = true;
-            }
-        }
 
-        function shouldShowValidation(fieldId) {
-            return fieldInteracted[fieldId];
-        }
-
-        function validateName() {
-            const name = document.getElementById('user-name').value.trim();
-            const nameInput = document.getElementById('user-name');
-            const hasInteracted = shouldShowValidation('user-name');
-
-            if (!name) {
-                if (hasInteracted) {
-                    showValidationMessage('user-name-validation', 'User name is required', 'error');
-                    nameInput.classList.add('error');
-                    nameInput.classList.remove('success');
-                }
-                validationStates['user-name'] = false;
-                return false;
-            } else if (name.length < 2) {
-                if (hasInteracted) {
-                    showValidationMessage('user-name-validation', 'Name must be at least 2 characters', 'error');
-                    nameInput.classList.add('error');
-                    nameInput.classList.remove('success');
-                }
-                validationStates['user-name'] = false;
-                return false;
-            } else {
-                if (hasInteracted) {
-                    showValidationMessage('user-name-validation', '', 'success');
-                    nameInput.classList.remove('error');
-                    nameInput.classList.add('success');
-                }
-                validationStates['user-name'] = true;
-                return true;
-            }
-        }
-
-        function validateEmail() {
-            const email = document.getElementById('user-email').value.trim();
-            const emailInput = document.getElementById('user-email');
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const hasInteracted = shouldShowValidation('user-email');
-
-            if (!email) {
-                if (hasInteracted) {
-                    showValidationMessage('user-email-validation', 'Email is required', 'error');
-                    emailInput.classList.add('error');
-                    emailInput.classList.remove('success');
-                }
-                validationStates['user-email'] = false;
-                return false;
-            } else if (!emailRegex.test(email)) {
-                if (hasInteracted) {
-                    showValidationMessage('user-email-validation', 'Please enter a valid email address', 'error');
-                    emailInput.classList.add('error');
-                    emailInput.classList.remove('success');
-                }
-                validationStates['user-email'] = false;
-                return false;
-            } else {
-                if (hasInteracted) {
-                    showValidationMessage('user-email-validation', '', 'success');
-                    emailInput.classList.remove('error');
-                    emailInput.classList.add('success');
-                }
-                validationStates['user-email'] = true;
-                return true;
-            }
-        }
-
-        function validatePassword() {
-            const password = document.getElementById('user-password').value;
-            const passwordInput = document.getElementById('user-password');
-            const hasInteracted = shouldShowValidation('user-password');
-
-            // Password requirements
-            const hasMinLength = password.length >= 8;
-            const hasUppercase = /[A-Z]/.test(password);
-            const hasNumber = /\d/.test(password);
-            const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-
-            // Update requirement indicators (always show these)
-            updateRequirement('req-length', hasMinLength);
-            updateRequirement('req-uppercase', hasUppercase);
-            updateRequirement('req-number', hasNumber);
-            updateRequirement('req-special', hasSpecialChar);
-
-            // Calculate password strength
-            let strength = 0;
-            if (hasMinLength) strength++;
-            if (hasUppercase) strength++;
-            if (hasNumber) strength++;
-            if (hasSpecialChar) strength++;
-
-            // Update strength indicator
-            const strengthBar = document.getElementById('password-strength');
-            strengthBar.innerHTML = `<div class="strength-${strength}"></div>`;
-
-            // Validate
-            if (!password) {
-                if (hasInteracted) {
-                    showValidationMessage('user-password-validation', 'Password is required', 'error');
-                    passwordInput.classList.add('error');
-                    passwordInput.classList.remove('success');
-                }
-                validationStates['user-password'] = false;
-                return false;
-            } else if (!hasMinLength || !hasUppercase || !hasNumber || !hasSpecialChar) {
-                if (hasInteracted) {
-                    showValidationMessage('user-password-validation', 'Password does not meet all requirements', 'error');
-                    passwordInput.classList.add('error');
-                    passwordInput.classList.remove('success');
-                }
-                validationStates['user-password'] = false;
-                return false;
-            } else {
-                if (hasInteracted) {
-                    showValidationMessage('user-password-validation', 'Password is strong', 'success');
-                    passwordInput.classList.remove('error');
-                    passwordInput.classList.add('success');
-                }
-                validationStates['user-password'] = true;
-                return true;
-            }
-        }
-
-        function updateRequirement(elementId, met) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                const icon = element.querySelector('i');
-                if (met) {
-                    element.classList.add('met');
-                    element.classList.remove('unmet');
-                    icon.className = 'bi bi-check-circle-fill';
-                } else {
-                    element.classList.add('unmet');
-                    element.classList.remove('met');
-                    icon.className = 'bi bi-circle';
-                }
-            }
-        }
-
-        function validateConfirmPassword() {
-            const password = document.getElementById('user-password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            const confirmInput = document.getElementById('confirm-password');
-            const hasInteracted = shouldShowValidation('confirm-password');
-
-            if (!confirmPassword) {
-                if (hasInteracted) {
-                    showValidationMessage('confirm-password-validation', 'Please confirm your password', 'error');
-                    confirmInput.classList.add('error');
-                    confirmInput.classList.remove('success');
-                }
-                validationStates['confirm-password'] = false;
-                return false;
-            } else if (password !== confirmPassword) {
-                if (hasInteracted) {
-                    showValidationMessage('confirm-password-validation', 'Passwords do not match', 'error');
-                    confirmInput.classList.add('error');
-                    confirmInput.classList.remove('success');
-                }
-                validationStates['confirm-password'] = false;
-                return false;
-            } else {
-                if (hasInteracted) {
-                    showValidationMessage('confirm-password-validation', '', 'success');
-                    confirmInput.classList.remove('error');
-                    confirmInput.classList.add('success');
-                }
-                validationStates['confirm-password'] = true;
-                return true;
-            }
-        }
-
-        function validateForm() {
-            const isNameValid = validateName();
-            const isEmailValid = validateEmail();
-            const isPasswordValid = validatePassword();
-            const isConfirmPasswordValid = validateConfirmPassword();
-
-            const saveButton = document.getElementById('btn-save-user');
-            if (isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
-                saveButton.disabled = false;
-                return true;
-            } else {
-                saveButton.disabled = true;
+            if (!userData || !userData._id) {
+                console.warn('User ID not found');
                 return false;
             }
-        }
 
-        function setupPasswordToggle() {
-            // Toggle for password
-            const togglePassword = document.getElementById('toggle-password');
-            const passwordInput = document.getElementById('user-password');
-
-            togglePassword.addEventListener('click', function () {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                this.querySelector('i').className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
-            });
-
-            // Toggle for confirm password
-            const toggleConfirmPassword = document.getElementById('toggle-confirm-password');
-            const confirmPasswordInput = document.getElementById('confirm-password');
-
-            toggleConfirmPassword.addEventListener('click', function () {
-                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                confirmPasswordInput.setAttribute('type', type);
-                this.querySelector('i').className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
-            });
-        }
-
-        function setupRealTimeValidation() {
-            // Set up blur events for first interaction
-            const fields = [
-                { id: 'user-name', validator: validateName },
-                { id: 'user-email', validator: validateEmail },
-                { id: 'user-password', validator: validatePassword },
-                { id: 'confirm-password', validator: validateConfirmPassword }
-            ];
-
-            fields.forEach(field => {
-                const input = document.getElementById(field.id);
-
-                // On focus - mark as interacted
-                input.addEventListener('focus', function () {
-                    updateFieldInteraction(field.id);
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3001/api/permissions/user/${userData._id}`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                // On blur - validate and show message if needed
-                input.addEventListener('blur', function () {
-                    updateFieldInteraction(field.id);
-                    field.validator();
-                    validateForm();
-                });
 
-                // On input - validate but only show if already interacted
-                input.addEventListener('input', function () {
-                    field.validator();
-                    validateForm();
-                });
-            });
-
-            // Special handling for password confirmation to validate when password changes
-            document.getElementById('user-password').addEventListener('input', function () {
-                if (shouldShowValidation('confirm-password')) {
-                    validateConfirmPassword();
+                if (response.ok) {
+                    const result = await response.json();
+                    currentUserPermissions = {
+                        canManageUsers: result.permissions?.canManageUsers || false
+                    };
+                    console.log('User permissions loaded:', currentUserPermissions);
+                    return currentUserPermissions.canManageUsers;
+                } else if (response.status === 404) {
+                    // Default permissions based on role
+                    currentUserPermissions.canManageUsers = userData.role === 'admin';
+                    return currentUserPermissions.canManageUsers;
                 }
-            });
+                return false;
+            } catch (error) {
+                console.error('Error fetching permissions:', error);
+                // Fallback to role-based permissions
+                currentUserPermissions.canManageUsers = userData.role === 'admin';
+                return currentUserPermissions.canManageUsers;
+            }
         }
 
-        // ============================================
-        // USER MANAGEMENT (Backend API Integration)
-        // ============================================
-
+        // Fetch all users
         async function fetchUsers() {
             try {
                 const token = localStorage.getItem('token');
@@ -954,39 +629,16 @@
                     window.location.href = 'login.html';
                     return [];
                 }
-
                 const response = await fetch('http://localhost:3001/api/users', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
-
                 if (response.status === 401) {
-                    // Token expired or invalid - logout
                     localStorage.removeItem('token');
                     localStorage.removeItem('user');
                     window.location.href = 'login.html';
                     return [];
                 }
-
-                if (response.status === 403) {
-                    // User is not admin - return empty array, don't logout
-                    console.log('User does not have admin privileges');
-                    return [];
-                }
-
-                if (!response.ok) {
-                    let errorText = await response.text();
-                    try {
-                        const errorData = JSON.parse(errorText);
-                        throw new Error(`Server error: ${errorData.message || response.statusText} (Status: ${response.status})`);
-                    } catch {
-                        throw new Error(`Failed to fetch users: ${response.status} ${response.statusText}`);
-                    }
-                }
-
+                if (!response.ok) throw new Error('Failed to fetch users');
                 const result = await response.json();
                 return result.users || [];
             } catch (error) {
@@ -995,106 +647,72 @@
             }
         }
 
-        function hideAdminFeatures() {
-            const userData = JSON.parse(localStorage.getItem('user'));
-            const isAdmin = userData && userData.role === 'admin';
-
-            if (!isAdmin) {
-                // Hide "Add User" button
-                const addUserBtn = document.getElementById('btn-add-user');
-                if (addUserBtn) {
-                    addUserBtn.style.display = 'none';
-                }
-
-                // Show restricted view message
-                const usersGrid = document.getElementById('users-grid');
-                if (usersGrid) {
-                    usersGrid.innerHTML = `
-                        <div class="restricted-view">
-                            <i class="bi bi-shield-lock"></i>
-                            <h3>Admin Access Required</h3>
-                            <p>
-                                You need administrator privileges to view and manage users.
-                                Please contact your system administrator if you need access.
-                            </p>
-                            <a href="index.html" class="btn btn-primary">
-                                <i class="bi bi-shop"></i> Go to POS
-                            </a>
-                        </div>
-                    `;
-                }
-
-                // // Update page title
-                // const pageTitle = document.querySelector('.page-title');
-                // if (pageTitle) {
-                //     pageTitle.textContent = 'User Management (Restricted View)';
-                // }
-            }
-        }
-
-        async function initializeUsers() {
-            const usersGrid = document.getElementById("users-grid");
-            if (!usersGrid) return;
-
-            // First, check user role and hide admin features if needed
-            const userData = JSON.parse(localStorage.getItem('user'));
-            const isAdmin = userData && userData.role === 'admin';
-
-            if (!isAdmin) {
-                hideAdminFeatures();
-                return; // Don't try to fetch users if not admin
-            }
-
-            try {
-                const users = await fetchUsers();
-                renderUsers(users);
-            } catch (error) {
-                console.error('Error initializing users:', error);
-                usersGrid.innerHTML = `
-                    <div class="error-container" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                        <i class="bi bi-exclamation-triangle" style="font-size: 48px; color: #dc3545; margin-bottom: 20px;"></i>
-                        <h3 style="color: #dc3545; margin-bottom: 10px;">Error Loading Users</h3>
-                        <p style="color: #666; margin-bottom: 20px;">${error.message}</p>
-                        <button onclick="retryUsers()" class="btn btn-primary">
-                            <i class="bi bi-arrow-clockwise"></i> Retry
-                        </button>
-                    </div>
-                `;
-            }
-        }
-
-        function retryUsers() {
-            initializeUsers();
-        }
-
+        // Render users based on permissions
         function renderUsers(usersToRender) {
             const usersGrid = document.getElementById("users-grid");
             if (!usersGrid) return;
 
+            const currentUser = JSON.parse(localStorage.getItem('user'));
+            const currentUserRole = currentUser?.role;
+            const canManageUsers = currentUserPermissions.canManageUsers;
+
+            // Sort users: Admin first, then Manager, then Cashier
+            const rolePriority = { 'admin': 1, 'manager': 2, 'cashier': 3 };
+            const sortedUsers = [...usersToRender].sort((a, b) => {
+                const roleA = rolePriority[a.role] || 4;
+                const roleB = rolePriority[b.role] || 4;
+                if (roleA !== roleB) return roleA - roleB;
+                return new Date(a.createdAt) - new Date(b.createdAt);
+            });
+
             usersGrid.innerHTML = "";
 
-            usersToRender.forEach((user) => {
+            sortedUsers.forEach((user) => {
+                let showEdit = false;
+                let showDelete = false;
+
+                // Permission logic based on role and API permissions
+                if (canManageUsers) {
+                    if (currentUserRole === 'admin') {
+                        // Admin can edit managers and cashiers (not other admins)
+                        if (user.role === 'manager' || user.role === 'cashier') {
+                            showEdit = true;
+                            if (user._id !== currentUser._id) {
+                                showDelete = true;
+                            }
+                        }
+                        // Admin can edit their own profile
+                        else if (user.role === 'admin' && user._id === currentUser._id) {
+                            showEdit = true;
+                        }
+                    }
+                    else if (currentUserRole === 'manager') {
+                        // Manager can only edit cashiers
+                        if (user.role === 'cashier') {
+                            showEdit = true;
+                            if (user._id !== currentUser._id) {
+                                showDelete = true;
+                            }
+                        }
+                    }
+                }
+                // Cashier or users without permission - no buttons shown
+
+                const createdDate = new Date(user.createdAt);
+                const formattedDate = createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
                 const card = document.createElement("div");
                 card.className = "user-card";
                 card.innerHTML = `
                     <div class="user-avatar">${user.fullName?.charAt(0) || 'U'}</div>
                     <div class="user-name">${user.fullName || 'Unknown'}</div>
-                    <div class="user-role">${user.role === 'admin' ? 'Administrator' :
-                        user.role === 'cashier' ? 'Cashier' :
-                            user.role === 'manager' ? 'Manager' :
-                                user.role || 'User'}</div>
-                    <div class="user-status ${user.isActive ? 'online' : 'offline'}">
-                        ● ${user.isActive ? 'Active' : 'Inactive'}
-                    </div>
+                    <div class="user-role">${user.role === 'admin' ? 'Administrator' : user.role === 'cashier' ? 'Cashier' : user.role === 'manager' ? 'Manager' : user.role || 'User'}</div>
+                    <div class="user-status">● ${user.isActive ? 'Active' : 'Inactive'}</div>
                     <div class="user-email mb-3">${user.email}</div>
+                    <div class="user-created-date"><i class="bi bi-calendar3"></i> Joined: ${formattedDate}</div>
                     <div class="user-actions">
-                        <button class="btn-icon edit-user" data-user-id="${user._id}" data-user-name="${user.fullName}">
-                            <i class="bi bi-pencil"></i> Edit
-                        </button>
-                        <button class="btn-icon delete-user" data-user-id="${user._id}" 
-                                ${user.role === 'admin' ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
-                            <i class="bi bi-trash"></i> Delete
-                        </button>
+                        ${showEdit ? `<button class="btn-icon edit-user" data-user-id="${user._id}" data-user-name="${user.fullName}"><i class="bi bi-pencil"></i> Edit</button>` : ''}
+                        ${showDelete ? `<button class="btn-icon delete-user" data-user-id="${user._id}"><i class="bi bi-trash"></i> Delete</button>` : ''}
                     </div>
                 `;
                 usersGrid.appendChild(card);
@@ -1103,391 +721,331 @@
             attachUserActionListeners();
         }
 
+        // Attach event listeners to action buttons
         function attachUserActionListeners() {
             document.querySelectorAll('.edit-user').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const userId = this.getAttribute('data-user-id');
-                    const userName = this.getAttribute('data-user-name');
-                    editUser(userId, userName);
-                });
+                btn.addEventListener('click', () => editUser(btn.dataset.userId));
             });
-
-            document.querySelectorAll('.delete-user:not([disabled])').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const userId = this.getAttribute('data-user-id');
-                    deleteUser(userId);
-                });
+            document.querySelectorAll('.delete-user').forEach(btn => {
+                btn.addEventListener('click', () => openDeleteUserModal(btn.dataset.userId));
             });
         }
 
-        function editUser(userId, userName) {
-            // Check if user is admin before proceeding
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (!userData || userData.role !== 'admin') {
-                showToast('Admin access required to edit users', 'error');
+        // Initialize users page
+        async function initializeUsers() {
+            const usersGrid = document.getElementById("users-grid");
+            if (!usersGrid) return;
+
+            // FIX: Ensure user object has _id
+            let userData = JSON.parse(localStorage.getItem('user'));
+            if (userData && !userData._id && userData.id) {
+                userData._id = userData.id;
+                localStorage.setItem('user', JSON.stringify(userData));
+                console.log('Fixed user object - added _id property');
+            }
+
+            try {
+                // First, fetch user permissions
+                await fetchUserPermissions();
+
+                const canManageUsers = currentUserPermissions.canManageUsers;
+                const currentUser = JSON.parse(localStorage.getItem('user'));
+
+                // Show/hide Add User button based on permission
+                const addUserBtn = document.getElementById('btn-add-user');
+                if (addUserBtn) {
+                    addUserBtn.style.display = canManageUsers ? 'flex' : 'none';
+                }
+
+                // Fetch and render users
+                const users = await fetchUsers();
+                renderUsers(users);
+
+                // If no permission to manage, show message
+                if (!canManageUsers && users.length > 0) {
+                    // Users are still visible, just no action buttons
+                    console.log('View-only mode: User can view but not manage users');
+                }
+            } catch (error) {
+                console.error('Error initializing users:', error);
+                usersGrid.innerHTML = `<div class="text-center py-5 text-danger">Error loading users: ${error.message}</div>`;
+            }
+        }
+
+        // Edit user
+        async function editUser(userId) {
+            const canManageUsers = currentUserPermissions.canManageUsers;
+            if (!canManageUsers) {
+                showToast('You don\'t have permission to edit users', 'error');
                 return;
             }
 
-            showToast(`Edit user: ${userName} - Functionality to be implemented`, 'error');
-        }
-
-        function openDeleteUserModal(userId, userName) {
-            // Check if user is admin before proceeding
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (!userData || userData.role !== 'admin') {
-                showToast('Admin access required to delete users', 'error');
-                return;
-            }
-
-            // Store the user ID to delete
-            document.getElementById('delete-user-id').value = userId;
-
-            // Show loading message initially
-            document.getElementById('delete-user-message').innerHTML = `
-        <div class="text-center py-3">
-            <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></span>
-            <span>Loading user details...</span>
-        </div>
-    `;
-
-            // Show the modal
-            const modal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
-            modal.show();
-
-            // Fetch user details for confirmation message
-            fetchUserDetails(userId, userName);
-        }
-
-        async function fetchUserDetails(userId, userName) {
             try {
                 const token = localStorage.getItem('token');
                 const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
+                if (!response.ok) throw new Error('Failed to fetch user');
+                const result = await response.json();
+                const user = result.user;
+                const currentUser = JSON.parse(localStorage.getItem('user'));
+
+                // Permission checks for editing
+                if (currentUser.role === 'admin' && user.role === 'admin' && user._id !== currentUser._id) {
+                    showToast('Admins cannot edit other admin users', 'error');
+                    return;
+                }
+                if (currentUser.role === 'manager' && user.role !== 'cashier') {
+                    showToast('Managers can only edit cashier users', 'error');
+                    return;
+                }
+
+                // Populate modal
+                document.getElementById('edit-user-id').value = user._id;
+                document.getElementById('edit-user-name').value = user.fullName;
+                document.getElementById('edit-user-email').value = user.email;
+                document.getElementById('edit-user-status').value = user.isActive ? 'true' : 'false';
+
+                const roleSelect = document.getElementById('edit-user-role');
+                if (currentUser.role === 'admin') {
+                    if (user.role === 'admin') {
+                        roleSelect.disabled = true;
+                        roleSelect.value = user.role;
+                    } else {
+                        roleSelect.disabled = false;
+                        roleSelect.value = user.role;
+                        // Disable admin option when editing non-admin
+                        Array.from(roleSelect.options).forEach(opt => {
+                            opt.disabled = (opt.value === 'admin');
+                        });
+                    }
+                } else if (currentUser.role === 'manager') {
+                    roleSelect.disabled = true;
+                    roleSelect.value = user.role;
+                }
+
+                document.getElementById('edit-user-password').value = '';
+                new bootstrap.Modal(document.getElementById('editUserModal')).show();
+            } catch (error) {
+                showToast('Error loading user details', 'error');
+            }
+        }
+
+        // Update user
+        async function handleUpdateUser() {
+            const userId = document.getElementById('edit-user-id').value;
+            const updateBtn = document.getElementById('btn-update-user');
+            const originalText = updateBtn.innerHTML;
+
+            updateBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Updating...';
+            updateBtn.disabled = true;
+
+            try {
+                const token = localStorage.getItem('token');
+                const updateData = {
+                    fullName: document.getElementById('edit-user-name').value.trim(),
+                    email: document.getElementById('edit-user-email').value.trim(),
+                    role: document.getElementById('edit-user-role').value,
+                    isActive: document.getElementById('edit-user-status').value === 'true'
+                };
+                const newPassword = document.getElementById('edit-user-password').value;
+                if (newPassword) updateData.password = newPassword;
+
+                const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updateData)
+                });
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
+                    initializeUsers();
+
+                    // Update current user in localStorage if editing self
+                    const currentUser = JSON.parse(localStorage.getItem('user'));
+                    if (currentUser._id === userId) {
+                        currentUser.fullName = updateData.fullName;
+                        currentUser.email = updateData.email;
+                        localStorage.setItem('user', JSON.stringify(currentUser));
+                        loadCurrentUser();
+                    }
+                    showToast('User updated successfully', 'success');
+                } else {
+                    showToast(result.message || 'Failed to update user', 'error');
+                }
+            } catch (error) {
+                showToast('An error occurred', 'error');
+            } finally {
+                updateBtn.innerHTML = originalText;
+                updateBtn.disabled = false;
+            }
+        }
+
+        // Delete user modal
+        function openDeleteUserModal(userId) {
+            const canManageUsers = currentUserPermissions.canManageUsers;
+            if (!canManageUsers) {
+                showToast('You don\'t have permission to delete users', 'error');
+                return;
+            }
+
+            document.getElementById('delete-user-id').value = userId;
+            document.getElementById('delete-user-message').innerHTML = `
+                <div class="text-center py-3">
+                    <div class="spinner-border spinner-border-sm text-primary"></div>
+                    <p class="mt-2">Loading user details...</p>
+                </div>
+            `;
+            new bootstrap.Modal(document.getElementById('deleteUserModal')).show();
+            loadDeleteUserDetails(userId);
+        }
+
+        async function loadDeleteUserDetails(userId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const currentUser = JSON.parse(localStorage.getItem('user'));
 
                 if (response.ok) {
                     const result = await response.json();
                     const user = result.user;
 
-                    let message = '';
-                    let disableButton = false;
-
-                    // Check if user is admin (admins cannot be deleted)
                     if (user.role === 'admin') {
-                        message = `
-                    <div class="text-center">
-                        <i class="bi bi-shield-lock mb-3" style="font-size: 2.5rem; color: #3b82f6;"></i>
-                        <h5 class="mb-2">Cannot Delete Administrator</h5>
-                        <p class="text-muted mb-0">"${user.fullName}" is an administrator account.</p>
-                        <small class="text-muted">Administrator accounts cannot be deleted for security reasons.</small>
-                    </div>
-                `;
-                        disableButton = true;
-                    } else if (user._id === JSON.parse(localStorage.getItem('user'))._id) {
-                        // Check if user is trying to delete themselves
-                        message = `
-                    <div class="text-center">
-                        <i class="bi bi-person-x mb-3" style="font-size: 2.5rem; color: #f59e0b;"></i>
-                        <h5 class="mb-2">Cannot Delete Your Own Account</h5>
-                        <p class="text-muted mb-0">You cannot delete your own user account.</p>
-                        <small class="text-muted">Please ask another administrator to delete your account.</small>
-                    </div>
-                `;
-                        disableButton = true;
+                        document.getElementById('delete-user-message').innerHTML = `
+                            <div class="text-center">
+                                <i class="bi bi-shield-lock mb-3" style="font-size: 2.5rem; color: #3b82f6;"></i>
+                                <h5>Cannot Delete Administrator</h5>
+                                <p>"${user.fullName}" is an administrator account.</p>
+                            </div>`;
+                        document.getElementById('btn-confirm-delete-user').disabled = true;
+                    } else if (user._id === currentUser._id) {
+                        document.getElementById('delete-user-message').innerHTML = `
+                            <div class="text-center">
+                                <i class="bi bi-person-x mb-3" style="font-size: 2.5rem; color: #f59e0b;"></i>
+                                <h5>Cannot Delete Your Own Account</h5>
+                            </div>`;
+                        document.getElementById('btn-confirm-delete-user').disabled = true;
                     } else {
-                        message = `
-                    <div class="text-center">
-                        <i class="bi bi-person-x mb-3" style="font-size: 2.5rem; color: #ef4444;"></i>
-                        <h5 class="mb-2">Delete "${user.fullName}"?</h5>
-                        <p class="text-muted mb-1">Role: <span class="fw-semibold">${user.role === 'admin' ? 'Administrator' :
-                                user.role === 'manager' ? 'Manager' :
-                                    user.role === 'cashier' ? 'Cashier' : 'User'}</span></p>
-                        <p class="text-muted mb-3">Email: ${user.email}</p>
-                        <div class="alert alert-warning p-2 mb-0">
-                            <i class="bi bi-exclamation-triangle"></i>
-                            <small>This action cannot be undone. The user will be permanently deleted.</small>
-                        </div>
-                    </div>
-                `;
-                        disableButton = false;
+                        document.getElementById('delete-user-message').innerHTML = `
+                            <div class="text-center">
+                                <i class="bi bi-person-x mb-3" style="font-size: 2.5rem; color: #ef4444;"></i>
+                                <h5>Delete "${user.fullName}"?</h5>
+                                <p>Role: ${user.role}<br>Email: ${user.email}</p>
+                                <div class="alert-warning"><small>This action cannot be undone.</small></div>
+                            </div>`;
+                        document.getElementById('btn-confirm-delete-user').disabled = false;
                     }
-
-                    document.getElementById('delete-user-message').innerHTML = message;
-                    document.getElementById('btn-confirm-delete-user').disabled = disableButton;
-
-                } else {
-                    // If API endpoint doesn't exist or fails, use basic confirmation
-                    const message = `
-                <div class="text-center">
-                    <i class="bi bi-person-x mb-3" style="font-size: 2.5rem; color: #ef4444;"></i>
-                    <h5 class="mb-2">Delete "${userName}"?</h5>
-                    <p class="text-muted mb-3">This user will be permanently deleted.</p>
-                    <div class="alert alert-warning p-2 mb-0">
-                        <i class="bi bi-exclamation-triangle"></i>
-                        <small>This action cannot be undone.</small>
-                    </div>
-                </div>
-            `;
-
-                    document.getElementById('delete-user-message').innerHTML = message;
-                    document.getElementById('btn-confirm-delete-user').disabled = false;
                 }
             } catch (error) {
-                console.error('Failed to fetch user details:', error);
-                // Show basic confirmation if API fails
-                const message = `
-            <div class="text-center">
-                <i class="bi bi-person-x mb-3" style="font-size: 2.5rem; color: #ef4444;"></i>
-                <h5 class="mb-2">Delete "${userName}"?</h5>
-                <p class="text-muted mb-3">This user will be permanently deleted.</p>
-                <div class="alert alert-warning p-2 mb-0">
-                    <i class="bi bi-exclamation-triangle"></i>
-                    <small>This action cannot be undone.</small>
-                </div>
-            </div>
-        `;
-
-                document.getElementById('delete-user-message').innerHTML = message;
+                document.getElementById('delete-user-message').innerHTML = `<div class="text-center"><p>Are you sure you want to delete this user?</p><div class="alert-warning"><small>This action cannot be undone.</small></div></div>`;
                 document.getElementById('btn-confirm-delete-user').disabled = false;
             }
         }
 
         async function handleDeleteUser() {
             const userId = document.getElementById('delete-user-id').value;
-
-            // Show loading state
             const deleteBtn = document.getElementById('btn-confirm-delete-user');
             const originalText = deleteBtn.innerHTML;
-            deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
+
+            deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Deleting...';
             deleteBtn.disabled = true;
 
             try {
                 const token = localStorage.getItem('token');
                 const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
                     method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
-
                 const result = await response.json();
 
-                // Restore button state
-                deleteBtn.innerHTML = originalText;
-                deleteBtn.disabled = false;
-
                 if (response.ok && result.success) {
-                    // Close the modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('deleteUserModal'));
-                    modal.hide();
-
-                    // Refresh the users list
+                    bootstrap.Modal.getInstance(document.getElementById('deleteUserModal')).hide();
                     initializeUsers();
-
-                    // Show success message
                     showToast('User deleted successfully', 'success');
                 } else {
                     showToast(result.message || 'Failed to delete user', 'error');
                 }
             } catch (error) {
-                console.error('Error deleting user:', error);
-
-                // Restore button state
+                showToast('An error occurred', 'error');
+            } finally {
                 deleteBtn.innerHTML = originalText;
                 deleteBtn.disabled = false;
-
-                showToast('An error occurred while deleting user', 'error');
             }
         }
 
-        // Remove or update the old deleteUser function and replace the button click handler
-        function attachUserActionListeners() {
-            document.querySelectorAll('.edit-user').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const userId = this.getAttribute('data-user-id');
-                    const userName = this.getAttribute('data-user-name');
-                    editUser(userId, userName);
-                });
-            });
-
-            document.querySelectorAll('.delete-user:not([disabled])').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const userId = this.getAttribute('data-user-id');
-                    const userName = this.closest('.user-card').querySelector('.user-name').textContent;
-                    openDeleteUserModal(userId, userName);
-                });
-            });
-        }
-
+        // Add new user
         async function addNewUser() {
-            // Check if user is admin before proceeding
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (!userData || userData.role !== 'admin') {
-                showToast('Admin access required to create users', 'error');
+            const canManageUsers = currentUserPermissions.canManageUsers;
+            if (!canManageUsers) {
+                showToast('You don\'t have permission to create users', 'error');
                 return;
             }
 
-            if (!validateForm()) {
-                // Force show all validation messages if form is invalid
-                Object.keys(fieldInteracted).forEach(fieldId => {
-                    if (!validationStates[fieldId]) {
-                        fieldInteracted[fieldId] = true;
-                    }
-                });
-
-                validateName();
-                validateEmail();
-                validatePassword();
-                validateConfirmPassword();
-                validateForm();
-                return;
-            }
-
+            const currentUser = JSON.parse(localStorage.getItem('user'));
             const name = document.getElementById("user-name").value.trim();
             const role = document.getElementById("user-role").value;
             const email = document.getElementById("user-email").value.trim();
             const password = document.getElementById("user-password").value;
 
-            try {
-                const token = localStorage.getItem('token');
-                const userData = {
-                    fullName: name,
-                    role: role.toLowerCase(),
-                    email: email,
-                    password: password
-                };
-
-                const response = await fetch('http://localhost:3001/api/users', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(userData)
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.success) {
-                    const successModal = new bootstrap.Modal(
-                        document.getElementById("addUserSuccessModal")
-                    );
-                    successModal.show();
-
-                    const addUserModal = bootstrap.Modal.getInstance(
-                        document.getElementById("addUserModal")
-                    );
-                    addUserModal.hide();
-
-                    initializeUsers();
-
-                    // Reset form state
-                    resetFormState();
-                } else {
-                    if (result.message) {
-                        showToast(result.message, 'error');
-                    } else if (result.errors) {
-                        const errorMessages = result.errors.map(err => err.message).join('\n');
-                        showToast(errorMessages, 'error');
-                    } else {
-                        showToast('Failed to create user', 'error');
-                    }
-                }
-            } catch (error) {
-                console.error('Error creating user:', error);
-                showToast('An error occurred while creating user', 'error');
-            }
-        }
-
-        function resetFormState() {
-            document.getElementById("add-user-form").reset();
-            document.getElementById('btn-save-user').disabled = true;
-
-            // Reset interaction tracking
-            Object.keys(fieldInteracted).forEach(key => {
-                fieldInteracted[key] = false;
-            });
-
-            // Reset validation states
-            Object.keys(validationStates).forEach(key => {
-                validationStates[key] = false;
-            });
-
-            // Hide all validation messages
-            const validationElements = document.querySelectorAll('.validation-message');
-            validationElements.forEach(el => {
-                el.classList.remove('show', 'error', 'success', 'info');
-                el.textContent = '';
-            });
-
-            // Reset input styling
-            const formInputs = document.querySelectorAll('.form-control');
-            formInputs.forEach(input => {
-                input.classList.remove('error', 'success');
-            });
-
-            // Reset requirement indicators
-            const requirements = document.querySelectorAll('.requirement');
-            requirements.forEach(req => {
-                req.classList.remove('met', 'unmet');
-                const icon = req.querySelector('i');
-                if (icon) icon.className = 'bi bi-circle';
-            });
-
-            // Reset password strength
-            document.getElementById('password-strength').innerHTML = '';
-        }
-
-        function openAddUserModal() {
-            // Check if user is admin before opening modal
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (!userData || userData.role !== 'admin') {
-                showToast('Admin access required to add users', 'error');
+            if (!name || !email || !password) {
+                showToast('Please fill all required fields', 'error');
                 return;
             }
 
-            resetFormState();
+            // Manager can only create cashiers
+            if (currentUser.role === 'manager' && role !== 'cashier') {
+                showToast('Managers can only create cashier users', 'error');
+                return;
+            }
 
-            const addUserModal = new bootstrap.Modal(
-                document.getElementById("addUserModal")
-            );
-            addUserModal.show();
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:3001/api/users', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName: name, role, email, password })
+                });
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+                    initializeUsers();
+                    document.getElementById("add-user-form").reset();
+                    showToast('User created successfully', 'success');
+                } else {
+                    showToast(result.message || 'Failed to create user', 'error');
+                }
+            } catch (error) {
+                showToast('An error occurred', 'error');
+            }
         }
 
-        function loadCurrentUser() {
-            const token = localStorage.getItem('token');
-            const userData = JSON.parse(localStorage.getItem('user'));
-
-            if (token && userData) {
-                document.querySelectorAll('.user-name').forEach(el => {
-                    el.textContent = userData.fullName || userData.email || 'User';
-                });
-
-                document.querySelectorAll('.user-role').forEach(el => {
-                    el.textContent = userData.role === 'admin' ? 'Administrator' :
-                        userData.role === 'cashier' ? 'Cashier' :
-                            userData.role === 'manager' ? 'Manager' :
-                                userData.role || 'User';
-                });
-
-                document.querySelectorAll('.avatar').forEach(el => {
-                    if (userData.fullName) {
-                        el.textContent = userData.fullName.charAt(0).toUpperCase();
-                    } else if (userData.email) {
-                        el.textContent = userData.email.charAt(0).toUpperCase();
-                    }
-                });
-            } else {
-                window.location.href = 'login.html';
+        function openAddUserModal() {
+            const canManageUsers = currentUserPermissions.canManageUsers;
+            if (!canManageUsers) {
+                showToast('You don\'t have permission to add users', 'error');
+                return;
             }
+
+            const currentUser = JSON.parse(localStorage.getItem('user'));
+            const roleSelect = document.getElementById('user-role');
+
+            if (currentUser.role === 'manager') {
+                roleSelect.innerHTML = '<option value="cashier">Cashier</option>';
+            } else if (currentUser.role === 'admin') {
+                roleSelect.innerHTML = '<option value="admin">Admin</option><option value="manager">Manager</option><option value="cashier">Cashier</option>';
+            }
+
+            document.getElementById("add-user-form").reset();
+            new bootstrap.Modal(document.getElementById("addUserModal")).show();
         }
 
         function setupLogout() {
             document.querySelectorAll('.logout-btn').forEach(btn => {
-                btn.addEventListener('click', function (e) {
+                btn.addEventListener('click', (e) => {
                     e.preventDefault();
                     localStorage.removeItem('token');
                     localStorage.removeItem('user');
@@ -1496,106 +1054,20 @@
             });
         }
 
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-
+        // Initialize on page load
         document.addEventListener("DOMContentLoaded", () => {
             loadCurrentUser();
-
-            const token = localStorage.getItem('token');
-            const userData = JSON.parse(localStorage.getItem('user'));
-
-            if (!token || !userData) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-      
-
             initializeUsers();
             setupLogout();
 
-            // Only set up admin event listeners if user is admin
-            if (userData.role === 'admin') {
-                const addUserBtn = document.getElementById("btn-add-user");
-                if (addUserBtn) {
-                    addUserBtn.addEventListener("click", openAddUserModal);
-                }
-
-                const saveUserBtn = document.getElementById("btn-save-user");
-                if (saveUserBtn) {
-                    saveUserBtn.addEventListener("click", addNewUser);
-                }
-
-                // Add event listener for delete confirmation button
-                document.getElementById('btn-confirm-delete-user')?.addEventListener('click', handleDeleteUser);
-            }
-
-            // Form submission handler (will check admin role inside addNewUser)
-            const userForm = document.getElementById("add-user-form");
-            if (userForm) {
-                userForm.addEventListener("submit", function (e) {
-                    e.preventDefault();
-                    addNewUser();
-                });
-            }
-
-            setupPasswordToggle();
-            setupRealTimeValidation();
-
+            document.getElementById("btn-add-user")?.addEventListener("click", openAddUserModal);
+            document.getElementById("btn-save-user")?.addEventListener("click", addNewUser);
+            document.getElementById("btn-update-user")?.addEventListener("click", handleUpdateUser);
+            document.getElementById("btn-confirm-delete-user")?.addEventListener("click", handleDeleteUser);
         });
 
-        // ============================================
-        // TOAST NOTIFICATION SYSTEM
-        // ============================================
 
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container') || createToastContainer();
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
 
-            const icon = type === 'success' ? 'bi-check-circle-fill' :
-                type === 'error' ? 'bi-exclamation-circle-fill' :
-                    type === 'warning' ? 'bi-exclamation-triangle-fill' :
-                        'bi-info-circle-fill';
-
-            toast.innerHTML = `
-                <i class="bi ${icon} toast-icon"></i>
-                <div class="toast-content">
-                    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
-                    <div class="toast-message">${message}</div>
-                </div>
-            `;
-
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.classList.add('fade-out');
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.parentNode.removeChild(toast);
-                    }
-                }, 300);
-            }, 5000);
-
-            toast.addEventListener('click', () => {
-                toast.classList.add('fade-out');
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.parentNode.removeChild(toast);
-                    }
-                }, 300);
-            });
-        }
-
-        function createToastContainer() {
-            const container = document.createElement('div');
-            container.id = 'toast-container';
-            container.className = 'toast-container';
-            document.body.appendChild(container);
-            return container;
-        }
     </script>
 </body>
 

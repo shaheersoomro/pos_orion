@@ -7,7 +7,59 @@ const Transaction = require("../models/Transaction");
 const Inventory = require("../models/Inventory");
 const User = require("../models/User");
 
-// Authentication middleware
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
+// Helper function to parse date range
+function parseDateRange(startDate, endDate) {
+  const result = {};
+  
+  if (startDate) {
+    const start = new Date(startDate);
+    if (isNaN(start.getTime())) {
+      throw new Error('Invalid start date');
+    }
+    start.setHours(0, 0, 0, 0);
+    result.$gte = start;
+  }
+  
+  if (endDate) {
+    const end = new Date(endDate);
+    if (isNaN(end.getTime())) {
+      throw new Error('Invalid end date');
+    }
+    end.setHours(23, 59, 59, 999);
+    result.$lte = end;
+  }
+  
+  return result;
+}
+
+// Helper function to convert to CSV
+function convertToCSV(data) {
+  if (!data || data.length === 0) return '';
+  
+  const headers = Object.keys(data[0]);
+  const csvRows = [];
+  
+  csvRows.push(headers.join(','));
+  
+  for (const row of data) {
+    const values = headers.map(header => {
+      const value = row[header] || '';
+      return `"${String(value).replace(/"/g, '""')}"`;
+    });
+    csvRows.push(values.join(','));
+  }
+  
+  return csvRows.join('\n');
+}
+
+// ============================================
+// AUTHENTICATION MIDDLEWARE
+// ============================================
+
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -46,7 +98,10 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// Test endpoint
+// ============================================
+// TEST ENDPOINT
+// ============================================
+
 router.get("/test", authenticateToken, (req, res) => {
   res.json({
     success: true,
@@ -60,7 +115,10 @@ router.get("/test", authenticateToken, (req, res) => {
   });
 });
 
-// POST create new transaction
+// ============================================
+// CREATE TRANSACTION
+// ============================================
+
 router.post(
   "/",
   authenticateToken,
@@ -113,14 +171,12 @@ router.post(
         taxName = "Sales Tax",
         taxInclusive = true,
         appliedDiscounts = [],
-        discount = 0, // Legacy discount field for backward compatibility
-        // IMPORTANT: Accept these values from frontend
+        discount = 0,
         subtotal: frontendSubtotal,
         tax: frontendTax,
         total: frontendTotal,
       } = req.body;
 
-      // Get user's business
       const userBusiness = req.user.business;
 
       if (!userBusiness) {
@@ -136,7 +192,6 @@ router.post(
 
       for (const item of items) {
         try {
-          // Find the inventory item
           const inventoryItem = await Inventory.findOne({
             _id: item.productId,
             business: userBusiness,
@@ -153,7 +208,6 @@ router.post(
             `Found product: ${inventoryItem.name}, Stock: ${inventoryItem.quantity}, Requested: ${item.quantity}`,
           );
 
-          // Check stock for non-service items
           const isService = inventoryItem.category === "services";
 
           if (!isService && inventoryItem.quantity < item.quantity) {
@@ -163,7 +217,6 @@ router.post(
             });
           }
 
-          // Calculate item subtotal using the price from inventory
           const itemSubtotal = inventoryItem.price * item.quantity;
 
           validatedItems.push({
@@ -188,24 +241,9 @@ router.post(
       let totalDiscount = 0;
       let discountsApplied = [];
 
-      // Handle legacy discount field (for backward compatibility)
-      // if (discount && discount > 0) {
-      //   totalDiscount = discount;
-      //   discountsApplied.push({
-      //     discountName: "Manual Discount",
-      //     discountType: "fixed",
-      //     discountValue: discount,
-      //     originalAmount: calculatedSubtotal,
-      //     discountedAmount: discount,
-      //   });
-      // }
-
-      // Handle applied discounts (new system)
       if (appliedDiscounts && appliedDiscounts.length > 0) {
-        // Validate and apply provided discounts
         for (const discountData of appliedDiscounts) {
           try {
-            // You need to import Discount model at the top
             const Discount = require("../models/Discount");
             
             const discount = await Discount.findOne({
@@ -221,7 +259,6 @@ router.post(
               });
             }
 
-            // Verify discount is valid
             if (!discount.isValid()) {
               return res.status(400).json({
                 success: false,
@@ -229,7 +266,6 @@ router.post(
               });
             }
 
-            // Calculate discount for this transaction
             const discountResult = discount.calculateDiscount(
               validatedItems,
               calculatedSubtotal,
@@ -239,7 +275,6 @@ router.post(
               totalDiscount += discountResult.discountAmount;
 
               discountsApplied.push({
-                // discountId: discount._id,
                 discountName: discount.name,
                 discountType: discount.type,
                 discountValue: discount.value || discountResult.discountAmount,
@@ -253,19 +288,15 @@ router.post(
             }
           } catch (discountError) {
             console.error("Error processing discount:", discountError);
-            // Continue with transaction even if discount fails
           }
         }
       }
 
-      // Apply discount to subtotal
       const discountedSubtotal = Math.max(0, calculatedSubtotal - totalDiscount);
 
-      // IMPORTANT FIX: Use frontend values if provided, otherwise calculate
       let finalSubtotal, finalTax, finalTotal;
 
       if (frontendSubtotal !== undefined && frontendTax !== undefined && frontendTotal !== undefined) {
-        // Use the values from frontend (trust frontend calculation)
         finalSubtotal = frontendSubtotal;
         finalTax = frontendTax;
         finalTotal = frontendTotal;
@@ -276,33 +307,26 @@ router.post(
           total: finalTotal
         });
       } else {
-        // Calculate based on tax settings (fallback)
         if (taxInclusive) {
-          // Tax-inclusive pricing
           finalTax = discountedSubtotal * (taxRate / (100 + taxRate));
           finalSubtotal = discountedSubtotal - finalTax;
           finalTotal = discountedSubtotal;
         } else {
-          // Tax-exclusive pricing
           finalTax = discountedSubtotal * (taxRate / 100);
           finalSubtotal = discountedSubtotal;
           finalTotal = discountedSubtotal + finalTax;
         }
       }
 
-      // Validate payment amount against final total
       if (amountPaid < finalTotal) {
         return res.status(400).json({
           success: false,
-          message: `Insufficient payment. Total: $${finalTotal.toFixed(
-            2,
-          )}, Paid: $${amountPaid.toFixed(2)}`,
+          message: `Insufficient payment. Total: $${finalTotal.toFixed(2)}, Paid: $${amountPaid.toFixed(2)}`,
         });
       }
 
       const change = amountPaid - finalTotal;
 
-      // Create the transaction
       const transactionData = {
         business: userBusiness,
         cashier: req.user._id,
@@ -351,7 +375,6 @@ router.post(
             `Error updating inventory for product ${item.productId}:`,
             inventoryError,
           );
-          // Log but don't fail the transaction
         }
       }
 
@@ -392,47 +415,324 @@ router.post(
         success: false,
         message: "Server error while processing transaction",
         error: error.message,
-        // Only show stack in development
         ...(process.env.NODE_ENV === "development" && { stack: error.stack }),
       });
     }
   },
 );
 
-// GET all transactions
+// ============================================
+// GET ALL TRANSACTIONS WITH FILTERS (UPDATED)
+// ============================================
+
 router.get("/", authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 50 } = req.query;
+    const { 
+      page = 1, 
+      limit = 50,
+      startDate,
+      endDate,
+      paymentMethod,
+      status,
+      search,
+      minAmount,
+      maxAmount,
+      sortBy = 'createdAt',
+      sortOrder = 'desc'
+    } = req.query;
+    
     const skip = (parseInt(page) - 1) * parseInt(limit);
-
+    
+    // Build the query object
     const query = { business: req.user.business };
+    
+    // Add date filter if provided
+    if (startDate || endDate) {
+      query.createdAt = parseDateRange(startDate, endDate);
+    }
+    
+    // Add payment method filter
+    if (paymentMethod && paymentMethod !== 'all' && paymentMethod !== '') {
+      query.paymentMethod = paymentMethod.toLowerCase();
+    }
+    
+    // Add status filter
+    if (status && status !== 'all' && status !== '') {
+      query.status = status;
+    }
+    
+    // Add amount range filter
+    if (minAmount || maxAmount) {
+      query.total = {};
+      if (minAmount) query.total.$gte = parseFloat(minAmount);
+      if (maxAmount) query.total.$lte = parseFloat(maxAmount);
+    }
+    
+    // Add search filter (by transaction ID or customer name)
+    if (search && search.trim() !== '') {
+      query.$or = [
+        { transactionId: { $regex: search, $options: 'i' } },
+        { 'customer.name': { $regex: search, $options: 'i' } },
+        { 'customer.phone': { $regex: search, $options: 'i' } },
+        { 'customer.email': { $regex: search, $options: 'i' } }
+      ];
+    }
+    
+    console.log('Transaction query:', JSON.stringify(query, null, 2)); // Debug log
+    
+    // Determine sort order
+    const sortOptions = {};
+    sortOptions[sortBy] = sortOrder === 'desc' ? -1 : 1;
+    
+    // Execute queries
     const transactions = await Transaction.find(query)
       .populate("cashier", "fullName email")
-      .sort({ createdAt: -1 })
+      .sort(sortOptions)
       .skip(skip)
       .limit(parseInt(limit))
       .lean();
-
+    
     const total = await Transaction.countDocuments(query);
-
+    
+    // Calculate summary for filtered results
+    const summary = await Transaction.aggregate([
+      { $match: query },
+      {
+        $group: {
+          _id: null,
+          totalSales: { $sum: "$total" },
+          totalTransactions: { $sum: 1 },
+          averageTransaction: { $avg: "$total" },
+          totalDiscount: { $sum: "$discount" },
+          totalTax: { $sum: "$tax" }
+        }
+      }
+    ]);
+    
     res.json({
       success: true,
       transactions,
+      summary: summary[0] || {
+        totalSales: 0,
+        totalTransactions: 0,
+        averageTransaction: 0,
+        totalDiscount: 0,
+        totalTax: 0
+      },
       pagination: {
         total,
         page: parseInt(page),
         limit: parseInt(limit),
         pages: Math.ceil(total / parseInt(limit)),
+        hasNextPage: parseInt(page) * parseInt(limit) < total,
+        hasPrevPage: parseInt(page) > 1
       },
+      filters: {
+        startDate: startDate || null,
+        endDate: endDate || null,
+        paymentMethod: paymentMethod || null,
+        status: status || null,
+        search: search || null
+      }
     });
   } catch (error) {
     console.error("Get transactions error:", error);
     res.status(500).json({
       success: false,
       message: "Server error while fetching transactions",
+      error: error.message
     });
   }
 });
+
+// ============================================
+// GET TRANSACTION STATISTICS
+// ============================================
+
+router.get("/statistics", authenticateToken, async (req, res) => {
+  try {
+    const { period = 'day', startDate, endDate, paymentMethod, status } = req.query;
+    
+    const query = { business: req.user.business };
+    
+    // Apply date filters
+    if (startDate || endDate) {
+      query.createdAt = parseDateRange(startDate, endDate);
+    }
+    
+    // Apply payment method filter
+    if (paymentMethod && paymentMethod !== 'all') {
+      query.paymentMethod = paymentMethod;
+    }
+    
+    // Apply status filter
+    if (status && status !== 'all') {
+      query.status = status;
+    }
+    
+    let groupBy;
+    let dateFormat;
+    
+    switch(period) {
+      case 'hour':
+        groupBy = { 
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+          day: { $dayOfMonth: "$createdAt" },
+          hour: { $hour: "$createdAt" }
+        };
+        dateFormat = "%Y-%m-%d %H:00";
+        break;
+      case 'week':
+        groupBy = {
+          year: { $year: "$createdAt" },
+          week: { $week: "$createdAt" }
+        };
+        dateFormat = "%Y-W%V";
+        break;
+      case 'month':
+        groupBy = {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" }
+        };
+        dateFormat = "%Y-%m";
+        break;
+      case 'year':
+        groupBy = {
+          year: { $year: "$createdAt" }
+        };
+        dateFormat = "%Y";
+        break;
+      default: // day
+        groupBy = {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+          day: { $dayOfMonth: "$createdAt" }
+        };
+        dateFormat = "%Y-%m-%d";
+    }
+    
+    const statistics = await Transaction.aggregate([
+      { $match: query },
+      {
+        $group: {
+          _id: groupBy,
+          totalSales: { $sum: "$total" },
+          transactionCount: { $sum: 1 },
+          averageValue: { $avg: "$total" },
+          totalDiscount: { $sum: "$discount" },
+          totalTax: { $sum: "$tax" }
+        }
+      },
+      { $sort: { "_id": 1 } }
+    ]);
+    
+    // Get payment method breakdown
+    const paymentBreakdown = await Transaction.aggregate([
+      { $match: query },
+      {
+        $group: {
+          _id: "$paymentMethod",
+          count: { $sum: 1 },
+          total: { $sum: "$total" }
+        }
+      }
+    ]);
+    
+    res.json({
+      success: true,
+      statistics,
+      paymentBreakdown,
+      period,
+      totalTransactions: statistics.reduce((sum, s) => sum + s.transactionCount, 0),
+      totalSales: statistics.reduce((sum, s) => sum + s.totalSales, 0)
+    });
+  } catch (error) {
+    console.error("Statistics error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching statistics",
+      error: error.message
+    });
+  }
+});
+
+// ============================================
+// EXPORT TRANSACTIONS
+// ============================================
+
+router.get("/export", authenticateToken, async (req, res) => {
+  try {
+    const { startDate, endDate, paymentMethod, status, search, format = 'json' } = req.query;
+    
+    const query = { business: req.user.business };
+    
+    // Apply same filters
+    if (startDate || endDate) {
+      query.createdAt = parseDateRange(startDate, endDate);
+    }
+    if (paymentMethod && paymentMethod !== 'all') {
+      query.paymentMethod = paymentMethod;
+    }
+    if (status && status !== 'all') {
+      query.status = status;
+    }
+    if (search && search.trim() !== '') {
+      query.$or = [
+        { transactionId: { $regex: search, $options: 'i' } },
+        { 'customer.name': { $regex: search, $options: 'i' } }
+      ];
+    }
+    
+    const transactions = await Transaction.find(query)
+      .populate("cashier", "fullName email")
+      .sort({ createdAt: -1 })
+      .lean();
+    
+    if (format === 'csv') {
+      // Convert to CSV
+      const csvData = transactions.map(t => ({
+        'Transaction ID': t.transactionId,
+        'Date': t.createdAt,
+        'Customer': t.customer?.name || 'Walk-in',
+        'Customer Phone': t.customer?.phone || '',
+        'Customer Email': t.customer?.email || '',
+        'Items': t.items.map(i => `${i.name} x${i.quantity}`).join('; '),
+        'Subtotal': t.subtotal,
+        'Discount': t.discount,
+        'Tax': t.tax,
+        'Total': t.total,
+        'Payment Method': t.paymentMethod,
+        'Status': t.status,
+        'Cashier': t.cashier?.fullName || 'System',
+        'Notes': t.notes || ''
+      }));
+      
+      const csv = convertToCSV(csvData);
+      
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename=transactions_${new Date().toISOString().split('T')[0]}.csv`);
+      return res.send(csv);
+    }
+    
+    res.json({
+      success: true,
+      transactions,
+      count: transactions.length
+    });
+  } catch (error) {
+    console.error("Export error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error exporting transactions",
+      error: error.message
+    });
+  }
+});
+
+// ============================================
+// GET TODAY'S SUMMARY
+// ============================================
 
 router.get("/summary/today", authenticateToken, async (req, res) => {
   try {
@@ -457,32 +757,35 @@ router.get("/summary/today", authenticateToken, async (req, res) => {
           _id: null,
           totalSales: { $sum: "$total" },
           transactionCount: { $sum: 1 },
+          averageTransaction: { $avg: "$total" },
         },
       },
     ];
 
     const result = await Transaction.aggregate(pipeline);
 
-    // Handle no results case
     let summary;
     if (result.length > 0) {
       summary = {
         totalSales: result[0].totalSales || 0,
         transactionCount: result[0].transactionCount || 0,
+        averageTransaction: result[0].averageTransaction || 0,
       };
     } else {
       summary = {
         totalSales: 0,
         transactionCount: 0,
+        averageTransaction: 0,
       };
     }
 
     res.json({
       success: true,
       summary: {
-        totalSales: summary.totalSales.toFixed(2), // Keep as string for display
+        totalSales: summary.totalSales.toFixed(2),
         transactionCount: summary.transactionCount,
-        formattedTotal: `$${summary.totalSales.toFixed(2)}`, // Already formatted
+        averageTransaction: summary.averageTransaction.toFixed(2),
+        formattedTotal: `$${summary.totalSales.toFixed(2)}`,
       },
     });
   } catch (error) {
@@ -493,47 +796,41 @@ router.get("/summary/today", authenticateToken, async (req, res) => {
       summary: {
         totalSales: "0.00",
         transactionCount: 0,
+        averageTransaction: "0.00",
       },
     });
   }
 });
 
-// GET next order number
+// ============================================
+// GET NEXT ORDER NUMBER
+// ============================================
+
 router.get("/next-order-number", authenticateToken, async (req, res) => {
   try {
     const today = new Date();
 
-    // Format: YY-DD-MM (25-12-22 for Dec 22, 2025)
-    const year = today.getFullYear().toString().slice(-2); // Last 2 digits
+    const year = today.getFullYear().toString().slice(-2);
     const day = today.getDate().toString().padStart(2, "0");
     const month = (today.getMonth() + 1).toString().padStart(2, "0");
 
-    const datePrefix = `${year}-${day}-${month}`; // 25-12-22
+    const datePrefix = `${year}-${day}-${month}`;
 
-    // Start of today (00:00:00)
     const todayStart = new Date(today);
     todayStart.setHours(0, 0, 0, 0);
 
-    // Start of tomorrow (00:00:00)
     const tomorrow = new Date(todayStart);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    // Count today's completed transactions
     const todayCount = await Transaction.countDocuments({
       business: req.user.business,
       status: "completed",
       createdAt: { $gte: todayStart, $lt: tomorrow },
     });
 
-    // Next sequence number (1-based, 4 digits)
     const nextSequence = todayCount + 1;
 
-    // Format: YY-DD-MM-SSSS (25-12-22-0123)
-    const nextOrderNumber = `${datePrefix}-${nextSequence.toString().padStart(4, "0")}`;
-
-    // For high-volume businesses (over 9999 orders/day)
     if (nextSequence > 9999) {
-      // Use 5 digits
       const extendedSequence = nextSequence.toString().padStart(5, "0");
       const extendedOrderNumber = `${datePrefix}-${extendedSequence}`;
 
@@ -548,7 +845,7 @@ router.get("/next-order-number", authenticateToken, async (req, res) => {
     } else {
       res.json({
         success: true,
-        nextOrderNumber,
+        nextOrderNumber: `${datePrefix}-${nextSequence.toString().padStart(4, "0")}`,
         displayNumber: nextSequence.toString().padStart(4, "0"),
         datePrefix,
         sequence: nextSequence,
@@ -556,7 +853,6 @@ router.get("/next-order-number", authenticateToken, async (req, res) => {
     }
   } catch (error) {
     console.error("Error getting next order number:", error);
-    // Fallback: Today's date with 0001
     const fallbackDate = new Date();
     const fallbackYear = fallbackDate.getFullYear().toString().slice(-2);
     const fallbackDay = fallbackDate.getDate().toString().padStart(2, "0");
@@ -574,7 +870,10 @@ router.get("/next-order-number", authenticateToken, async (req, res) => {
   }
 });
 
-// GET single transaction
+// ============================================
+// GET SINGLE TRANSACTION
+// ============================================
+
 router.get("/:id", authenticateToken, async (req, res) => {
   try {
     const transaction = await Transaction.findOne({
@@ -604,13 +903,15 @@ router.get("/:id", authenticateToken, async (req, res) => {
   }
 });
 
-// POST refund transaction
+// ============================================
+// REFUND TRANSACTION
+// ============================================
+
 router.post("/:id/refund", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { refundItems, reason, partialRefund = false } = req.body;
 
-    // Find the transaction
     const transaction = await Transaction.findOne({
       _id: id,
       business: req.user.business,
@@ -623,7 +924,6 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
       });
     }
 
-    // Check if transaction is already refunded
     if (transaction.status === "refunded") {
       return res.status(400).json({
         success: false,
@@ -631,7 +931,6 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
       });
     }
 
-    // Check if transaction is cancelled
     if (transaction.status === "cancelled") {
       return res.status(400).json({
         success: false,
@@ -644,7 +943,6 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
     const inventoryUpdates = [];
 
     if (partialRefund && refundItems && refundItems.length > 0) {
-      // Partial refund - specific items
       for (const refundItem of refundItems) {
         const originalItem = transaction.items.find(
           (item) => item.productId.toString() === refundItem.productId,
@@ -673,7 +971,6 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
           refundAmount: itemRefundAmount,
         });
 
-        // Track inventory updates
         inventoryUpdates.push({
           productId: originalItem.productId,
           quantity: refundItem.quantity,
@@ -681,7 +978,6 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
         });
       }
     } else {
-      // Full refund - all items
       refundAmount = transaction.total;
 
       transaction.items.forEach((item) => {
@@ -699,7 +995,6 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
       });
     }
 
-    // Create refund record
     const refundTransaction = new Transaction({
       business: transaction.business,
       cashier: req.user._id,
@@ -711,7 +1006,7 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
         subtotal: item.refundAmount,
       })),
       subtotal: refundAmount,
-      tax: 0, // Refunds typically don't include tax
+      tax: 0,
       discount: 0,
       total: refundAmount,
       paymentMethod: "refund",
@@ -727,7 +1022,6 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
 
     await refundTransaction.save();
 
-    // Update original transaction status
     if (partialRefund) {
       transaction.status = "partially_refunded";
       transaction.refundedAmount =
@@ -743,7 +1037,7 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
 
     await transaction.save();
 
-    // Update inventory for non-service items
+    // Update inventory
     for (const update of inventoryUpdates) {
       try {
         const inventoryItem = await Inventory.findOne({
@@ -765,7 +1059,6 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
           `Error updating inventory for product ${update.productId}:`,
           inventoryError,
         );
-        // Continue with other updates
       }
     }
 
@@ -790,7 +1083,10 @@ router.post("/:id/refund", authenticateToken, async (req, res) => {
   }
 });
 
-// GET refund reasons (common reasons)
+// ============================================
+// GET REFUND REASONS
+// ============================================
+
 router.get("/refund/reasons", authenticateToken, (req, res) => {
   const reasons = [
     "Customer changed mind",
@@ -809,74 +1105,5 @@ router.get("/refund/reasons", authenticateToken, (req, res) => {
     reasons: reasons,
   });
 });
-
-// Add this function to calculate discounts
-async function calculateDiscounts(cartItems, orderTotal, userBusiness) {
-  try {
-    // Get active discounts for business
-    const discounts = await Discount.find({
-      business: userBusiness,
-      status: "active",
-      $or: [
-        { applyToAll: true },
-        { products: { $in: cartItems.map((item) => item._id) } },
-        { categories: { $exists: true, $ne: [] } },
-      ],
-    }).populate("products categories");
-
-    if (!discounts || discounts.length === 0) {
-      return {
-        applicableDiscounts: [],
-        totalDiscount: 0,
-        discountDetails: [],
-      };
-    }
-
-    let applicableDiscounts = [];
-    let totalDiscount = 0;
-    let discountDetails = [];
-    const now = new Date();
-
-    for (const discount of discounts) {
-      // Check validity
-      if (!discount.isValid()) continue;
-
-      // Calculate discount amount
-      const discountResult = discount.calculateDiscount(cartItems, orderTotal);
-
-      if (discountResult.discountAmount > 0) {
-        applicableDiscounts.push(discount);
-        totalDiscount += discountResult.discountAmount;
-
-        discountDetails.push({
-          discountId: discount._id,
-          discountName: discount.name,
-          discountType: discount.type,
-          discountValue: discount.value || discountResult.discountAmount,
-          originalAmount: discountResult.applicableItems.reduce(
-            (sum, item) => sum + item.quantity * item.price,
-            0,
-          ),
-          discountedAmount: discountResult.discountAmount,
-          discountDetails: discountResult,
-        });
-      }
-    }
-
-    return {
-      applicableDiscounts,
-      totalDiscount,
-      discountDetails,
-    };
-  } catch (error) {
-    console.error("Error calculating discounts:", error);
-    return {
-      applicableDiscounts: [],
-      totalDiscount: 0,
-      discountDetails: [],
-    };
-  }
-}
-
 
 module.exports = router;

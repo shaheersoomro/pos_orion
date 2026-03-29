@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const Inventory = require("../models/Inventory");
 const User = require("../models/User");
+const Permission = require("../models/Permission");
 
 const discountValidation = [
   body("discountType")
@@ -60,14 +61,51 @@ const authenticateToken = (req, res, next) => {
       next();
     } catch (error) {
       console.error("User lookup error:", error);
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: "Server error during authentication",
-        });
+      res.status(500).json({
+        success: false,
+        message: "Server error during authentication",
+      });
     }
   });
+};
+
+const requireInventoryPermission = async (req, res, next) => {
+  try {
+    const permissions = await Permission.findOne({
+      business: req.user.business,
+    });
+
+    if (!permissions) {
+      // If no permissions configured, use default: only admin and manager can manage inventory
+      if (req.user.role === "cashier") {
+        return res.status(403).json({
+          success: false,
+          message: "You don't have permission to manage inventory",
+        });
+      }
+      return next();
+    }
+
+    const hasPermission = permissions.hasPermission(
+      req.user.role,
+      "canManageInventory"
+    );
+
+    if (!hasPermission) {
+      return res.status(403).json({
+        success: false,
+        message: "You don't have permission to manage inventory",
+      });
+    }
+
+    next();
+  } catch (error) {
+    console.error("Permission check error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error checking permissions",
+    });
+  }
 };
 
 // GET all inventory items for the business
@@ -197,9 +235,10 @@ router.get("/:id", authenticateToken, async (req, res) => {
 router.post(
   "/",
   authenticateToken,
+  requireInventoryPermission,
   [
     body("name").trim().notEmpty().withMessage("Product name is required"),
-    body("category").notEmpty().withMessage("Category is required"), 
+    body("category").notEmpty().withMessage("Category is required"),
     body("price")
       .isFloat({ min: 0 })
       .withMessage("Price must be a positive number"),
@@ -271,13 +310,13 @@ router.post(
           process.env.NODE_ENV === "development" ? error.message : undefined,
       });
     }
-  }
+  },
 );
 
 // PUT update inventory item
 router.put(
   "/:id",
-  authenticateToken,
+  authenticateToken, requireInventoryPermission,
   [
     body("name").trim().notEmpty().withMessage("Product name is required"),
     body("category").custom((value) => {
@@ -368,11 +407,11 @@ router.put(
           process.env.NODE_ENV === "development" ? error.message : undefined,
       });
     }
-  }
+  },
 );
 
 // DELETE inventory item
-router.delete("/:id", authenticateToken, async (req, res) => {
+router.delete("/:id", authenticateToken, requireInventoryPermission, async (req, res) => {
   try {
     const inventory = await Inventory.findOneAndDelete({
       _id: req.params.id,
@@ -402,7 +441,7 @@ router.delete("/:id", authenticateToken, async (req, res) => {
 // POST update stock (restock or sell)
 router.post(
   "/:id/stock",
-  authenticateToken,
+  authenticateToken, requireInventoryPermission,
   [
     body("quantity").isInt().withMessage("Quantity must be an integer"),
     body("type")
@@ -467,7 +506,7 @@ router.post(
           process.env.NODE_ENV === "development" ? error.message : undefined,
       });
     }
-  }
+  },
 );
 
 // GET inventory statistics

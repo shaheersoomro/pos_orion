@@ -214,7 +214,6 @@
             border-color: var(--success);
         }
 
-        /* Toast Container */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -224,8 +223,6 @@
             flex-direction: column;
             gap: 10px;
         }
-
-        /* Toast Styles */
 
         .toast:not(.show) {
             display: block;
@@ -276,7 +273,6 @@
             opacity: 0.9;
         }
 
-        /* Toast Animation */
         @keyframes slideIn {
             to {
                 transform: translateX(0);
@@ -284,7 +280,6 @@
             }
         }
 
-        /* Toast Exit Animation */
         .toast.fade-out {
             animation: slideOut 0.3s ease forwards;
         }
@@ -318,9 +313,16 @@
             background: var(--bg-white);
         }
 
+        .permission-info {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #1976d2;
+            font-size: 13px;
+        }
 
-
-        /* Add to your existing CSS */
         .type-option {
             transition: var(--transition);
             border: 1px solid var(--border-color);
@@ -440,8 +442,6 @@
             background-color: var(--bg-white) !important;
             border: 1px solid var(--border-color) !important;
             color: var(--text-secondary) !important;
-            ;
-
         }
 
         .btn-select-all:hover,
@@ -452,7 +452,6 @@
             color: var(--primary) !important;
         }
 
-        /* Custom scrollbar */
         .category-checkboxes::-webkit-scrollbar,
         .product-checkboxes::-webkit-scrollbar,
         #discounts-list::-webkit-scrollbar {
@@ -478,7 +477,6 @@
             background: var(--text-secondary);
         }
 
-        /* BOGO specific styling */
         #bogo-section .form-group {
             margin-bottom: var(--spacing-md);
         }
@@ -487,7 +485,6 @@
             min-height: 120px;
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .discount-type-selector {
                 grid-template-columns: 1fr !important;
@@ -511,57 +508,6 @@
 
 <body>
     <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <!-- <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="bi bi-lightning-fill"></i>
-                    <span>Orion</span>
-                </div>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <a href="index.html" class="nav-item">
-                    <i class="bi bi-shop"></i>
-                    <span>POS</span>
-                </a>
-                <a href="dashboard.html" class="nav-item">
-                    <i class="bi bi-speedometer2"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="inventory.html" class="nav-item">
-                    <i class="bi bi-box-seam"></i>
-                    <span>Inventory</span>
-                </a>
-                <a href="history.html" class="nav-item">
-                    <i class="bi bi-clock-history"></i>
-                    <span>History</span>
-                </a>
-                <a href="users.html" class="nav-item">
-                    <i class="bi bi-people"></i>
-                    <span>Users</span>
-                </a>
-                <a href="#" class="nav-item active">
-                    <i class="bi bi-gear"></i>
-                    <span>Settings</span>
-                </a>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="avatar">A</div>
-                    <div class="user-info">
-                        <div class="user-name">Alice</div>
-                        <div class="user-role">Admin</div>
-                    </div>
-                </div>
-                <a href="login.html" class="logout-btn">
-                    <i class="bi bi-box-arrow-right"></i>
-                </a>
-            </div>
-        </aside>
-         -->
-        <!-- Main Content -->
         <div class="admin-main">
             <header class="top-header">
                 <div class="header-left">
@@ -679,9 +625,7 @@
                     </div>
                 </div>
 
-                <!-- Add this after the Tax Settings card in the settings-grid div -->
-                <!-- Add this after the Tax Settings card in the settings-grid div -->
-                <!-- Add this after the other settings cards in the settings-grid div -->
+                <!-- Custom Discount Creator -->
                 <div class="settings-card" style="margin-top: var(--spacing-lg);">
                     <div class="settings-header">
                         <div class="settings-title">
@@ -690,7 +634,6 @@
                         </div>
                     </div>
                     <div class="settings-body">
-                        <!-- Discount Type Selection -->
                         <div class="form-group">
                             <label>Discount Type</label>
                             <div class="discount-type-selector"
@@ -719,7 +662,6 @@
                             </div>
                         </div>
 
-                        <!-- Discount Name -->
                         <div class="form-group">
                             <label>Discount Name</label>
                             <input type="text" id="discount-name"
@@ -727,31 +669,25 @@
                                 style="width: 100%;">
                         </div>
 
-                        <!-- Discount Value (Percentage/Fixed) -->
                         <div class="form-group" id="discount-value-section">
                             <label>Discount Value</label>
-                            <div style="display: block; align-items: center; gap: var(--spacing-md);">
+                            <div style="display: block;">
                                 <div style="position: relative;">
                                     <input type="number" id="discount-percentage" placeholder="Enter percentage"
                                         style="width: 100%;" min="0" max="100" step="0.01">
-
                                 </div>
-
-                                <div style="position: relative;">
+                                <div style="position: relative; margin-top: 10px;">
                                     <input type="number" id="discount-fixed" placeholder="Enter fixed amount"
                                         style="width: 100%;" min="0" step="0.01">
-
                                 </div>
                             </div>
                         </div>
 
-                        <!-- BOGO Configuration (Initially hidden) -->
                         <div class="form-group" id="bogo-section" style="display: block;">
                             <label>BOGO Configuration</label>
                             <div style="border-radius: var(--radius-sm); padding: var(--spacing-lg);">
                                 <div
                                     style="display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--spacing-lg); align-items: center;">
-                                    <!-- Buy Section -->
                                     <div>
                                         <div
                                             style="font-weight: 600; margin-bottom: var(--spacing-md); color: var(--primary);">
@@ -769,8 +705,6 @@
                                                 style="width: 100%;">
                                         </div>
                                     </div>
-
-                                    <!-- Arrow -->
                                     <div style="text-align: center;">
                                         <i class="bi bi-arrow-right"
                                             style="font-size: 32px; color: var(--primary);"></i>
@@ -778,8 +712,6 @@
                                             style="font-size: 12px; color: var(--text-secondary); margin-top: var(--spacing-xs);">
                                             to get</div>
                                     </div>
-
-                                    <!-- Get Section -->
                                     <div>
                                         <div
                                             style="font-weight: 600; margin-bottom: var(--spacing-md); color: var(--success);">
@@ -798,8 +730,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- BOGO Options -->
                                 <div class="form-group"
                                     style="margin-top: var(--spacing-lg); border-top: 1px solid var(--border-color); padding-top: var(--spacing-lg);">
                                     <label>BOGO Options</label>
@@ -815,11 +745,8 @@
                             </div>
                         </div>
 
-                        <!-- Product & Category Selection -->
                         <div class="form-group" id="product-category-selection">
                             <label>Apply To</label>
-
-                            <!-- Category Selection -->
                             <div style="margin-bottom: var(--spacing-lg);">
                                 <div
                                     style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-md);">
@@ -833,14 +760,10 @@
                                             All</button>
                                     </div>
                                 </div>
-
                                 <div class="category-checkboxes"
                                     style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--spacing-sm); max-height: 200px; overflow-y: auto; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
-                                    <!-- Categories will be populated dynamically -->
                                 </div>
                             </div>
-
-                            <!-- Product Selection -->
                             <div>
                                 <div
                                     style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-md);">
@@ -854,30 +777,23 @@
                                             All</button>
                                     </div>
                                 </div>
-
                                 <div class="product-selection-container"
                                     style="border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
-                                    <!-- Search -->
                                     <div
                                         style="padding: var(--spacing-md); border-bottom: 1px solid var(--border-color);">
                                         <input type="text" id="product-search" placeholder="Search products..."
                                             style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
                                     </div>
-
-                                    <!-- Product List -->
                                     <div class="product-checkboxes"
                                         style="max-height: 250px; overflow-y: auto; padding: var(--spacing-md);">
-                                        <!-- Products will be populated dynamically -->
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Conditions -->
                         <div class="form-group">
                             <label>Conditions</label>
                             <div style="border-radius: var(--radius-sm); padding: var(--spacing-lg);">
-                                <!-- Minimum Amount -->
                                 <div class="form-group" style="margin-bottom: var(--spacing-lg);">
                                     <div style="display: flex; align-items: center; gap: var(--spacing-md);">
                                         <div style="flex-shrink: 0;">Apply if total amount is</div>
@@ -891,15 +807,13 @@
                                         </select>
                                         <div style="position: relative; width: 180px;">
                                             <input type="number" id="condition-amount" placeholder="Amount"
-                                                style="width: 100%; padding-right: 40px; color: var(--text-secondary);"
+                                                style="width: 100%; padding-right: 40px;"
                                                 min="0" step="0.01">
                                             <span
                                                 style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);">$</span>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Time Range -->
                                 <div class="form-group" style="margin-bottom: var(--spacing-lg);">
                                     <div style="display: flex; align-items: center; gap: var(--spacing-md);">
                                         <div style="flex-shrink: 0;">Time Range</div>
@@ -914,8 +828,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Week Days -->
                                 <div class="form-group">
                                     <label style="margin-bottom: var(--spacing-md);">Available Days</label>
                                     <div class="week-days"
@@ -950,8 +862,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Date Range -->
                                 <div class="form-group" style="margin-top: var(--spacing-lg);">
                                     <div style="display: flex; align-items: center; gap: var(--spacing-md);">
                                         <div style="flex-shrink: 0;">Valid from</div>
@@ -965,7 +875,6 @@
                             </div>
                         </div>
 
-                        <!-- Additional Options -->
                         <div class="form-group">
                             <label>Additional Options</label>
                             <div class="form-check">
@@ -982,13 +891,8 @@
                                 <input type="number" id="max-uses" value="100" min="1"
                                     style="width: 100px; margin-left: var(--spacing-sm); padding: var(--spacing-xs);">
                             </div>
-                            <div class="form-check" style="display: none">
-                                <input type="checkbox" id="option-one-per-customer">
-                                <label for="option-one-per-customer">One use per customer</label>
-                            </div>
                         </div>
 
-                        <!-- Preview Section -->
                         <div class="form-group"
                             style="border-top: 1px solid var(--border-color); padding-top: var(--spacing-lg);">
                             <label>Preview</label>
@@ -1011,18 +915,15 @@
                             </div>
                         </div>
 
-                        <!-- Action Buttons -->
                         <div class="action-buttons" style="margin-top: var(--spacing-lg);">
                             <button class="btn-cancel" id="discount-reset">Reset</button>
                             <button class="btn-save" id="discount-create">Create Discount</button>
                         </div>
 
-                        <!-- Created Discounts List -->
                         <div class="form-group"
                             style="border-top: 1px solid var(--border-color); padding-top: var(--spacing-lg); margin-top: var(--spacing-lg);">
                             <label>Created Discounts</label>
                             <div id="discounts-list" style="max-height: 300px; overflow-y: auto;">
-                                <!-- Discounts will be listed here -->
                                 <div
                                     style="text-align: center; padding: var(--spacing-xl); color: var(--text-secondary);">
                                     <i class="bi bi-tag"
@@ -1034,51 +935,175 @@
                     </div>
                 </div>
 
-                <!-- Permissions -->
+                <!-- Permissions Section -->
                 <div class="settings-card" style="margin-top: var(--spacing-lg);">
                     <div class="settings-header">
                         <div class="settings-title">
                             <i class="bi bi-shield-lock"></i>
                             <h3>User Permissions</h3>
                         </div>
-                        <button class="edit-toggle" id="permissions-edit-toggle">
-                            <i class="bi bi-pencil-square"></i>
-                        </button>
+                        <div>
+                            <button class="edit-toggle" id="permissions-edit-toggle"
+                                style="margin-right: var(--spacing-sm);">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="edit-toggle" id="permissions-save-toggle" style="display: none;">
+                                <i class="bi bi-check-lg"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="settings-body">
-                        <table class="permissions-table">
-                            <thead>
-                                <tr>
-                                    <th>Feature</th>
-                                    <th style="text-align: center;">Admin</th>
-                                    <th style="text-align: center;">Manager</th>
-                                    <th style="text-align: center;">Cashier</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Access Dashboard</td>
-                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
-                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
-                                    <td style="text-align: center;"><input type="checkbox" disabled></td>
-                                </tr>
-                                <tr>
-                                    <td>Manage Inventory</td>
-                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
-                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
-                                    <td style="text-align: center;"><input type="checkbox" disabled></td>
-                                </tr>
-                                <tr>
-                                    <td>Process Refunds</td>
-                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
-                                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
-                                    <td style="text-align: center;"><input type="checkbox" disabled></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button class="btn-cancel" id="permissions-cancel" style="display: none;">Cancel</button>
-                        <button class="btn-save" id="permissions-save"
-                            style="margin-top: var(--spacing-lg); display: none;">Save Permissions</button>
+                        <div id="permissions-message" style="display: none;" class="alert alert-info mb-3"></div>
+                        <div class="permissions-info mb-3">
+                            <p class="text-muted small">
+                                <i class="bi bi-info-circle"></i> Configure what each user role can access and manage.
+                                Changes take effect immediately for all users.
+                            </p>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="permissions-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 200px;">Feature</th>
+                                        <th style="text-align: center; width: 120px;">Admin</th>
+                                        <th style="text-align: center; width: 120px;">Manager</th>
+                                        <th style="text-align: center; width: 120px;">Cashier</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-people"></i> Manage Users
+                                            <small class="d-block text-muted">Create, edit, delete users</small>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
+                                                data-perm="canManageUsers" checked disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
+                                                data-perm="canManageUsers" disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
+                                                data-perm="canManageUsers" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-tag"></i> Manage Discounts
+                                            <small class="d-block text-muted">Create, edit, delete discounts</small>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
+                                                data-perm="canManageDiscounts" checked disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
+                                                data-perm="canManageDiscounts" disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
+                                                data-perm="canManageDiscounts" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-box-seam"></i> Manage Inventory
+                                            <small class="d-block text-muted">Add, edit, delete products</small>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
+                                                data-perm="canManageInventory" checked disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
+                                                data-perm="canManageInventory" disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
+                                                data-perm="canManageInventory" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-gear"></i> Manage Settings
+                                            <small class="d-block text-muted">Business, tax, system settings</small>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
+                                                data-perm="canManageSettings" checked disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
+                                                data-perm="canManageSettings" disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
+                                                data-perm="canManageSettings" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-graph-up"></i> View Reports
+                                            <small class="d-block text-muted">Sales reports, analytics, statistics</small>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
+                                                data-perm="canViewReports" checked disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
+                                                data-perm="canViewReports" disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
+                                                data-perm="canViewReports" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-arrow-return-left"></i> Process Refunds
+                                            <small class="d-block text-muted">Issue refunds to customers</small>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
+                                                data-perm="canProcessRefunds" checked disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
+                                                data-perm="canProcessRefunds" disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
+                                                data-perm="canProcessRefunds" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-cart"></i> Create Sales
+                                            <small class="d-block text-muted">Process sales transactions</small>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
+                                                data-perm="canCreateSales" checked disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
+                                                data-perm="canCreateSales" disabled>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
+                                                data-perm="canCreateSales" checked disabled>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="action-buttons" style="margin-top: var(--spacing-lg);">
+                            <button class="btn-cancel" id="permissions-cancel" style="display: none;">Cancel</button>
+                            <button class="btn-save" id="permissions-save" style="display: none;">Save Permissions</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1116,243 +1141,254 @@
 
     <script>
         let editingDiscountId = null;
+        let createdDiscounts = [];
+        let selectedCategories = new Set();
+        let selectedProducts = new Set();
+        let categories = [];
+        let sampleProducts = [];
+        let currentUserPermissions = {
+            canManageSettings: false
+        };
 
         // Toast notification system
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-
             const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill';
-
             toast.innerHTML = `
-            <div class="toast-icon">
-                <i class="bi ${icon}"></i>
-            </div>
-            <div class="toast-content">
-                <div class="toast-title">${type === 'success' ? 'Success' : 'Error'}</div>
-                <div class="toast-message">${message}</div>
-            </div>
-        `;
-
+                <div class="toast-icon"><i class="bi ${icon}"></i></div>
+                <div class="toast-content">
+                    <div class="toast-title">${type === 'success' ? 'Success' : 'Error'}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
             container.appendChild(toast);
-
             setTimeout(() => {
                 toast.classList.add('fade-out');
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.parentNode.removeChild(toast);
-                    }
-                }, 300);
+                setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
             }, 5000);
-
             toast.addEventListener('click', () => {
                 toast.classList.add('fade-out');
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.parentNode.removeChild(toast);
+                setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
+            });
+        }
+
+        // Load current user
+        function loadCurrentUser() {
+            const token = localStorage.getItem('token');
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (token && userData) {
+                document.querySelectorAll('.user-name').forEach(el => {
+                    el.textContent = userData.fullName || userData.email || 'User';
+                });
+                document.querySelectorAll('.user-role').forEach(el => {
+                    el.textContent = userData.role === 'admin' ? 'Administrator' :
+                        userData.role === 'cashier' ? 'Cashier' :
+                            userData.role === 'manager' ? 'Manager' : userData.role || 'User';
+                });
+                document.querySelectorAll('.avatar').forEach(el => {
+                    if (userData.fullName) {
+                        el.textContent = userData.fullName.charAt(0).toUpperCase();
+                    } else if (userData.email) {
+                        el.textContent = userData.email.charAt(0).toUpperCase();
                     }
-                }, 300);
-            });
+                });
+                return userData;
+            }
+            window.location.href = 'login.html';
+            return null;
         }
 
-        // Show restricted view for non-admins
-        function showRestrictedView() {
-            console.log('Showing restricted view for non-admin user');
-
-            // Hide edit buttons
-            document.querySelectorAll('.edit-toggle').forEach(btn => {
-                btn.style.display = 'none';
-            });
-
-            // Hide save/cancel buttons
-            document.getElementById('business-save').style.display = 'none';
-            document.getElementById('business-cancel').style.display = 'none';
-            document.getElementById('tax-save').style.display = 'none';
-            document.getElementById('tax-cancel').style.display = 'none';
-            document.getElementById('discount-save').style.display = 'none';
-            document.getElementById('discount-cancel').style.display = 'none';
-
-            // Disable all form inputs
-            disableAllFormInputs();
-            disableDiscountFormInputs();
-
-            // Show message in business card
-            const businessCard = document.querySelector('.settings-card:nth-child(1) .settings-body');
-            if (businessCard) {
-                businessCard.innerHTML = `
-                <div style="text-align: center; padding: 40px 20px;">
-                    <i class="bi bi-shield-lock" style="font-size: 48px; color: #6c757d; margin-bottom: 20px;"></i>
-                    <h4 style="color: #495057; margin-bottom: 10px;">Admin Access Required</h4>
-                    <p style="color: #6c757d; margin-bottom: 20px;">
-                        You need administrator privileges to view and edit business settings.
-                    </p>
-                </div>
-            `;
+        // Fetch user permissions
+        async function fetchUserPermissions() {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (!userData || !userData._id) {
+                currentUserPermissions.canManageSettings = false;
+                return false;
             }
-
-            // Show message in tax card
-            const taxCard = document.querySelector('.settings-card:nth-child(2) .settings-body');
-            if (taxCard) {
-                taxCard.innerHTML = `
-                <div style="text-align: center; padding: 40px 20px;">
-                    <i class="bi bi-percent" style="font-size: 48px; color: #6c757d; margin-bottom: 20px;"></i>
-                    <h4 style="color: #495057; margin-bottom: 10px;">Tax Settings Restricted</h4>
-                    <p style="color: #6c757d; margin-bottom: 20px;">
-                        Only administrators can view and modify tax settings.
-                    </p>
-                </div>
-            `;
-            }
-
-            // Show message in discount card
-            const discountCard = document.querySelector('.settings-card:nth-child(3) .settings-body');
-            if (discountCard) {
-                discountCard.innerHTML = `
-                <div style="text-align: center; padding: 40px 20px;">
-                    <i class="bi bi-tag" style="font-size: 48px; color: #6c757d; margin-bottom: 20px;"></i>
-                    <h4 style="color: #495057; margin-bottom: 10px;">Discount Settings Restricted</h4>
-                    <p style="color: #6c757d; margin-bottom: 20px;">
-                        Discount configuration requires administrator access.
-                    </p>
-                </div>
-            `;
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3001/api/permissions/user/${userData._id}`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    currentUserPermissions = {
+                        canManageSettings: result.permissions?.canManageSettings || false
+                    };
+                    console.log('Settings permissions - canManageSettings:', currentUserPermissions.canManageSettings);
+                    return currentUserPermissions.canManageSettings;
+                }
+                return false;
+            } catch (error) {
+                console.error('Error fetching permissions:', error);
+                currentUserPermissions.canManageSettings = false;
+                return false;
             }
         }
 
-        // Disable all form inputs (business & tax)
-        function disableAllFormInputs() {
-            // Business settings
-            document.getElementById('business-name').disabled = true;
-            document.getElementById('business-type').disabled = true;
-            document.getElementById('business-address').disabled = true;
-            document.getElementById('business-phone').disabled = true;
-            document.getElementById('business-owner').disabled = true;
-            document.querySelector('input[type="email"]').disabled = true;
-
-            // Tax settings
-            document.getElementById('tax-rate').disabled = true;
-            document.getElementById('tax-name').disabled = true;
-            document.getElementById('tax-inclusive').disabled = true;
-            document.getElementById('tax-enabled').disabled = true;
-
-            // Disable save buttons
-            document.getElementById('business-save').disabled = true;
-            document.getElementById('tax-save').disabled = true;
+        // Fetch business settings
+        async function fetchBusinessSettings() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                const response = await fetch('http://localhost:3001/api/settings/business', {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+                });
+                if (response.status === 401) {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch business settings: ${response.status}`);
+                }
+                const result = await response.json();
+                if (result.success && result.business) {
+                    updateBusinessFormFields(result.business);
+                    return { success: true };
+                }
+                return { success: false };
+            } catch (error) {
+                console.error('Error fetching business settings:', error);
+                showToast('Failed to load settings', 'error');
+                return { success: false };
+            }
         }
 
-        // Disable discount form inputs
-        function disableDiscountFormInputs() {
-            // Tab buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.disabled = true;
-                btn.style.cursor = 'not-allowed';
-                btn.style.opacity = '0.6';
-            });
-
-            // All discount inputs
-            const discountInputs = [
-                'type-percentage', 'type-fixed', 'type-bogo', 'type-bulk',
-                'default-tax-before-discount', 'default-rounding',
-                'order-product', 'order-category', 'order-customer', 'order-order',
-                'stack-multiple', 'stack-coupon-product', 'stack-loyalty-all',
-                'coupon-enabled', 'coupon-auto-validate', 'coupon-one-per-order',
-                'time-happyhour', 'time-earlybird',
-                'loyalty-auto-apply',
-                'day-monday', 'day-tuesday', 'day-wednesday', 'day-thursday',
-                'day-friday', 'day-saturday', 'day-sunday',
-                'limit-manager-approval', 'limit-max-discount', 'limit-cashier-max', 'limit-min-purchase'
-            ];
-
-            discountInputs.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) element.disabled = true;
-            });
-
-            // Number inputs
-            const numberInputs = [
-                'manager-threshold', 'max-discount', 'cashier-limit', 'min-purchase'
-            ];
-
-            numberInputs.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) element.disabled = true;
-            });
-
-            // Preset inputs
-            document.querySelectorAll('.preset-input').forEach(input => {
-                input.disabled = true;
-            });
-
-            // Dropdowns
-            document.getElementById('discount-priority').disabled = true;
+        // Update business form fields
+        function updateBusinessFormFields(businessData) {
+            document.getElementById('business-name').value = businessData.name || '';
+            const businessTypeSelect = document.getElementById('business-type');
+            if (businessTypeSelect && businessData.type) {
+                businessTypeSelect.value = businessData.type;
+            }
+            document.getElementById('business-address').value = businessData.address || '';
+            document.getElementById('business-phone').value = businessData.phone || '';
+            if (businessData.owner) {
+                document.getElementById('business-owner').value = businessData.owner.fullName || '';
+            }
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData && userData.email) {
+                document.querySelector('input[type="email"]').value = userData.email;
+            }
+            if (businessData.taxSettings) {
+                document.getElementById('tax-rate').value = businessData.taxSettings.rate || 8.0;
+                document.getElementById('tax-name').value = businessData.taxSettings.taxName || 'Sales Tax';
+                document.getElementById('tax-inclusive').checked = businessData.taxSettings.taxInclusive !== false;
+                document.getElementById('tax-enabled').checked = businessData.taxSettings.enabled || false;
+            } else {
+                document.getElementById('tax-rate').value = 8.0;
+                document.getElementById('tax-name').value = 'Sales Tax';
+                document.getElementById('tax-inclusive').checked = true;
+                document.getElementById('tax-enabled').checked = true;
+            }
         }
 
-        // Enable discount form inputs
-        function enableDiscountFormInputs() {
-            // Tab buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.disabled = false;
-                btn.style.cursor = 'pointer';
-                btn.style.opacity = '1';
-            });
-
-            // All discount inputs
-            const discountInputs = [
-                'type-percentage', 'type-fixed', 'type-bogo', 'type-bulk',
-                'default-tax-before-discount', 'default-rounding',
-                'order-product', 'order-category', 'order-customer', 'order-order',
-                'stack-multiple', 'stack-coupon-product', 'stack-loyalty-all',
-                'coupon-enabled', 'coupon-auto-validate', 'coupon-one-per-order',
-                'time-happyhour', 'time-earlybird',
-                'loyalty-auto-apply',
-                'day-monday', 'day-tuesday', 'day-wednesday', 'day-thursday',
-                'day-friday', 'day-saturday', 'day-sunday',
-                'limit-manager-approval', 'limit-max-discount', 'limit-cashier-max', 'limit-min-purchase'
-            ];
-
-            discountInputs.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) element.disabled = false;
-            });
-
-            // Number inputs
-            const numberInputs = [
-                'manager-threshold', 'max-discount', 'cashier-limit', 'min-purchase'
-            ];
-
-            numberInputs.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) element.disabled = false;
-            });
-
-            // Preset inputs
-            document.querySelectorAll('.preset-input').forEach(input => {
-                input.disabled = false;
-            });
-
-            // Dropdowns
-            document.getElementById('discount-priority').disabled = false;
+        // Update business settings
+        async function updateBusinessSettings() {
+            if (!currentUserPermissions.canManageSettings) {
+                showToast('You don\'t have permission to edit settings', 'error');
+                return;
+            }
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                const name = document.getElementById('business-name').value.trim();
+                const type = document.getElementById('business-type').value;
+                const phone = document.getElementById('business-phone').value.trim();
+                const address = document.getElementById('business-address').value.trim();
+                if (!name || !type || !phone || !address) {
+                    showToast('All fields are required', 'error');
+                    return;
+                }
+                const businessData = { name, type: type.toLowerCase(), phone, address };
+                const response = await fetch('http://localhost:3001/api/settings/business', {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify(businessData)
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    showToast('Business settings updated successfully', 'success');
+                    toggleEditMode('business', false);
+                } else {
+                    showToast(result.message || 'Failed to update business settings', 'error');
+                }
+            } catch (error) {
+                console.error('Error updating business settings:', error);
+                showToast('An error occurred while updating settings', 'error');
+            }
         }
 
-        // Edit mode toggle for business and tax
+        // Update tax settings
+        async function updateTaxSettings() {
+            if (!currentUserPermissions.canManageSettings) {
+                showToast('You don\'t have permission to edit settings', 'error');
+                return;
+            }
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                const enabled = document.getElementById('tax-enabled').checked;
+                const taxInclusive = document.getElementById('tax-inclusive').checked;
+                const rate = document.getElementById('tax-rate').value;
+                const taxName = document.getElementById('tax-name').value.trim();
+                if (rate === '' || isNaN(parseFloat(rate))) {
+                    showToast('Please enter a valid tax rate', 'error');
+                    return;
+                }
+                const taxData = { enabled, taxInclusive, rate: parseFloat(rate), taxName };
+                const response = await fetch('http://localhost:3001/api/settings/tax', {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify(taxData)
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    showToast('Tax settings updated successfully', 'success');
+                    toggleEditMode('tax', false);
+                    if (result.taxSettings) {
+                        document.getElementById('tax-rate').value = result.taxSettings.rate || 8.0;
+                        document.getElementById('tax-name').value = result.taxSettings.taxName || 'Sales Tax';
+                        document.getElementById('tax-inclusive').checked = result.taxSettings.taxInclusive !== false;
+                        document.getElementById('tax-enabled').checked = result.taxSettings.enabled || false;
+                    }
+                } else {
+                    showToast(result.message || 'Failed to update tax settings', 'error');
+                }
+            } catch (error) {
+                console.error('Error updating tax settings:', error);
+                showToast('An error occurred while updating settings', 'error');
+            }
+        }
+
+        // Toggle edit mode
         function toggleEditMode(section, enable) {
-            console.log(`toggleEditMode: ${section}, enable: ${enable}`);
-
+            if (!currentUserPermissions.canManageSettings && enable) {
+                showToast('You don\'t have permission to edit settings', 'error');
+                return;
+            }
             if (section === 'business') {
                 if (enable) {
                     document.getElementById('business-name').disabled = false;
                     document.getElementById('business-type').disabled = false;
                     document.getElementById('business-address').disabled = false;
                     document.getElementById('business-phone').disabled = false;
-
-                    const businessSaveBtn = document.getElementById('business-save');
-                    if (businessSaveBtn) {
-                        businessSaveBtn.disabled = false;
-                        businessSaveBtn.removeAttribute('disabled');
-                        businessSaveBtn.style.display = 'block';
-                    }
-
+                    document.getElementById('business-save').style.display = 'block';
                     document.getElementById('business-cancel').style.display = 'block';
                     document.getElementById('business-edit-toggle').style.display = 'none';
                 } else {
@@ -1360,14 +1396,7 @@
                     document.getElementById('business-type').disabled = true;
                     document.getElementById('business-address').disabled = true;
                     document.getElementById('business-phone').disabled = true;
-
-                    const businessSaveBtn = document.getElementById('business-save');
-                    if (businessSaveBtn) {
-                        businessSaveBtn.disabled = true;
-                        businessSaveBtn.setAttribute('disabled', 'disabled');
-                        businessSaveBtn.style.display = 'none';
-                    }
-
+                    document.getElementById('business-save').style.display = 'none';
                     document.getElementById('business-cancel').style.display = 'none';
                     document.getElementById('business-edit-toggle').style.display = 'block';
                 }
@@ -1377,14 +1406,7 @@
                     document.getElementById('tax-name').disabled = false;
                     document.getElementById('tax-inclusive').disabled = false;
                     document.getElementById('tax-enabled').disabled = false;
-
-                    const taxSaveBtn = document.getElementById('tax-save');
-                    if (taxSaveBtn) {
-                        taxSaveBtn.disabled = false;
-                        taxSaveBtn.removeAttribute('disabled');
-                        taxSaveBtn.style.display = 'block';
-                    }
-
+                    document.getElementById('tax-save').style.display = 'block';
                     document.getElementById('tax-cancel').style.display = 'block';
                     document.getElementById('tax-edit-toggle').style.display = 'none';
                 } else {
@@ -1392,2399 +1414,73 @@
                     document.getElementById('tax-name').disabled = true;
                     document.getElementById('tax-inclusive').disabled = true;
                     document.getElementById('tax-enabled').disabled = true;
-
-                    const taxSaveBtn = document.getElementById('tax-save');
-                    if (taxSaveBtn) {
-                        taxSaveBtn.disabled = true;
-                        taxSaveBtn.setAttribute('disabled', 'disabled');
-                        taxSaveBtn.style.display = 'none';
-                    }
-
+                    document.getElementById('tax-save').style.display = 'none';
                     document.getElementById('tax-cancel').style.display = 'none';
                     document.getElementById('tax-edit-toggle').style.display = 'block';
                 }
             }
         }
 
-        // Toggle discount edit mode
-        function toggleDiscountEditMode(enable) {
-            console.log(`toggleDiscountEditMode: ${enable}`);
-
-            const discountSaveBtn = document.getElementById('discount-save');
-            const discountCancelBtn = document.getElementById('discount-cancel');
-            const discountEditToggle = document.getElementById('discount-edit-toggle');
-
-            if (enable) {
-                enableDiscountFormInputs();
-
-                // Show save/cancel buttons
-                if (discountSaveBtn) {
-                    discountSaveBtn.disabled = false;
-                    discountSaveBtn.removeAttribute('disabled');
-                    discountSaveBtn.style.display = 'block';
+        // Show restricted view (only hides edit buttons)
+        function showRestrictedView() {
+            if (!currentUserPermissions.canManageSettings) {
+                document.querySelectorAll('.edit-toggle').forEach(btn => { btn.style.display = 'none'; });
+                document.getElementById('business-save').style.display = 'none';
+                document.getElementById('business-cancel').style.display = 'none';
+                document.getElementById('tax-save').style.display = 'none';
+                document.getElementById('tax-cancel').style.display = 'none';
+                document.getElementById('business-name').disabled = true;
+                document.getElementById('business-type').disabled = true;
+                document.getElementById('business-address').disabled = true;
+                document.getElementById('business-phone').disabled = true;
+                document.getElementById('tax-rate').disabled = true;
+                document.getElementById('tax-name').disabled = true;
+                document.getElementById('tax-inclusive').disabled = true; 
+                document.getElementById('tax-enabled').disabled = true;
+                const businessCard = document.querySelector('.settings-card:first-child .settings-body');
+                if (businessCard && !businessCard.querySelector('.permission-info')) {
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'permission-info';
+                    infoDiv.innerHTML = '<i class="bi bi-info-circle"></i> View-only mode. You cannot edit these settings.';
+                    businessCard.insertBefore(infoDiv, businessCard.firstChild);
                 }
-
-                discountCancelBtn.style.display = 'block';
-                discountEditToggle.style.display = 'none';
-            } else {
-                disableDiscountFormInputs();
-
-                // Hide save/cancel buttons
-                if (discountSaveBtn) {
-                    discountSaveBtn.disabled = true;
-                    discountSaveBtn.setAttribute('disabled', 'disabled');
-                    discountSaveBtn.style.display = 'none';
+                const taxCard = document.querySelector('.settings-card:nth-child(2) .settings-body');
+                if (taxCard && !taxCard.querySelector('.permission-info')) {
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'permission-info';
+                    infoDiv.innerHTML = '<i class="bi bi-info-circle"></i> View-only mode. You cannot edit these settings.';
+                    taxCard.insertBefore(infoDiv, taxCard.firstChild);
                 }
-
-                discountCancelBtn.style.display = 'none';
-                discountEditToggle.style.display = 'block';
             }
         }
-
-        // Tab switching functionality
-        function setupDiscountTabs() {
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Remove active class from all buttons and contents
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabContents.forEach(content => {
-                        content.classList.remove('active');
-                        content.style.display = 'none';
-                    });
-
-                    // Add active class to clicked button
-                    button.classList.add('active');
-
-                    // Show corresponding content
-                    const tabId = button.getAttribute('data-tab');
-                    const tabContent = document.getElementById(`tab-${tabId}`);
-                    if (tabContent) {
-                        tabContent.classList.add('active');
-                        tabContent.style.display = 'block';
-                    }
-                });
-            });
-        }
-
-        // Load current user
-        function loadCurrentUser() {
-            const token = localStorage.getItem('token');
-            const userData = JSON.parse(localStorage.getItem('user'));
-
-            if (token && userData) {
-                document.querySelectorAll('.user-name').forEach(el => {
-                    el.textContent = userData.fullName || userData.email || 'User';
-                });
-
-                document.querySelectorAll('.user-role').forEach(el => {
-                    el.textContent = userData.role === 'admin' ? 'Administrator' :
-                        userData.role === 'cashier' ? 'Cashier' :
-                            userData.role === 'manager' ? 'Manager' :
-                                userData.role || 'User';
-                });
-
-                document.querySelectorAll('.avatar').forEach(el => {
-                    if (userData.fullName) {
-                        el.textContent = userData.fullName.charAt(0).toUpperCase();
-                    } else if (userData.email) {
-                        el.textContent = userData.email.charAt(0).toUpperCase();
-                    }
-                });
-
-                return userData;
-            } else {
-                window.location.href = 'login.html';
-                return null;
-            }
-        }
-
-        // Fetch business settings from backend (ADMIN ONLY)
-        async function fetchBusinessSettings() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                console.log('Fetching business settings (admin only)...');
-
-                const response = await fetch('http://localhost:3001/api/settings/business', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                // Handle unauthorized/forbidden
-                if (response.status === 403) {
-                    console.log('User is not admin - showing restricted view');
-                    showRestrictedView();
-                    return { success: false, isAdmin: false };
-                }
-
-                if (response.status === 401) {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch business settings: ${response.status}`);
-                }
-
-                const result = await response.json();
-
-                if (result.success && result.business) {
-                    console.log('Business data loaded for admin:', result.business);
-                    updateBusinessFormFields(result.business);
-                    return { success: true, isAdmin: true };
-                }
-
-                return { success: false, isAdmin: false };
-
-            } catch (error) {
-                console.error('Error fetching business settings:', error);
-
-                // If it's a 403 error (not admin), show restricted view
-                if (error.message.includes('403') || error.message.includes('Forbidden')) {
-                    showRestrictedView();
-                } else {
-                    showToast('Failed to load settings', 'error');
-                }
-
-                return { success: false, isAdmin: false };
-            }
-        }
-
-        // Update form fields with business data (ADMIN ONLY)
-        function updateBusinessFormFields(businessData) {
-            // Business Information
-            document.getElementById('business-name').value = businessData.name || '';
-
-            const businessTypeSelect = document.getElementById('business-type');
-            if (businessTypeSelect && businessData.type) {
-                businessTypeSelect.value = businessData.type;
-            }
-
-            document.getElementById('business-address').value = businessData.address || '';
-            document.getElementById('business-phone').value = businessData.phone || '';
-
-            // Owner's name
-            if (businessData.owner) {
-                document.getElementById('business-owner').value = businessData.owner.fullName || '';
-            }
-
-            // Email (from current user, not business)
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (userData && userData.email) {
-                document.querySelector('input[type="email"]').value = userData.email;
-            }
-
-            // Tax Settings - IMPORTANT: Check if taxSettings exists
-            if (businessData.taxSettings) {
-                console.log('Tax settings found:', businessData.taxSettings);
-                document.getElementById('tax-rate').value = businessData.taxSettings.rate || 8.0;
-                document.getElementById('tax-name').value = businessData.taxSettings.taxName || 'Sales Tax';
-
-                // Set taxInclusive - default to true if not specified
-                const taxInclusive = businessData.taxSettings.taxInclusive !== false;
-                document.getElementById('tax-inclusive').checked = taxInclusive;
-
-                // Set tax enabled
-                document.getElementById('tax-enabled').checked = businessData.taxSettings.enabled || false;
-
-                // Log for debugging
-                console.log('Setting taxInclusive to:', taxInclusive);
-                console.log('Setting taxEnabled to:', businessData.taxSettings.enabled);
-            } else {
-                console.log('No tax settings found in business data');
-                // Set defaults
-                document.getElementById('tax-rate').value = 8.0;
-                document.getElementById('tax-name').value = 'Sales Tax';
-                document.getElementById('tax-inclusive').checked = true;
-                document.getElementById('tax-enabled').checked = true;
-            }
-        }
-
-        // Update business settings (ADMIN ONLY)
-        async function updateBusinessSettings() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                const name = document.getElementById('business-name').value.trim();
-                const type = document.getElementById('business-type').value;
-                const phone = document.getElementById('business-phone').value.trim();
-                const address = document.getElementById('business-address').value.trim();
-
-                if (!name || !type || !phone || !address) {
-                    showToast('All fields are required', 'error');
-                    return;
-                }
-
-                const businessData = {
-                    name: name,
-                    type: type.toLowerCase(),
-                    phone: phone,
-                    address: address
-                };
-
-                console.log('Sending business update:', businessData);
-
-                const response = await fetch('http://localhost:3001/api/settings/business', {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(businessData)
-                });
-
-                const result = await response.json();
-                console.log('Update response:', result);
-
-                if (response.ok && result.success) {
-                    showToast('Business settings updated successfully', 'success');
-                    toggleEditMode('business', false);
-                } else {
-                    if (result.errors && result.errors.length > 0) {
-                        const errorMessages = result.errors.map(err => `${err.field}: ${err.message}`).join(', ');
-                        showToast(`Error: ${errorMessages}`, 'error');
-                    } else {
-                        showToast(result.message || 'Failed to update business settings', 'error');
-                    }
-                }
-            } catch (error) {
-                console.error('Error updating business settings:', error);
-                showToast('An error occurred while updating settings', 'error');
-            }
-        }
-
-        // Update tax settings (ADMIN ONLY)
-        async function updateTaxSettings() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                const enabled = document.getElementById('tax-enabled').checked;
-                const taxInclusive = document.getElementById('tax-inclusive').checked;
-                const rate = document.getElementById('tax-rate').value;
-                const taxName = document.getElementById('tax-name').value.trim();
-
-                if (rate === '' || isNaN(parseFloat(rate))) {
-                    showToast('Please enter a valid tax rate', 'error');
-                    return;
-                }
-
-                const taxData = {
-                    enabled: enabled,
-                    taxInclusive: taxInclusive,
-                    rate: parseFloat(rate),
-                    taxName: taxName
-                };
-
-                console.log('Sending tax update:', taxData);
-
-                const response = await fetch('http://localhost:3001/api/settings/tax', {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(taxData)
-                });
-
-                const result = await response.json();
-                console.log('Tax update response:', result);
-
-                if (response.ok && result.success) {
-                    showToast('Tax settings updated successfully', 'success');
-                    toggleEditMode('tax', false);
-
-                    // Update the display with new settings
-                    if (result.taxSettings) {
-                        document.getElementById('tax-rate').value = result.taxSettings.rate || 8.0;
-                        document.getElementById('tax-name').value = result.taxSettings.taxName || 'Sales Tax';
-                        document.getElementById('tax-inclusive').checked = result.taxSettings.taxInclusive !== false;
-                        document.getElementById('tax-enabled').checked = result.taxSettings.enabled || false;
-                    }
-                } else {
-                    if (result.errors && result.errors.length > 0) {
-                        const errorMessages = result.errors.map(err => `${err.field}: ${err.message}`).join(', ');
-                        showToast(`Error: ${errorMessages}`, 'error');
-                    } else {
-                        showToast(result.message || 'Failed to update tax settings', 'error');
-                    }
-                }
-            } catch (error) {
-                console.error('Error updating tax settings:', error);
-                showToast('An error occurred while updating settings', 'error');
-            }
-        }
-
-        // Fetch discount settings from backend
-        // Fetch discount settings from backend
-        async function fetchDiscountSettings() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                console.log('Fetching discount settings...');
-
-                const response = await fetch('http://localhost:3001/api/discounts/settings', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.status === 403) {
-                    console.log('User is not admin - discount settings restricted');
-                    return { success: false, isAdmin: false };
-                }
-
-                if (response.status === 401) {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                if (!response.ok) {
-                    // If endpoint doesn't exist yet, set defaults
-                    console.log('Discount endpoint not available, setting defaults');
-                    const defaultDiscountSettings = getDefaultDiscountSettings();
-                    updateDiscountFormFields(defaultDiscountSettings);
-                    return { success: false, isAdmin: true };
-                }
-
-                const result = await response.json();
-
-                if (result.success && result.discountSettings) {
-                    console.log('Discount settings loaded:', result.discountSettings);
-                    updateDiscountFormFields(result.discountSettings);
-                    return { success: true, isAdmin: true };
-                }
-
-                // If no data returned, set defaults
-                const defaultDiscountSettings = getDefaultDiscountSettings();
-                updateDiscountFormFields(defaultDiscountSettings);
-                return { success: false, isAdmin: true };
-
-            } catch (error) {
-                console.error('Error fetching discount settings:', error);
-
-                // Set defaults if fetch fails
-                const defaultDiscountSettings = getDefaultDiscountSettings();
-                updateDiscountFormFields(defaultDiscountSettings);
-                return { success: false, isAdmin: true };
-            }
-        }
-
-        // Get default discount settings
-        function getDefaultDiscountSettings() {
-            return {
-                presets: [5, 10, 15, 20, 25, ''],
-                allowedTypes: ['percentage', 'fixed'],
-                defaults: {
-                    taxBeforeDiscount: true,
-                    rounding: true
-                },
-                applicationOrder: ['product', 'customer', 'order'],
-                priority: 'cumulative',
-                stacking: {
-                    multiple: false,
-                    couponProduct: false,
-                    loyaltyWithAll: true
-                },
-                coupons: {
-                    enabled: true,
-                    autoValidate: true,
-                    onePerOrder: false
-                },
-                timeBased: {
-                    happyHour: false,
-                    earlyBird: false
-                },
-                loyalty: {
-                    autoApply: true
-                },
-                limits: {
-                    requireManagerApproval: true,
-                    managerThreshold: 25,
-                    maxDiscountEnabled: false,
-                    maxDiscountPercent: 50,
-                    cashierLimitEnabled: false,
-                    cashierMaxPercent: 15,
-                    minPurchaseEnabled: false,
-                    minPurchaseAmount: 10
-                }
-            };
-        }
-
-        // Update discount form fields with data
-        function updateDiscountFormFields(discountData) {
-            if (!discountData) return;
-
-            console.log('Updating discount form fields:', discountData);
-
-            // Quick presets
-            if (discountData.presets && Array.isArray(discountData.presets)) {
-                const presetInputs = document.querySelectorAll('.preset-input');
-                discountData.presets.forEach((preset, index) => {
-                    if (index < presetInputs.length) {
-                        presetInputs[index].value = preset || '';
-                    }
-                });
-            }
-
-            // Discount types
-            if (discountData.allowedTypes) {
-                document.getElementById('type-percentage').checked = discountData.allowedTypes.includes('percentage');
-                document.getElementById('type-fixed').checked = discountData.allowedTypes.includes('fixed');
-                document.getElementById('type-bogo').checked = discountData.allowedTypes.includes('bogo');
-                document.getElementById('type-bulk').checked = discountData.allowedTypes.includes('bulk');
-            }
-
-            // Default behavior
-            if (discountData.defaults) {
-                document.getElementById('default-tax-before-discount').checked = discountData.defaults.taxBeforeDiscount !== false;
-                document.getElementById('default-rounding').checked = discountData.defaults.rounding !== false;
-            }
-
-            // Application order
-            if (discountData.applicationOrder) {
-                document.getElementById('order-product').checked = discountData.applicationOrder.includes('product');
-                document.getElementById('order-category').checked = discountData.applicationOrder.includes('category');
-                document.getElementById('order-customer').checked = discountData.applicationOrder.includes('customer');
-                document.getElementById('order-order').checked = discountData.applicationOrder.includes('order');
-            }
-
-            // Priority
-            if (discountData.priority) {
-                document.getElementById('discount-priority').value = discountData.priority;
-            }
-
-            // Stacking rules
-            if (discountData.stacking) {
-                document.getElementById('stack-multiple').checked = discountData.stacking.multiple || false;
-                document.getElementById('stack-coupon-product').checked = discountData.stacking.couponProduct || false;
-                document.getElementById('stack-loyalty-all').checked = discountData.stacking.loyaltyWithAll !== false;
-            }
-
-            // Coupon settings
-            if (discountData.coupons) {
-                document.getElementById('coupon-enabled').checked = discountData.coupons.enabled !== false;
-                document.getElementById('coupon-auto-validate').checked = discountData.coupons.autoValidate !== false;
-                document.getElementById('coupon-one-per-order').checked = discountData.coupons.onePerOrder || false;
-            }
-
-            // Time-based discounts
-            if (discountData.timeBased) {
-                document.getElementById('time-happyhour').checked = discountData.timeBased.happyHour || false;
-                document.getElementById('time-earlybird').checked = discountData.timeBased.earlyBird || false;
-            }
-
-            // Loyalty program
-            if (discountData.loyalty) {
-                document.getElementById('loyalty-auto-apply').checked = discountData.loyalty.autoApply !== false;
-            }
-
-            // Day-specific discounts
-            if (discountData.days) {
-                const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-                days.forEach(day => {
-                    const checkbox = document.getElementById(`day-${day}`);
-                    if (checkbox) {
-                        checkbox.checked = discountData.days[day] || false;
-                    }
-                });
-            }
-
-            // Limits
-            if (discountData.limits) {
-                document.getElementById('limit-manager-approval').checked = discountData.limits.requireManagerApproval || false;
-                document.getElementById('manager-threshold').value = discountData.limits.managerThreshold || 25;
-                document.getElementById('limit-max-discount').checked = discountData.limits.maxDiscountEnabled || false;
-                document.getElementById('max-discount').value = discountData.limits.maxDiscountPercent || 50;
-                document.getElementById('limit-cashier-max').checked = discountData.limits.cashierLimitEnabled || false;
-                document.getElementById('cashier-limit').value = discountData.limits.cashierMaxPercent || 15;
-                document.getElementById('limit-min-purchase').checked = discountData.limits.minPurchaseEnabled || false;
-                document.getElementById('min-purchase').value = discountData.limits.minPurchaseAmount || 10;
-            }
-        }
-
-        // Update discount settings
-        async function updateDiscountSettings() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                // Collect allowed discount types
-                const allowedTypes = [];
-                if (document.getElementById('type-percentage').checked) allowedTypes.push('percentage');
-                if (document.getElementById('type-fixed').checked) allowedTypes.push('fixed');
-                if (document.getElementById('type-bogo').checked) allowedTypes.push('bogo');
-                if (document.getElementById('type-bulk').checked) allowedTypes.push('bulk');
-
-                if (allowedTypes.length === 0) {
-                    showToast('At least one discount type must be enabled', 'error');
-                    return;
-                }
-
-                // Collect presets
-                const presets = [];
-                const presetInputs = document.querySelectorAll('.preset-input');
-                presetInputs.forEach((input, index) => {
-                    if (index < 5) { // First 5 are percentage inputs
-                        const value = input.value;
-                        presets.push(value ? parseInt(value) : null);
-                    }
-                });
-
-                // Validate presets
-                const invalidPreset = presets.find(preset => preset !== null && (preset < 0 || preset > 100));
-                if (invalidPreset !== undefined) {
-                    showToast('Preset values must be between 0 and 100', 'error');
-                    return;
-                }
-
-                // Collect application order
-                const applicationOrder = [];
-                if (document.getElementById('order-product').checked) applicationOrder.push('product');
-                if (document.getElementById('order-category').checked) applicationOrder.push('category');
-                if (document.getElementById('order-customer').checked) applicationOrder.push('customer');
-                if (document.getElementById('order-order').checked) applicationOrder.push('order');
-
-                // Collect day-specific discounts
-                const days = {};
-                const dayNames = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-                dayNames.forEach(day => {
-                    const checkbox = document.getElementById(`day-${day}`);
-                    if (checkbox) {
-                        days[day] = checkbox.checked;
-                    }
-                });
-
-                const discountData = {
-                    presets: presets,
-                    allowedTypes: allowedTypes,
-                    defaults: {
-                        taxBeforeDiscount: document.getElementById('default-tax-before-discount').checked,
-                        rounding: document.getElementById('default-rounding').checked
-                    },
-                    applicationOrder: applicationOrder,
-                    priority: document.getElementById('discount-priority').value,
-                    stacking: {
-                        multiple: document.getElementById('stack-multiple').checked,
-                        couponProduct: document.getElementById('stack-coupon-product').checked,
-                        loyaltyWithAll: document.getElementById('stack-loyalty-all').checked
-                    },
-                    coupons: {
-                        enabled: document.getElementById('coupon-enabled').checked,
-                        autoValidate: document.getElementById('coupon-auto-validate').checked,
-                        onePerOrder: document.getElementById('coupon-one-per-order').checked
-                    },
-                    timeBased: {
-                        happyHour: document.getElementById('time-happyhour').checked,
-                        earlyBird: document.getElementById('time-earlybird').checked
-                    },
-                    loyalty: {
-                        autoApply: document.getElementById('loyalty-auto-apply').checked
-                    },
-                    days: days,
-                    limits: {
-                        requireManagerApproval: document.getElementById('limit-manager-approval').checked,
-                        managerThreshold: parseInt(document.getElementById('manager-threshold').value) || 0,
-                        maxDiscountEnabled: document.getElementById('limit-max-discount').checked,
-                        maxDiscountPercent: parseInt(document.getElementById('max-discount').value) || 0,
-                        cashierLimitEnabled: document.getElementById('limit-cashier-max').checked,
-                        cashierMaxPercent: parseInt(document.getElementById('cashier-limit').value) || 0,
-                        minPurchaseEnabled: document.getElementById('limit-min-purchase').checked,
-                        minPurchaseAmount: parseFloat(document.getElementById('min-purchase').value) || 0
-                    }
-                };
-
-                console.log('Sending discount update:', discountData);
-
-                // Validate manager threshold
-                if (discountData.limits.requireManagerApproval &&
-                    (discountData.limits.managerThreshold < 0 || discountData.limits.managerThreshold > 100)) {
-                    showToast('Manager approval threshold must be between 0 and 100', 'error');
-                    return;
-                }
-
-                const response = await fetch('http://localhost:3001/api/settings/discount', {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(discountData)
-                });
-
-                const result = await response.json();
-                console.log('Discount update response:', result);
-
-                if (response.ok && result.success) {
-                    showToast('Discount settings updated successfully', 'success');
-                    toggleDiscountEditMode(false);
-                } else {
-                    if (result.errors && result.errors.length > 0) {
-                        const errorMessages = result.errors.map(err => `${err.field}: ${err.message}`).join(', ');
-                        showToast(`Error: ${errorMessages}`, 'error');
-                    } else {
-                        showToast(result.message || 'Failed to update discount settings', 'error');
-                    }
-                }
-            } catch (error) {
-                console.error('Error updating discount settings:', error);
-                showToast('An error occurred while updating discount settings', 'error');
-            }
-        }
-
-        // CUSTOM DISCOUNT CREATOR CODE
-
-
-        let createdDiscounts = [];
-        let selectedCategories = new Set();
-        let selectedProducts = new Set();
-
-        // Initialize Custom Discount Creator
-        async function initCustomDiscountCreator() {
-            try {
-                // Load categories first
-                await fetchCategories();
-                // Then load products
-                await fetchProducts();
-                setupDiscountCreatorEventListeners();
-                setupDiscountTypeSelector();
-                setDefaultDiscountType();
-                updateDiscountPreview();
-            }
-            catch (error) {
-                console.error('Error initializing discount creator:', error);
-                showToast('Failed to load products and categories', 'error');
-            }
-        }
-
-        // Fetch categories from backend
-        async function fetchCategories() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                console.log('Fetching categories from backend...');
-
-                const response = await fetch('http://localhost:3001/api/categories', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.status === 401) {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch categories: ${response.status}`);
-                }
-
-                const result = await response.json();
-
-                if (result.success && result.categories) {
-                    console.log('Categories loaded:', result.categories);
-                    categories = result.categories;
-
-                    // Add product count to each category
-                    const products = await fetchProductsCount();
-                    categories.forEach(category => {
-                        const categoryProducts = products.filter(p =>
-                            p.category === category._id ||
-                            p.category === category.id ||
-                            (typeof p.category === 'object' && (p.category._id === category._id || p.category.id === category.id))
-                        );
-                        category.productCount = categoryProducts.length;
-                    });
-
-                    loadCategories();
-                    return categories;
-                } else {
-                    console.error('No categories found:', result.message);
-                    categories = [];
-                    loadCategories();
-                    return [];
-                }
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-                categories = [];
-                loadCategories();
-                return [];
-            }
-        }
-
-        async function fetchProductsCount() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return [];
-                }
-
-                const response = await fetch('http://localhost:3001/api/inventory', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    return [];
-                }
-
-                const result = await response.json();
-                return result.success ? result.inventory : [];
-            } catch (error) {
-                console.error('Error fetching products for count:', error);
-                return [];
-            }
-        }
-
-        // Ensure categories are loaded before formatting products
-        async function ensureCategoriesLoaded() {
-            if (categories.length === 0) {
-                console.log('Categories not loaded, fetching now...');
-                await fetchCategoriesFromBackend();
-            }
-        }
-
-
-        // Ensure categories are loaded before formatting products
-        async function ensureCategoriesLoaded() {
-            if (categories.length === 0) {
-                console.log('Categories not loaded, fetching now...');
-                await fetchCategoriesFromBackend();
-            }
-        }
-
-        // fetch products from backend
-        async function fetchProducts() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                console.log('Fetching products from backend...');
-
-                // Fetch products
-                const response = await fetch('http://localhost:3001/api/inventory', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.status === 401) {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch products: ${response.status}`);
-                }
-
-                const result = await response.json();
-
-                if (result.success && result.inventory) {
-                    // First fetch categories if not loaded
-                    if (categories.length === 0) {
-                        await fetchCategories();
-                    }
-
-                    // Format products with proper category mapping
-                    sampleProducts = await formatProductsData(result.inventory);
-                    console.log('Formatted products:', sampleProducts);
-                    loadProducts();
-                } else {
-                    sampleProducts = [];
-                    loadProducts();
-                }
-            } catch (error) {
-                console.error('Error fetching products:', error);
-                sampleProducts = [];
-                loadProducts();
-            }
-        }
-
-        async function formatProductsData(products) {
-            console.log('Raw products data:', products);
-            console.log('Available categories:', categories);
-
-            return products.map(product => {
-                let categoryName = 'Uncategorized';
-                let categoryId = product.category;
-
-                // Find category name by ID
-                if (product.category) {
-                    let category;
-
-                    // If category is populated object (from populated query)
-                    if (typeof product.category === 'object') {
-                        category = product.category;
-                        categoryName = category.name || 'Uncategorized';
-                        categoryId = category._id || category.id;
-                    }
-                    // If category is a string ID
-                    else if (typeof product.category === 'string') {
-                        // Try to find in categories array
-                        category = categories.find(c =>
-                            c._id === product.category ||
-                            c.id === product.category ||
-                            (c._id && c._id.toString() === product.category) ||
-                            (c.id && c.id.toString() === product.category)
-                        );
-
-                        if (category) {
-                            categoryName = category.name || 'Uncategorized';
-                            categoryId = category._id || category.id;
-                        } else {
-                            console.log(`Category not found for ID: ${product.category}`);
-                        }
-                    }
-                }
-
-                const formattedProduct = {
-                    id: product._id || product.id,
-                    name: product.name || 'Unnamed Product',
-                    category: categoryName,
-                    categoryId: categoryId,
-                    price: product.price || product.salePrice || 0,
-                    sku: product.sku || product.productId || '',
-                    stock: product.quantity || product.stockQuantity || product.stock || 0
-                };
-
-                console.log(`Formatted product: ${formattedProduct.name}, Category: ${formattedProduct.category}, Category ID: ${formattedProduct.categoryId}`);
-                return formattedProduct;
-            });
-        }
-
-        function setDefaultDiscountType() {
-            const typeOptions = document.querySelectorAll('.type-option');
-
-            // Find the percentage option
-            const percentageOption = Array.from(typeOptions).find(option =>
-                option.dataset.type === 'percentage'
-            );
-
-            // If percentage option exists, activate it
-            if (percentageOption) {
-                // Remove active class from all
-                typeOptions.forEach(opt => {
-                    opt.classList.remove('active');
-                    opt.style.borderColor = 'var(--border-color)';
-                    opt.style.background = 'transparent';
-                    const icon = opt.querySelector('i');
-                    const text = opt.querySelectorAll('div');
-                    if (icon) icon.style.color = 'var(--text-secondary)';
-                    text.forEach(t => t.style.color = 'var(--text-primary)');
-                });
-
-                // Add active class to percentage
-                percentageOption.classList.add('active');
-                percentageOption.style.borderColor = 'var(--primary)';
-                percentageOption.style.background = 'var(--secondary)';
-                const icon = percentageOption.querySelector('i');
-                const text = percentageOption.querySelectorAll('div');
-                if (icon) icon.style.color = 'var(--primary)';
-                text.forEach(t => t.style.color = 'var(--primary)');
-
-                // Show percentage input, hide fixed and BOGO
-                const valueSection = document.getElementById('discount-value-section');
-                const bogoSection = document.getElementById('bogo-section');
-                const applyToSection = document.getElementById('product-category-selection');
-                const percentageDiscountInput = document.getElementById('discount-percentage');
-                const fixedDiscountInput = document.getElementById('discount-fixed');
-
-                if (valueSection) valueSection.style.display = 'block';
-                if (bogoSection) bogoSection.style.display = 'none';
-                if (applyToSection) applyToSection.style.display = 'block';
-                if (percentageDiscountInput) percentageDiscountInput.style.display = 'block';
-                if (fixedDiscountInput) fixedDiscountInput.style.display = 'none';
-
-                // // Set default percentage value
-                // if (percentageDiscountInput) {
-                //     percentageDiscountInput.value = '10'; // Default 10% discount
-                // }
-            }
-        }
-
-        function loadCategories() {
-            const container = document.querySelector('.category-checkboxes');
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            if (categories.length === 0) {
-                container.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-lg); color: var(--text-secondary);">
-                <i class="bi bi-folder-x" style="font-size: 24px; margin-bottom: var(--spacing-sm);"></i>
-                <div>No categories found</div>
-            </div>
-        `;
-                return;
-            }
-
-            categories.forEach(category => {
-                const div = document.createElement('div');
-                div.className = 'category-checkbox';
-                div.innerHTML = `
-            <input type="checkbox" id="cat-${category._id || category.id}" 
-                   class="category-checkbox-input" 
-                   data-category-id="${category._id || category.id}">
-            <label for="cat-${category._id || category.id}" style="cursor: pointer; flex: 1;">
-                <div style="font-weight: 600;">${category.name}</div>
-                <div style="font-size: 11px; color: var(--text-secondary);">
-                    ${category.productCount || 0} products
-                </div>
-            </label>
-        `;
-                container.appendChild(div);
-            });
-        }
-
-        function loadProducts() {
-            const container = document.querySelector('.product-checkboxes');
-            const buySelect = document.getElementById('bogo-buy-products');
-            const getSelect = document.getElementById('bogo-get-products');
-
-            if (!container || !buySelect || !getSelect) return;
-
-            container.innerHTML = '';
-            buySelect.innerHTML = '<option value="">Select products...</option>';
-            getSelect.innerHTML = '<option value="">Select products...</option>';
-
-            if (sampleProducts.length === 0) {
-                container.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-lg); color: var(--text-secondary);">
-                <i class="bi bi-box-seam" style="font-size: 24px; margin-bottom: var(--spacing-sm);"></i>
-                <div>No products found</div>
-                <div style="font-size: 11px; margin-top: var(--spacing-xs);">
-                    Add products in the Inventory section first
-                </div>
-            </div>
-        `;
-                return;
-            }
-
-            // Group products by category for display
-            const productsByCategory = {};
-            sampleProducts.forEach(product => {
-                if (!productsByCategory[product.category]) {
-                    productsByCategory[product.category] = [];
-                }
-                productsByCategory[product.category].push(product);
-            });
-
-            // Create product checkboxes grouped by category
-            Object.keys(productsByCategory).forEach(category => {
-                // Add category header
-                const header = document.createElement('div');
-                header.style.cssText = 'grid-column: 1 / -1; font-weight: 600; margin-top: var(--spacing-md); margin-bottom: var(--spacing-sm); color: var(--primary);';
-                header.textContent = category || 'Uncategorized';
-                container.appendChild(header);
-
-                // Add products
-                productsByCategory[category].forEach(product => {
-                    const div = document.createElement('div');
-                    div.className = 'product-checkbox';
-                    div.innerHTML = `
-                <input type="checkbox" id="prod-${product.id}" 
-                       class="product-checkbox-input" 
-                       data-product-id="${product.id}">
-                <label for="prod-${product.id}" style="cursor: pointer; flex: 1;">
-                    <div style="font-weight: 600;">${product.name}</div>
-                    <div style="font-size: 11px; color: var(--text-secondary);">
-                        $${product.price.toFixed(2)}      
-                        ${product.stock !== undefined ? `Stock: ${product.stock}` : ''}
-                    </div>
-                </label>
-            `;
-                    container.appendChild(div);
-
-                    // Add to BOGO dropdowns
-                    const option1 = document.createElement('option');
-                    option1.value = product.id;
-                    option1.textContent = `${product.name} ($${product.price.toFixed(2)})`;
-                    buySelect.appendChild(option1.cloneNode(true));
-                    getSelect.appendChild(option1);
-                });
-            });
-        }
-
-        function setupDiscountCreatorEventListeners() {
-            // Category selection
-            const selectAllCatBtn = document.querySelector('.btn-select-all');
-            const deselectAllCatBtn = document.querySelector('.btn-deselect-all');
-            const selectAllProdBtn = document.querySelector('.btn-select-all-products');
-            const deselectAllProdBtn = document.querySelector('.btn-deselect-all-products');
-
-            if (selectAllCatBtn) selectAllCatBtn.addEventListener('click', selectAllCategories);
-            if (deselectAllCatBtn) deselectAllCatBtn.addEventListener('click', deselectAllCategories);
-            if (selectAllProdBtn) selectAllProdBtn.addEventListener('click', selectAllProducts);
-            if (deselectAllProdBtn) deselectAllProdBtn.addEventListener('click', deselectAllProducts);
-
-            // Category checkbox change
-            document.addEventListener('change', function (e) {
-                if (e.target.classList.contains('category-checkbox-input')) {
-                    const categoryId = e.target.dataset.categoryId;
-                    if (e.target.checked) {
-                        selectedCategories.add(categoryId);
-                        // Auto-select all products in this category
-                        selectProductsInCategory(categoryId);
-                    } else {
-                        selectedCategories.delete(categoryId);
-                        // Auto-deselect all products in this category
-                        deselectProductsInCategory(categoryId);
-                    }
-                    updateDiscountPreview();
-                }
-
-                if (e.target.classList.contains('product-checkbox-input')) {
-                    const productId = e.target.dataset.productId;
-                    if (e.target.checked) {
-                        selectedProducts.add(productId);
-                    } else {
-                        selectedProducts.delete(productId);
-                    }
-                    updateDiscountPreview();
-                }
-            });
-
-            // Product search
-            const productSearch = document.getElementById('product-search');
-            if (productSearch) {
-                productSearch.addEventListener('input', function (e) {
-                    filterProducts(e.target.value);
-                });
-            }
-
-            // BOGO same product checkbox
-            const bogoSameProduct = document.getElementById('bogo-same-product');
-            if (bogoSameProduct) {
-                bogoSameProduct.addEventListener('change', function (e) {
-                    if (e.target.checked) {
-                        const buySelect = document.getElementById('bogo-buy-products');
-                        const getSelect = document.getElementById('bogo-get-products');
-                        getSelect.innerHTML = buySelect.innerHTML;
-                        getSelect.disabled = true;
-                    } else {
-                        document.getElementById('bogo-get-products').disabled = false;
-                    }
-                    updateDiscountPreview();
-                });
-            }
-
-            // Time restriction toggle
-            const enableTime = document.getElementById('enable-time');
-            if (enableTime) {
-                enableTime.addEventListener('change', function (e) {
-                    const startTime = document.getElementById('start-time');
-                    const endTime = document.getElementById('end-time');
-                    startTime.disabled = !e.target.checked;
-                    endTime.disabled = !e.target.checked;
-                    updateDiscountPreview();
-                });
-            }
-
-            // Week day selection
-            document.querySelectorAll('.day-option').forEach(option => {
-                option.addEventListener('click', function () {
-                    this.classList.toggle('active');
-                    updateDiscountPreview();
-                });
-            });
-
-            // Discount creation
-            const createBtn = document.getElementById('discount-create');
-            if (createBtn) {
-                createBtn.addEventListener('click', createDiscount);
-            }
-
-            // Reset form
-            const resetBtn = document.getElementById('discount-reset');
-            if (resetBtn) {
-                resetBtn.addEventListener('click', resetDiscountForm);
-            }
-
-            // Form input changes for preview
-            const previewInputs = [
-                'discount-name', 'discount-percentage', 'discount-fixed',
-                'condition-operator', 'condition-amount', 'start-time',
-                'end-time', 'start-date', 'end-date', 'bogo-buy-quantity',
-                'bogo-get-quantity', 'max-uses'
-            ];
-
-            previewInputs.forEach(inputId => {
-                const input = document.getElementById(inputId);
-                if (input) {
-                    input.addEventListener('input', updateDiscountPreview);
-                    input.addEventListener('change', updateDiscountPreview);
-                }
-            });
-
-            // Checkbox changes for preview
-            const previewCheckboxes = [
-                'option-auto-apply', 'option-cumulative', 'option-max-uses',
-                'option-one-per-customer', 'bogo-same-product', 'bogo-repeat',
-                'enable-time'
-            ];
-
-            previewCheckboxes.forEach(checkboxId => {
-                const checkbox = document.getElementById(checkboxId);
-                if (checkbox) {
-                    checkbox.addEventListener('change', updateDiscountPreview);
-                }
-            });
-
-            // BOGO select changes
-            const bogoBuySelect = document.getElementById('bogo-buy-products');
-            const bogoGetSelect = document.getElementById('bogo-get-products');
-            if (bogoBuySelect) bogoBuySelect.addEventListener('change', updateDiscountPreview);
-            if (bogoGetSelect) bogoGetSelect.addEventListener('change', updateDiscountPreview);
-        }
-
-        function setupDiscountTypeSelector() {
-            const typeOptions = document.querySelectorAll('.type-option');
-
-            typeOptions.forEach(option => {
-                option.addEventListener('click', function () {
-                    // Remove active class from all
-                    typeOptions.forEach(opt => {
-                        opt.classList.remove('active');
-                        opt.style.borderColor = 'var(--border-color)';
-                        opt.style.background = 'transparent';
-                        const icon = opt.querySelector('i');
-                        const text = opt.querySelectorAll('div');
-                        if (icon) icon.style.color = 'var(--text-secondary)';
-                        text.forEach(t => t.style.color = 'var(--text-primary)');
-                    });
-
-                    // Add active class to clicked
-                    this.classList.add('active');
-                    this.style.borderColor = 'var(--primary)';
-                    this.style.background = 'var(--secondary)';
-                    const icon = this.querySelector('i');
-                    const text = this.querySelectorAll('div');
-                    if (icon) icon.style.color = 'var(--primary)';
-                    text.forEach(t => t.style.color = 'var(--primary)');
-
-                    const type = this.dataset.type;
-                    toggleDiscountType(type);
-                });
-            });
-        }
-
-        function toggleDiscountType(type) {
-            const valueSection = document.getElementById('discount-value-section');
-            const bogoSection = document.getElementById('bogo-section');
-            const applyToSection = document.getElementById('product-category-selection');
-            const percentageDiscountInput = document.getElementById('discount-percentage');
-            const fixedDiscountInput = document.getElementById('discount-fixed');
-
-            if (type === 'bogo') {
-                if (valueSection) valueSection.style.display = 'none';
-                if (bogoSection) bogoSection.style.display = 'block';
-                if (applyToSection) applyToSection.style.display = 'none';
-
-                // Clear selections since they're not needed for BOGO
-                clearApplyToSelections();
-            } else if (type === 'percentage') {
-                if (valueSection) valueSection.style.display = 'block';
-                if (bogoSection) bogoSection.style.display = 'none';
-                if (applyToSection) applyToSection.style.display = 'block';
-                if (percentageDiscountInput) percentageDiscountInput.style.display = 'block';
-                if (fixedDiscountInput) fixedDiscountInput.style.display = 'none';
-            } else {
-                if (valueSection) valueSection.style.display = 'block';
-                if (bogoSection) bogoSection.style.display = 'none';
-                if (applyToSection) applyToSection.style.display = 'block';
-                if (percentageDiscountInput) percentageDiscountInput.style.display = 'none';
-                if (fixedDiscountInput) fixedDiscountInput.style.display = 'block';
-            }
-
-            updateDiscountPreview();
-        }
-
-        function selectAllCategories() {
-            selectedCategories.clear();
-            document.querySelectorAll('.category-checkbox-input').forEach(checkbox => {
-                checkbox.checked = true;
-                selectedCategories.add(checkbox.dataset.categoryId);
-            });
-            // Also select all products
-            selectAllProducts();
-            updateDiscountPreview();
-        }
-
-        function deselectAllCategories() {
-            selectedCategories.clear();
-            document.querySelectorAll('.category-checkbox-input').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            // Also deselect all products
-            deselectAllProducts();
-            updateDiscountPreview();
-        }
-
-        function selectAllProducts() {
-            selectedProducts.clear();
-            document.querySelectorAll('.product-checkbox-input').forEach(checkbox => {
-                checkbox.checked = true;
-                selectedProducts.add(checkbox.dataset.productId);
-            });
-            updateDiscountPreview();
-        }
-
-        function deselectAllProducts() {
-            selectedProducts.clear();
-            document.querySelectorAll('.product-checkbox-input').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            updateDiscountPreview();
-        }
-
-        function selectProductsInCategory(categoryId) {
-            console.log('Selecting products in category:', categoryId);
-            console.log('Available products:', sampleProducts);
-            console.log('Available categories:', categories);
-
-            const category = categories.find(c =>
-                c._id == categoryId ||
-                c.id == categoryId ||
-                (c._id && c._id.toString() === categoryId) ||
-                (c.id && c.id.toString() === categoryId)
-            );
-
-            if (!category) {
-                console.log('Category not found for ID:', categoryId);
-                return;
-            }
-
-            console.log(`Found category: ${category.name}, looking for products with category ID: ${category._id || category.id}`);
-
-            sampleProducts.forEach(product => {
-                // Check if product's categoryId matches
-                if (product.categoryId == categoryId ||
-                    product.categoryId == (category._id || category.id) ||
-                    (product.categoryId && product.categoryId.toString() === categoryId)) {
-
-                    console.log(`Found product in category: ${product.name}`);
-                    const checkbox = document.getElementById(`prod-${product.id}`);
-                    if (checkbox) {
-                        checkbox.checked = true;
-                        selectedProducts.add(product.id.toString());
-                    }
-                }
-            });
-
-            updateDiscountPreview();
-        }
-
-        function deselectProductsInCategory(categoryId) {
-            const category = categories.find(c =>
-                c._id == categoryId ||
-                c.id == categoryId ||
-                (c._id && c._id.toString() === categoryId) ||
-                (c.id && c.id.toString() === categoryId)
-            );
-
-            if (!category) return;
-
-            sampleProducts.forEach(product => {
-                if (product.categoryId == categoryId ||
-                    product.categoryId == (category._id || category.id) ||
-                    (product.categoryId && product.categoryId.toString() === categoryId)) {
-
-                    const checkbox = document.getElementById(`prod-${product.id}`);
-                    if (checkbox) {
-                        checkbox.checked = false;
-                        selectedProducts.delete(product.id.toString());
-                    }
-                }
-            });
-
-            updateDiscountPreview();
-        }
-
-        function filterProducts(searchTerm) {
-            const products = document.querySelectorAll('.product-checkbox');
-            searchTerm = searchTerm.toLowerCase();
-
-            products.forEach(product => {
-                const label = product.querySelector('label');
-                const text = label ? label.textContent.toLowerCase() : '';
-                product.style.display = text.includes(searchTerm) ? 'flex' : 'none';
-            });
-        }
-
-        function updateDiscountPreview() {
-            const preview = document.getElementById('discount-preview');
-            if (!preview) return;
-
-            const discountName = document.getElementById('discount-name')?.value || 'Untitled Discount';
-            const discountType = document.querySelector('.type-option.active')?.dataset.type || 'percentage';
-
-            let discountValue = '';
-            let discountDescription = '';
-            let productInfo = '';
-            let productCount = '';
-
-            if (discountType === 'bogo') {
-                const buyQuantity = document.getElementById('bogo-buy-quantity')?.value || 1;
-                const getQuantity = document.getElementById('bogo-get-quantity')?.value || 1;
-                const buySelect = document.getElementById('bogo-buy-products');
-                const getSelect = document.getElementById('bogo-get-products');
-
-                const buyOptions = buySelect ? Array.from(buySelect.selectedOptions) : [];
-                const getOptions = getSelect ? Array.from(getSelect.selectedOptions) : [];
-
-                const buyCount = buyOptions.length;
-                const getCount = getOptions.length;
-
-                // Format discount value
-                discountValue = `Buy ${buyQuantity} Get ${getQuantity} Free`;
-
-                // Format product info for BOGO
-                if (buyCount > 0 || getCount > 0) {
-                    // Get buy product names
-                    const buyNames = buyOptions.map(opt => {
-                        const product = sampleProducts.find(p => p.id == opt.value);
-                        return product ? product.name : opt.text.split(' (')[0];
-                    });
-
-                    // Get free product names
-                    const getNames = getOptions.map(opt => {
-                        const product = sampleProducts.find(p => p.id == opt.value);
-                        return product ? product.name : opt.text.split(' (')[0];
-                    });
-
-                    // Check if it's the same product BOGO
-                    const sameProduct = document.getElementById('bogo-same-product')?.checked;
-
-                    if (sameProduct && buyNames.length > 0) {
-                        // Same product BOGO
-                        productInfo = `Buy ${buyQuantity} ${buyNames[0]}, Get ${getQuantity} Free`;
-                        if (buyNames.length > 1) {
-                            productInfo += ` (and ${buyNames.length - 1} more)`;
-                        }
-                    } else {
-                        // Different products BOGO
-                        if (buyNames.length > 0 && getNames.length > 0) {
-                            productInfo = `Buy ${buyQuantity} ${buyNames.slice(0, 2).join(', ')}${buyNames.length > 2 ? '...' : ''}`;
-                            productInfo += `, Get ${getQuantity} ${getNames.slice(0, 2).join(', ')}${getNames.length > 2 ? '...' : ''} Free`;
-                        } else if (buyNames.length > 0) {
-                            productInfo = `Buy ${buyQuantity} ${buyNames.slice(0, 2).join(', ')}${buyNames.length > 2 ? '...' : ''}`;
-                        } else if (getNames.length > 0) {
-                            productInfo = `Get ${getQuantity} ${getNames.slice(0, 2).join(', ')}${getNames.length > 2 ? '...' : ''} Free`;
-                        }
-                    }
-
-                    // Set product count for summary
-                    productCount = productInfo;
-                } else {
-                    discountDescription = 'No products selected';
-                    productInfo = 'Select products in BOGO configuration';
-                    productCount = 'No products selected';
-                }
-            }
-            else {
-                const percentage = document.getElementById('discount-percentage')?.value;
-                const fixed = document.getElementById('discount-fixed')?.value;
-
-                if (percentage) {
-                    discountValue = `${percentage}% OFF`;
-                } else if (fixed) {
-                    discountValue = `$${fixed} OFF`;
-                } else {
-                    discountValue = 'No discount set';
-                }
-
-                // For percentage/fixed, show just the counts without names
-                let productSummary = [];
-                if (selectedCategories.size > 0) {
-                    productSummary.push(`${selectedCategories.size} categor${selectedCategories.size > 1 ? 'ies' : 'y'}`);
-                }
-                if (selectedProducts.size > 0) {
-                    productSummary.push(`${selectedProducts.size} product${selectedProducts.size > 1 ? 's' : ''}`);
-                }
-
-                // Only show "All products" if both categories and products are selected AND they represent all items
-                // Otherwise show "No products selected" if nothing is selected
-                if (productSummary.length > 0) {
-                    productCount = productSummary.join(', ');
-                } else {
-                    productCount = 'No products selected';
-                }
-            }
-
-            // Conditions
-            const conditions = [];
-            const amount = document.getElementById('condition-amount')?.value;
-            const operator = document.getElementById('condition-operator')?.value;
-            const enableTime = document.getElementById('enable-time')?.checked;
-
-            if (amount && operator) {
-                const operatorText = {
-                    '>=': '≥',
-                    '>': '>',
-                    '=': '=',
-                    '<': '<',
-                    '<=': '≤'
-                }[operator] || operator;
-                conditions.push(`Order ${operatorText} $${amount}`);
-            }
-
-            if (enableTime) {
-                const startTime = document.getElementById('start-time')?.value;
-                const endTime = document.getElementById('end-time')?.value;
-                if (startTime && endTime) {
-                    conditions.push(`${startTime} - ${endTime}`);
-                }
-            }
-
-            // Days
-            const activeDays = Array.from(document.querySelectorAll('.day-option.active'))
-                .map(day => day.dataset.day.substring(0, 3).toUpperCase())
-                .join(', ');
-
-            // Date range
-            const startDate = document.getElementById('start-date')?.value;
-            const endDate = document.getElementById('end-date')?.value;
-            let validRange = 'Always valid';
-            if (startDate && endDate) {
-                validRange = `${formatDate(startDate)} - ${formatDate(endDate)}`;
-            }
-
-            // Build preview HTML
-            preview.innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-    <div>
-        <div style="font-weight: 700; font-size: 16px;">${discountName}</div>
-        <div style="font-size: 12px; color: var(--text-secondary);">${discountDescription}</div>
-    </div>
-    <div style="font-weight: 700; font-size: 18px; color: var(--primary);">${discountValue}</div>
-</div>
-<div style="font-size: 12px; color: var(--text-secondary);">
-    <div><i class="bi bi-box"></i> Products: ${productCount}</div>
-    <div><i class="bi bi-filter"></i> Conditions: ${conditions.length > 0 ? conditions.join(', ') : 'None'}</div>
-    <div><i class="bi bi-calendar"></i> Days: ${activeDays || 'All days'}</div>
-    <div><i class="bi bi-clock"></i> Valid: ${validRange}</div>
-</div>
-`;
-        }
-
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        }
-
-        async function createDiscount() {
-            try {
-                const discountName = document.getElementById('discount-name')?.value.trim();
-                if (!discountName) {
-                    showToast('Please enter a discount name', 'error');
-                    return;
-                }
-
-                const discountType = document.querySelector('.type-option.active')?.dataset.type || 'percentage';
-
-                let discountData = {
-                    name: discountName,
-                    type: discountType,
-                    status: 'active'
-                };
-
-                // Product selection
-                discountData.categories = Array.from(selectedCategories);
-                discountData.products = Array.from(selectedProducts);
-
-                // Check if applying to all
-                if (discountType === 'bogo') {
-                    // For BOGO, check if products are selected in the BOGO selects
-                    const buySelect = document.getElementById('bogo-buy-products');
-                    const getSelect = document.getElementById('bogo-get-products');
-                    const buyProducts = buySelect ? Array.from(buySelect.selectedOptions) : [];
-                    const getProducts = getSelect ? Array.from(getSelect.selectedOptions) : [];
-
-                    if (buyProducts.length === 0 && getProducts.length === 0) {
-                        showToast('Please select at least one product for BOGO', 'error');
-                        return;
-                    }
-                    discountData.applyToAll = false;
-                }
-                else {
-                    // For percentage/fixed, check categories/products
-                    if (selectedCategories.size === 0 && selectedProducts.size === 0) {
-                        discountData.applyToAll = true;
-
-                    } else {
-                        discountData.applyToAll = false;
-                    }
-                }
-
-                // Discount value
-                if (discountType === 'bogo') {
-                    const buySelect = document.getElementById('bogo-buy-products');
-                    const getSelect = document.getElementById('bogo-get-products');
-
-                    const buyProducts = buySelect ? Array.from(buySelect.selectedOptions).map(opt => opt.value) : [];
-                    const getProducts = getSelect ? Array.from(getSelect.selectedOptions).map(opt => opt.value) : [];
-
-                    // IMPORTANT: Save products to discountData.products
-                    discountData.products = [...new Set([...buyProducts, ...getProducts])]; // Combine unique products
-                    discountData.bogo = {
-                        buyQuantity: parseInt(document.getElementById('bogo-buy-quantity')?.value || 1),
-                        getQuantity: parseInt(document.getElementById('bogo-get-quantity')?.value || 1),
-                        buyProducts: Array.from(document.getElementById('bogo-buy-products')?.selectedOptions || []).map(opt => opt.value),
-                        getProducts: Array.from(document.getElementById('bogo-get-products')?.selectedOptions || []).map(opt => opt.value),
-                        sameProduct: document.getElementById('bogo-same-product')?.checked || false,
-                        repeatable: document.getElementById('bogo-repeat')?.checked || false
-                    };
-
-                } else {
-                    const percentage = document.getElementById('discount-percentage')?.value;
-                    const fixed = document.getElementById('discount-fixed')?.value;
-
-                    if (percentage) {
-                        discountData.value = parseFloat(percentage);
-                        discountData.valueType = 'percentage';
-                    } else if (fixed) {
-                        discountData.value = parseFloat(fixed);
-                        discountData.valueType = 'fixed';
-                    } else {
-                        showToast('Please enter a discount value', 'error');
-                        return;
-                    }
-                }
-
-                // Conditions
-                discountData.conditions = {};
-                const amount = document.getElementById('condition-amount')?.value;
-                const operator = document.getElementById('condition-operator')?.value;
-                if (amount && operator) {
-                    discountData.conditions.minAmount = {
-                        amount: parseFloat(amount),
-                        operator: operator
-                    };
-                }
-
-                // Time restrictions
-                const enableTime = document.getElementById('enable-time')?.checked;
-                if (enableTime) {
-                    discountData.conditions.timeRange = {
-                        start: document.getElementById('start-time')?.value,
-                        end: document.getElementById('end-time')?.value,
-                        enabled: true
-                    };
-                }
-
-                // Days
-                const activeDays = Array.from(document.querySelectorAll('.day-option.active'))
-                    .map(day => day.dataset.day);
-                if (activeDays.length > 0) {
-                    discountData.conditions.days = activeDays;
-                }
-
-                // Date range
-                const startDate = document.getElementById('start-date')?.value;
-                const endDate = document.getElementById('end-date')?.value;
-                if (startDate) discountData.validFrom = startDate;
-                if (endDate) discountData.validUntil = endDate;
-
-                // Additional options
-                discountData.autoApply = document.getElementById('option-auto-apply')?.checked || false;
-                discountData.cumulative = document.getElementById('option-cumulative')?.checked || false;
-                discountData.onePerCustomer = document.getElementById('option-one-per-customer')?.checked || false;
-
-                const maxUses = document.getElementById('max-uses')?.value;
-                if (document.getElementById('option-max-uses')?.checked && maxUses) {
-                    discountData.maxUses = parseInt(maxUses);
-                    discountData.usedCount = 0;
-                }
-
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                let response;
-                let result;
-
-                // Check if we're updating or creating
-                if (editingDiscountId) {
-                    // UPDATE existing discount
-                    console.log(`Updating discount with ID: ${editingDiscountId}`, discountData);
-
-                    response = await fetch(`http://localhost:3001/api/discounts/${editingDiscountId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(discountData)
-                    });
-
-                    result = await response.json();
-
-                    if (response.ok && result.success) {
-                        showToast(`Discount "${discountName}" updated successfully`, 'success');
-                        // Clear editing mode
-                        editingDiscountId = null;
-                        // Reset button text
-                        document.getElementById('discount-create').textContent = 'Create Discount';
-                        resetDiscountForm();
-                    } else {
-                        showToast(result.message || 'Failed to update discount', 'error');
-                        return;
-                    }
-                } else {
-                    // CREATE new discount
-                    console.log('Creating new discount:', discountData);
-
-                    response = await fetch('http://localhost:3001/api/discounts', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(discountData)
-                    });
-
-                    result = await response.json();
-
-                    if (response.ok && result.success) {
-                        showToast(`Discount "${discountName}" created successfully`, 'success');
-                        resetDiscountForm();
-                    } else {
-                        showToast(result.message || 'Failed to create discount', 'error');
-                        return;
-                    }
-                }
-
-                // Refresh the discounts list
-                await fetchDiscountsFromServer();
-
-            } catch (error) {
-                console.error('Error saving discount:', error);
-                showToast('Failed to save discount', 'error');
-            }
-        }
-        function resetDiscountForm() {
-            // Clear editing mode
-            editingDiscountId = null;
-
-            // Reset button text
-            const createBtn = document.getElementById('discount-create');
-            if (createBtn) {
-                createBtn.textContent = 'Create Discount';
-            }
-
-            // Reset form fields
-            document.getElementById('discount-name').value = '';
-            document.getElementById('discount-percentage').value = '';
-            document.getElementById('discount-fixed').value = '';
-            document.getElementById('condition-amount').value = '';
-            document.getElementById('start-time').value = '';
-            document.getElementById('end-time').value = '';
-            document.getElementById('start-date').value = '';
-            document.getElementById('end-date').value = '';
-            document.getElementById('bogo-buy-quantity').value = '1';
-            document.getElementById('bogo-get-quantity').value = '1';
-            document.getElementById('max-uses').value = '100';
-
-            // Reset checkboxes
-            document.getElementById('option-auto-apply').checked = false;
-            document.getElementById('option-cumulative').checked = false;
-            document.getElementById('option-max-uses').checked = false;
-            document.getElementById('option-one-per-customer').checked = false;
-            document.getElementById('bogo-same-product').checked = false;
-            document.getElementById('bogo-repeat').checked = false;
-            document.getElementById('enable-time').checked = false;
-
-            // Reset time inputs disabled state
-            document.getElementById('start-time').disabled = true;
-            document.getElementById('end-time').disabled = true;
-
-            // Reset BOGO selects
-            const buySelect = document.getElementById('bogo-buy-products');
-            const getSelect = document.getElementById('bogo-get-products');
-            if (buySelect) {
-                buySelect.selectedIndex = -1;
-                getSelect.innerHTML = buySelect.innerHTML; // Reset get select options
-            }
-            if (getSelect) {
-                getSelect.selectedIndex = -1;
-                getSelect.disabled = false;
-            }
-
-            // Reset selections
-            selectedCategories.clear();
-            selectedProducts.clear();
-            document.querySelectorAll('.category-checkbox-input').forEach(cb => cb.checked = false);
-            document.querySelectorAll('.product-checkbox-input').forEach(cb => cb.checked = false);
-
-            // Reset days
-            document.querySelectorAll('.day-option').forEach(day => {
-                day.classList.remove('active');
-            });
-
-            // Reset to default type (percentage)
-            setDefaultDiscountType();
-
-            updateDiscountPreview();
-        }
-
-        function saveDiscountsToLocalStorage() {
-            try {
-                localStorage.setItem('orion_custom_discounts', JSON.stringify(createdDiscounts));
-            } catch (error) {
-                console.error('Error saving discounts to localStorage:', error);
-            }
-        }
-
-        async function fetchDiscountsFromServer() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) return;
-
-                const response = await fetch('http://localhost:3001/api/discounts', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.success) {
-                        createdDiscounts = result.discounts || [];
-                        updateDiscountsList();
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching discounts from server:', error);
-                // Fallback to localStorage
-                loadDiscountsFromLocalStorage();
-            }
-        }
-
-        
-
-        function updateDiscountsList() {
-            const container = document.getElementById('discounts-list');
-            if (!container) return;
-
-            if (createdDiscounts.length === 0) {
-                container.innerHTML = `
-            <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-secondary);">
-                <i class="bi bi-tag" style="font-size: 48px; opacity: 0.3; margin-bottom: var(--spacing-md);"></i>
-                <div>No discounts created yet</div>
-            </div>
-        `;
-                return;
-            }
-
-            container.innerHTML = '';
-
-            createdDiscounts.forEach((discount, index) => {
-                const discountEl = document.createElement('div');
-                discountEl.className = 'discount-item';
-
-                let valueText = '';
-                if (discount.type === 'bogo') {
-                    valueText = `Buy ${discount.bogo?.buyQuantity || 1} Get ${discount.bogo?.getQuantity || 1} Free`;
-                } else if (discount.type === 'percentage') {
-                    valueText = `${discount.value}% OFF`;
-                } else if (discount.type === 'fixed') {
-                    valueText = `$${discount.value} OFF`;
-                }
-
-                // Format product count
-                let productCount = 0;
-                if (discount.applyToAll) {
-                    productCount = 'All products';
-                } else {
-                    const categoryCount = discount.categories?.length || 0;
-                    const individualProductCount = discount.products?.length || 0;
-                    productCount = `${individualProductCount} products${categoryCount > 0 ? `, ${categoryCount} categories` : ''}`;
-                }
-
-                discountEl.innerHTML = `
-            <div class="discount-info">
-                <div style="font-weight: 600; margin-bottom: 2px;">${discount.name}</div>
-                <div style="font-size: 11px; color: var(--text-secondary);">
-                    ${valueText} • ${productCount}
-                    ${discount.status === 'active' ?
-                        '<span style="color: var(--success);">• Active</span>' :
-                        '<span style="color: var(--warning);">• Inactive</span>'}
-                </div>
-            </div>
-            <div class="discount-actions">
-                <button class="btn-toggle" onclick="toggleDiscountStatus(${index})" 
-                        style="padding: 6px 12px; border: none; border-radius: var(--radius-sm); cursor: pointer; 
-                               background: ${discount.status === 'active' ? 'var(--warning-light)' : 'var(--success-light)'}; 
-                               color: ${discount.status === 'active' ? 'var(--warning)' : 'var(--success)'};">
-                    ${discount.status === 'active' ? 'Deactivate' : 'Activate'}
-                </button>
-                <button class="btn-edit" onclick="editDiscount(${index})"
-                        style="padding: 6px; border: none; border-radius: var(--radius-sm); cursor: pointer;
-                               background: var(--info-light); color: var(--info);">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn-delete" onclick="deleteDiscount(${index})"
-                        style="padding: 6px; border: none; border-radius: var(--radius-sm); cursor: pointer;
-                               background: var(--warning-light); color: var(--warning);">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
-        `;
-
-                container.appendChild(discountEl);
-            });
-        }
-
-        // Global functions for discount actions
-        window.toggleDiscountStatus = async function (index) {
-            try {
-                const discount = createdDiscounts[index];
-                if (!discount) return;
-
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                const discountId = discount._id || discount.id;
-                const newStatus = discount.status === 'active' ? 'inactive' : 'active';
-
-                const response = await fetch(`http://localhost:3001/api/discounts/${discountId}/status`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ status: newStatus })
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.success) {
-                    // Update local array
-                    createdDiscounts[index].status = newStatus;
-                    updateDiscountsList();
-                    showToast(`Discount ${newStatus === 'active' ? 'activated' : 'deactivated'}`, 'success');
-                } else {
-                    showToast(result.message || 'Failed to update discount status', 'error');
-                }
-            } catch (error) {
-                console.error('Error toggling discount status:', error);
-                showToast('Failed to update discount status', 'error');
-            }
-        };
-
-        window.editDiscount = async function (index) {
-            try {
-                const discount = createdDiscounts[index];
-                if (!discount) return;
-
-                console.log('Editing discount:', discount);
-
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                const discountId = discount._id || discount.id;
-
-                // Fetch discount details from backend
-                const response = await fetch(`http://localhost:3001/api/discounts/${discountId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch discount: ${response.status}`);
-                }
-
-                const result = await response.json();
-
-                if (!result.success) {
-                    throw new Error(result.message || 'Failed to fetch discount details');
-                }
-
-                // Populate form with the fetched discount data
-                populateFormForEditing(result.discount);
-
-                // DON'T remove from list - keep it there until update is complete
-                // createdDiscounts.splice(index, 1);
-                // updateDiscountsList();
-
-                showToast('Discount loaded for editing', 'success');
-
-            } catch (error) {
-                console.error('Error fetching discount for editing:', error);
-                showToast('Failed to load discount for editing', 'error');
-            }
-        };
-
-        // Function to populate the form with discount data for editing
-        function populateFormForEditing(discount) {
-            console.log('Populating form with discount:', discount);
-
-            // Store the ID of the discount being edited
-            editingDiscountId = discount._id || discount.id;
-
-            // Set discount name
-            document.getElementById('discount-name').value = discount.name || '';
-
-            // Set discount type
-            const typeOptions = document.querySelectorAll('.type-option');
-            typeOptions.forEach(opt => {
-                opt.classList.remove('active');
-                opt.style.borderColor = 'var(--border-color)';
-                opt.style.background = 'transparent';
-                const icon = opt.querySelector('i');
-                const text = opt.querySelectorAll('div');
-                if (icon) icon.style.color = 'var(--text-secondary)';
-                text.forEach(t => t.style.color = 'var(--text-primary)');
-            });
-
-            // Find and activate the correct type
-            const typeOption = Array.from(typeOptions).find(opt => opt.dataset.type === discount.type);
-            if (typeOption) {
-                typeOption.classList.add('active');
-                typeOption.style.borderColor = 'var(--primary)';
-                typeOption.style.background = 'var(--secondary)';
-                const icon = typeOption.querySelector('i');
-                const text = typeOption.querySelectorAll('div');
-                if (icon) icon.style.color = 'var(--primary)';
-                text.forEach(t => t.style.color = 'var(--primary)');
-
-                // Toggle sections based on type
-                toggleDiscountType(discount.type);
-            }
-
-            // Set discount value based on type
-            if (discount.type === 'percentage') {
-                document.getElementById('discount-percentage').value = discount.value || '';
-            } else if (discount.type === 'fixed') {
-                document.getElementById('discount-fixed').value = discount.value || '';
-            } else if (discount.type === 'bogo' && discount.bogo) {
-                document.getElementById('bogo-buy-quantity').value = discount.bogo.buyQuantity || 1;
-                document.getElementById('bogo-get-quantity').value = discount.bogo.getQuantity || 1;
-                document.getElementById('bogo-same-product').checked = discount.bogo.sameProduct || false;
-                document.getElementById('bogo-repeat').checked = discount.bogo.repeatable || false;
-
-                // Select BOGO products
-                const buySelect = document.getElementById('bogo-buy-products');
-                const getSelect = document.getElementById('bogo-get-products');
-
-                if (buySelect && discount.bogo.buyProducts) {
-                    Array.from(buySelect.options).forEach(option => {
-                        option.selected = discount.bogo.buyProducts.includes(option.value);
-                    });
-                }
-
-                if (getSelect && discount.bogo.getProducts) {
-                    if (discount.bogo.sameProduct) {
-                        getSelect.innerHTML = buySelect.innerHTML;
-                        getSelect.disabled = true;
-                    }
-                    Array.from(getSelect.options).forEach(option => {
-                        option.selected = discount.bogo.getProducts.includes(option.value);
-                    });
-                }
-            }
-
-            // Clear existing selections
-            selectedCategories.clear();
-            selectedProducts.clear();
-            document.querySelectorAll('.category-checkbox-input').forEach(cb => cb.checked = false);
-            document.querySelectorAll('.product-checkbox-input').forEach(cb => cb.checked = false);
-
-            // Set categories
-            if (discount.categories && discount.categories.length > 0) {
-                discount.categories.forEach(category => {
-                    // Handle both object and string ID formats
-                    let categoryId;
-                    if (typeof category === 'object') {
-                        categoryId = category._id || category.id;
-                        console.log('Category is object, using ID:', categoryId, 'for category:', category.name);
-                    } else {
-                        categoryId = category;
-                        console.log('Category is string ID:', categoryId);
-                    }
-
-                    if (categoryId) {
-                        selectedCategories.add(categoryId);
-                        const checkbox = document.querySelector(`.category-checkbox-input[data-category-id="${categoryId}"]`);
-                        if (checkbox) {
-                            checkbox.checked = true;
-                            console.log('✓ Category checkbox checked for ID:', categoryId);
-                        }
-
-                        // Auto-select products in this category
-                        selectProductsInCategory(categoryId);
-                    }
-                });
-            }
-            // Set products
-            if (discount.products && discount.products.length > 0) {
-                discount.products.forEach(product => {
-                    // Handle both object and string ID formats
-                    let productId;
-                    if (typeof product === 'object') {
-                        productId = product._id || product.id;
-                        console.log('Product is object, using ID:', productId, 'for product:', product.name);
-                    } else {
-                        productId = product;
-                        console.log('Product is string ID:', productId);
-                    }
-
-                    if (productId) {
-                        selectedProducts.add(productId);
-                        const checkbox = document.querySelector(`.product-checkbox-input[data-product-id="${productId}"]`);
-                        if (checkbox) {
-                            checkbox.checked = true;
-                            console.log('✓ Checkbox checked for product ID:', productId);
-                        } else {
-                            console.log('✗ Checkbox not found for product ID:', productId);
-                        }
-                    }
-                });
-            }
-
-            // Set apply to all
-            if (discount.applyToAll) {
-                selectAllCategories();
-                selectAllProducts();
-            }
-
-            // Set conditions
-            if (discount.conditions) {
-                if (discount.conditions.minAmount) {
-                    document.getElementById('condition-operator').value = discount.conditions.minAmount.operator || '>=';
-                    document.getElementById('condition-amount').value = discount.conditions.minAmount.amount || '';
-                }
-
-                if (discount.conditions.timeRange && discount.conditions.timeRange.enabled) {
-                    document.getElementById('enable-time').checked = true;
-                    document.getElementById('start-time').value = discount.conditions.timeRange.start || '';
-                    document.getElementById('end-time').value = discount.conditions.timeRange.end || '';
-                    document.getElementById('start-time').disabled = false;
-                    document.getElementById('end-time').disabled = false;
-                }
-
-                if (discount.conditions.days && discount.conditions.days.length > 0) {
-                    document.querySelectorAll('.day-option').forEach(dayOption => {
-                        if (discount.conditions.days.includes(dayOption.dataset.day)) {
-                            dayOption.classList.add('active');
-                        } else {
-                            dayOption.classList.remove('active');
-                        }
-                    });
-                }
-            }
-
-            // Set date range
-            if (discount.validFrom) {
-                document.getElementById('start-date').value = discount.validFrom.split('T')[0];
-            }
-            if (discount.validUntil) {
-                document.getElementById('end-date').value = discount.validUntil.split('T')[0];
-            }
-
-            // Set options
-            document.getElementById('option-auto-apply').checked = discount.autoApply || false;
-            document.getElementById('option-cumulative').checked = discount.cumulative || false;
-            document.getElementById('option-one-per-customer').checked = discount.onePerCustomer || false;
-
-            if (discount.maxUses) {
-                document.getElementById('option-max-uses').checked = true;
-                document.getElementById('max-uses').value = discount.maxUses;
-            } else {
-                document.getElementById('option-max-uses').checked = false;
-                document.getElementById('max-uses').value = '100';
-            }
-
-            // Update preview
-            updateDiscountPreview();
-
-            // Scroll to the discount creator section
-            document.querySelector('.settings-card:nth-child(3)').scrollIntoView({ behavior: 'smooth' });
-
-            // Change button text to indicate update mode
-            const createBtn = document.getElementById('discount-create');
-            if (createBtn) {
-                createBtn.textContent = 'Update Discount';
-            }
-
-            setTimeout(() => {
-                console.log('Forcing product checkbox refresh...');
-                if (discount.products && discount.products.length > 0) {
-                    discount.products.forEach(product => {
-                        // Check if product is an object with _id or just a string ID
-                        let productId;
-                        if (typeof product === 'object') {
-                            productId = product._id || product.id;
-                            console.log('Product is object, extracted ID:', productId, 'for product:', product.name);
-                        } else {
-                            productId = product;
-                            console.log('Product is string ID:', productId);
-                        }
-
-                        if (productId) {
-                            const checkbox = document.getElementById(`prod-${productId}`);
-                            if (checkbox) {
-                                checkbox.checked = true;
-                                selectedProducts.add(productId);
-                                console.log('✓ Checkbox forced checked for:', productId);
-                            } else {
-                                console.log('✗ Checkbox still not found for ID:', productId);
-
-                                // Try to find by searching through all product checkboxes
-                                const allCheckboxes = document.querySelectorAll('.product-checkbox-input');
-                                console.log('All available product IDs:', Array.from(allCheckboxes).map(cb => cb.dataset.productId));
-
-                                // Try to find by matching name if it's an object
-                                if (typeof product === 'object' && product.name) {
-                                    const matchingCheckbox = Array.from(allCheckboxes).find(cb => {
-                                        const label = cb.closest('.product-checkbox')?.querySelector('label div:first-child')?.textContent;
-                                        return label && label.includes(product.name);
-                                    });
-                                    if (matchingCheckbox) {
-                                        matchingCheckbox.checked = true;
-                                        selectedProducts.add(matchingCheckbox.dataset.productId);
-                                        console.log('✓ Found by name for:', product.name);
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-                updateDiscountPreview();
-            }, 1500);
-        }
-
-        window.deleteDiscount = async function (index) {
-            try {
-                const discount = createdDiscounts[index];
-                if (!discount) return;
-
-                if (!confirm('Are you sure you want to delete this discount?')) {
-                    return;
-                }
-
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-
-                // Get the discount ID from the discount object
-                const discountId = discount._id || discount.id;
-
-                if (!discountId) {
-                    console.error('No discount ID found');
-                    showToast('Cannot delete discount: ID not found', 'error');
-                    return;
-                }
-
-                console.log(`Deleting discount with ID: ${discountId}`);
-
-                // Call the backend DELETE endpoint
-                const response = await fetch(`http://localhost:3001/api/discounts/${discountId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.success) {
-                    // Remove from local array
-                    createdDiscounts.splice(index, 1);
-                    updateDiscountsList();
-                    showToast('Discount deleted successfully', 'success');
-                } else {
-                    console.error('Delete failed:', result.message);
-                    showToast(result.message || 'Failed to delete discount', 'error');
-                }
-
-            } catch (error) {
-                console.error('Error deleting discount:', error);
-                showToast('Failed to delete discount. Please try again.', 'error');
-            }
-        };
 
         // Setup event listeners
         function setupEventListeners() {
-            // Business settings
-            const businessEditBtn = document.getElementById('business-edit-toggle');
-            if (businessEditBtn) {
-                businessEditBtn.addEventListener('click', () => {
-                    console.log('Business edit clicked');
-                    toggleEditMode('business', true);
-                });
-            }
-
-            const businessCancelBtn = document.getElementById('business-cancel');
-            if (businessCancelBtn) {
-                businessCancelBtn.addEventListener('click', () => {
-                    console.log('Business cancel clicked');
-                    toggleEditMode('business', false);
-                    fetchBusinessSettings();
-                });
-            }
-
-            const businessSaveBtn = document.getElementById('business-save');
-            if (businessSaveBtn) {
-                businessSaveBtn.addEventListener('click', updateBusinessSettings);
-            }
-
-            // Tax settings
-            const taxEditBtn = document.getElementById('tax-edit-toggle');
-            if (taxEditBtn) {
-                taxEditBtn.addEventListener('click', () => {
-                    console.log('Tax edit clicked');
-                    toggleEditMode('tax', true);
-                });
-            }
-
-            const taxCancelBtn = document.getElementById('tax-cancel');
-            if (taxCancelBtn) {
-                taxCancelBtn.addEventListener('click', () => {
-                    console.log('Tax cancel clicked');
-                    toggleEditMode('tax', false);
-                    fetchBusinessSettings();
-                });
-            }
-
-            const taxSaveBtn = document.getElementById('tax-save');
-            if (taxSaveBtn) {
-                taxSaveBtn.addEventListener('click', updateTaxSettings);
-            }
-
-            // Discount settings
-            const discountEditBtn = document.getElementById('discount-edit-toggle');
-            if (discountEditBtn) {
-                discountEditBtn.addEventListener('click', () => {
-                    console.log('Discount edit clicked');
-                    toggleDiscountEditMode(true);
-                });
-            }
-
-            const discountCancelBtn = document.getElementById('discount-cancel');
-            if (discountCancelBtn) {
-                discountCancelBtn.addEventListener('click', () => {
-                    console.log('Discount cancel clicked');
-                    toggleDiscountEditMode(false);
-                    fetchDiscountSettings();
-                });
-            }
-
-            const discountSaveBtn = document.getElementById('discount-save');
-            if (discountSaveBtn) {
-                discountSaveBtn.addEventListener('click', updateDiscountSettings);
-            }
-
-            // Setup discount tabs
-            setupDiscountTabs();
-
-            // Logout
-            const logoutBtn = document.querySelector('.logout-btn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = 'login.html';
-                });
-            }
+            document.getElementById('business-edit-toggle')?.addEventListener('click', () => toggleEditMode('business', true));
+            document.getElementById('business-cancel')?.addEventListener('click', () => toggleEditMode('business', false));
+            document.getElementById('business-save')?.addEventListener('click', updateBusinessSettings);
+            document.getElementById('tax-edit-toggle')?.addEventListener('click', () => toggleEditMode('tax', true));
+            document.getElementById('tax-cancel')?.addEventListener('click', () => toggleEditMode('tax', false));
+            document.getElementById('tax-save')?.addEventListener('click', updateTaxSettings);
+            document.querySelector('.logout-btn')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            });
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM loaded');
+        // Initialize app
+        async function initializeApp() {
             const userData = loadCurrentUser();
-
-            if (userData) {
-                console.log('User loaded, role:', userData.role);
-
-                // Check user role and handle accordingly
-                if (userData.role !== 'admin') {
-                    console.log('User is not admin - showing restricted view immediately');
-                    showRestrictedView();
-                } else {
-                    console.log('User is admin - loading settings');
-                    // Only fetch settings if user is admin
-                    fetchBusinessSettings();
-                    fetchDiscountSettings();
-                    // Initialize custom discount creator
-                    initCustomDiscountCreator();
-                    fetchDiscountsFromServer();
-                }
-            }
-
-            // Setup event listeners
+            if (!userData) return;
+            await fetchUserPermissions();
+            await fetchBusinessSettings();
+            showRestrictedView();
             setupEventListeners();
-        });
+        }
 
-
+        document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
-
 </html>

@@ -45,18 +45,28 @@
             padding: var(--spacing-lg);
             box-shadow: var(--shadow-md);
             border-left: 4px solid var(--primary);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .metric-card.success {
-            border-left-color: var(--success);
+            border-left-color: #27ae60;
         }
 
         .metric-card.warning {
-            border-left-color: var(--warning);
+            border-left-color: #f39c12;
         }
 
         .metric-card.info {
-            border-left-color: var(--info);
+            border-left-color: #3498db;
+        }
+
+        .metric-card.danger {
+            border-left-color: #e74c3c;
         }
 
         .metric-label {
@@ -77,18 +87,19 @@
 
         .metric-change {
             font-size: 12px;
-            color: var(--success);
+            color: #27ae60;
             font-weight: 600;
         }
 
         .metric-change.negative {
-            color: var(--danger);
+            color: #e74c3c;
         }
 
         .charts-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
         }
 
         .chart-card {
@@ -107,11 +118,105 @@
 
         .chart-container {
             height: 300px;
+            position: relative;
+        }
+
+        .loading-placeholder {
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 100%;
             background: var(--secondary);
             border-radius: var(--radius-md);
+            color: var(--text-secondary);
+        }
+
+        .recent-transactions {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .recent-transactions-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .transaction-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s;
+        }
+
+        .transaction-item:hover {
+            background: var(--secondary);
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-id {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .transaction-date {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary);
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .status-completed {
+            background: rgba(46, 204, 113, 0.15);
+            color: #27ae60;
+        }
+
+        .status-pending {
+            background: rgba(241, 196, 15, 0.15);
+            color: #f39c12;
+        }
+
+        .status-cancelled {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+        }
+
+        .status-refunded {
+            background: rgba(155, 89, 182, 0.15);
+            color: #9b59b6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
             color: var(--text-secondary);
         }
 
@@ -120,62 +225,17 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <!-- <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="bi bi-lightning-fill"></i>
-                    <span>Orion</span>
-                </div>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <a href="index.html" class="nav-item">
-                    <i class="bi bi-shop"></i>
-                    <span>POS</span>
-                </a>
-                <a href="#" class="nav-item active">
-                    <i class="bi bi-speedometer2"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="inventory.html" class="nav-item">
-                    <i class="bi bi-box-seam"></i>
-                    <span>Inventory</span>
-                </a>
-                <a href="history.html" class="nav-item">
-                    <i class="bi bi-clock-history"></i>
-                    <span>History</span>
-                </a>
-                <a href="users.html" class="nav-item">
-                    <i class="bi bi-people"></i>
-                    <span>Users</span>
-                </a>
-                <a href="settings.html" class="nav-item">
-                    <i class="bi bi-gear"></i>
-                    <span>Settings</span>
-                </a>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="avatar">A</div>
-                    <div class="user-info">
-                        <div class="user-name">Alice</div>
-                        <div class="user-role">Admin</div>
-                    </div>
-                </div>
-                <a href="login.html" class="logout-btn">
-                    <i class="bi bi-box-arrow-right"></i>
-                </a>
-            </div>
-        </aside> -->
-
-        <!-- Main Content -->
         <div class="admin-main">
             <header class="top-header">
                 <div class="header-left">
@@ -197,21 +257,26 @@
 
             <div class="admin-content">
                 <!-- Key Metrics -->
-                <div class="metrics-grid">
+                <div class="metrics-grid" id="metrics-grid">
                     <div class="metric-card success">
                         <div class="metric-label">Today's Sales</div>
-                        <div class="metric-value">$1,250.50</div>
-                        <div class="metric-change">↑ 12% from yesterday</div>
+                        <div class="metric-value" id="today-sales">$0.00</div>
+                        <div class="metric-change" id="today-sales-change">Loading...</div>
                     </div>
                     <div class="metric-card info">
                         <div class="metric-label">Total Transactions</div>
-                        <div class="metric-value">55</div>
-                        <div class="metric-change">↑ 8 more than yesterday</div>
+                        <div class="metric-value" id="total-transactions">0</div>
+                        <div class="metric-change" id="transaction-change">Loading...</div>
                     </div>
                     <div class="metric-card warning">
                         <div class="metric-label">Average Order Value</div>
-                        <div class="metric-value">$22.74</div>
-                        <div class="metric-change negative">↓ 3% from yesterday</div>
+                        <div class="metric-value" id="avg-order-value">$0.00</div>
+                        <div class="metric-change" id="avg-change">Loading...</div>
+                    </div>
+                    <div class="metric-card danger">
+                        <div class="metric-label">Low Stock Items</div>
+                        <div class="metric-value" id="low-stock-count">0</div>
+                        <div class="metric-change">Needs attention</div>
                     </div>
                 </div>
 
@@ -227,6 +292,20 @@
                         <div class="chart-title">Top 5 Selling Items</div>
                         <div class="chart-container">
                             <canvas id="topItemsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="recent-transactions">
+                    <div class="recent-transactions-title">
+                        Recent Transactions
+                        <i class="bi bi-clock-history ms-2"></i>
+                    </div>
+                    <div id="recent-transactions-list" class="transaction-list">
+                        <div class="empty-state">
+                            <i class="bi bi-receipt" style="font-size: 48px;"></i>
+                            <p class="mt-2">Loading transactions...</p>
                         </div>
                     </div>
                 </div>
@@ -262,54 +341,604 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="script_new.js"></script>
+    
     <script>
-        // Initialize charts
-        document.addEventListener('DOMContentLoaded', () => {
-            if (document.getElementById('salesChart')) {
-                new Chart(document.getElementById('salesChart'), {
-                    type: 'line',
-                    data: {
-                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                        datasets: [{
-                            label: 'Daily Sales ($)',
-                            data: [450, 620, 580, 750, 910, 1250, 880],
-                            borderColor: '#5B4B9E',
-                            backgroundColor: 'rgba(91, 75, 158, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: { y: { beginAtZero: true } }
+        const API_BASE_URL = 'http://localhost:3001/api';
+        
+        // Chart instances
+        let salesChart = null;
+        let topItemsChart = null;
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function getStatusClass(status) {
+            if (!status) return 'status-completed';
+            switch (status.toLowerCase()) {
+                case 'completed': return 'status-completed';
+                case 'pending': return 'status-pending';
+                case 'cancelled': return 'status-cancelled';
+                case 'refunded': return 'status-refunded';
+                default: return 'status-completed';
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container') || createToastContainer();
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const icon = type === 'success' ? 'bi-check-circle-fill' :
+                type === 'error' ? 'bi-exclamation-circle-fill' :
+                    type === 'warning' ? 'bi-exclamation-triangle-fill' :
+                        'bi-info-circle-fill';
+
+            toast.innerHTML = `
+                <i class="bi ${icon} toast-icon"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
                     }
-                });
+                }, 300);
+            }, 5000);
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+            return container;
+        }
+
+        // ============================================
+        // AUTHENTICATION
+        // ============================================
+
+        function checkAuthentication() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (!token || !user) {
+                showToast('Please login first', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return false;
             }
 
-            if (document.getElementById('topItemsChart')) {
-                new Chart(document.getElementById('topItemsChart'), {
-                    type: 'bar',
-                    data: {
-                        labels: ['Latte', 'Haircut', 'Espresso', 'Sandwich', 'Shampoo'],
-                        datasets: [{
-                            label: 'Units Sold',
-                            data: [150, 95, 80, 65, 40],
-                            backgroundColor: ['#5B4B9E', '#FF6B35', '#2ECC71', '#3498DB', '#E74C3C']
-                        }]
-                    },
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: { x: { beginAtZero: true } }
-                    }
-                });
+            updateUserInfo(user);
+            return true;
+        }
+
+        function updateUserInfo(user) {
+            const userNameEl = document.querySelector('.user-name');
+            const userRoleEl = document.querySelector('.user-role');
+            const avatarEl = document.querySelector('.avatar');
+
+            if (userNameEl) userNameEl.textContent = user.fullName || 'User';
+            if (userRoleEl) {
+                userRoleEl.textContent = user.role === 'admin' ? 'Administrator' :
+                    user.role === 'cashier' ? 'Cashier' :
+                        user.role === 'manager' ? 'Manager' : 'User';
             }
+            if (avatarEl && user.fullName) {
+                avatarEl.textContent = user.fullName.charAt(0).toUpperCase();
+            }
+        }
+
+        function setupLogout() {
+            document.querySelectorAll('.logout-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                });
+            });
+        }
+
+        // ============================================
+        // API HELPER
+        // ============================================
+
+        async function apiRequest(endpoint, options = {}) {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                window.location.href = 'login.html';
+                return null;
+            }
+
+            const url = `${API_BASE_URL}${endpoint}`;
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...options.headers
+            };
+
+            try {
+                const response = await fetch(url, { ...options, headers });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    return {
+                        success: false,
+                        status: response.status,
+                        message: data.message || data.error || `API request failed`,
+                        errors: data.errors
+                    };
+                }
+
+                return data;
+            } catch (error) {
+                console.error('API request error:', error);
+                return {
+                    success: false,
+                    status: 0,
+                    message: 'Network error',
+                    errors: []
+                };
+            }
+        }
+
+        // ============================================
+        // DASHBOARD DATA LOADING
+        // ============================================
+
+        async function loadDashboardData() {
+            try {
+                await loadTodaySummary();
+                await loadSalesData();
+                await loadRecentTransactions();
+                await loadLowStockItems();
+                await loadTopSellingItems();
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                showToast('Error loading dashboard data', 'error');
+            }
+        }
+
+        async function loadTodaySummary() {
+            try {
+                const data = await apiRequest('/transactions/summary/today');
+                
+                if (data && data.success) {
+                    const todaySales = parseFloat(data.summary.totalSales);
+                    const transactionCount = data.summary.transactionCount;
+                    const avgOrderValue = parseFloat(data.summary.averageTransaction);
+                    
+                    document.getElementById('today-sales').textContent = `$${todaySales.toFixed(2)}`;
+                    document.getElementById('total-transactions').textContent = transactionCount;
+                    document.getElementById('avg-order-value').textContent = `$${avgOrderValue.toFixed(2)}`;
+                    
+                    // Update change indicators (compare with yesterday)
+                    await updateComparisonMetrics(todaySales, transactionCount, avgOrderValue);
+                } else {
+                    document.getElementById('today-sales-change').textContent = 'No data yet';
+                    document.getElementById('transaction-change').textContent = 'No data yet';
+                    document.getElementById('avg-change').textContent = 'No data yet';
+                }
+            } catch (error) {
+                console.error('Error loading today summary:', error);
+                document.getElementById('today-sales').textContent = '$0.00';
+                document.getElementById('total-transactions').textContent = '0';
+                document.getElementById('avg-order-value').textContent = '$0.00';
+            }
+        }
+
+        async function updateComparisonMetrics(todaySales, todayTransactions, todayAvg) {
+            try {
+                // Get yesterday's date
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = yesterday.toISOString().split('T')[0];
+                
+                const params = new URLSearchParams({
+                    startDate: yesterdayStr,
+                    endDate: yesterdayStr
+                });
+                
+                const data = await apiRequest(`/transactions?${params.toString()}`);
+                
+                if (data && data.success && data.transactions.length > 0) {
+                    let yesterdaySales = 0;
+                    let yesterdayTransactions = data.transactions.length;
+                    
+                    data.transactions.forEach(t => {
+                        yesterdaySales += t.total;
+                    });
+                    
+                    const yesterdayAvg = yesterdayTransactions > 0 ? yesterdaySales / yesterdayTransactions : 0;
+                    
+                    // Calculate changes
+                    const salesChange = yesterdaySales > 0 ? ((todaySales - yesterdaySales) / yesterdaySales * 100) : 0;
+                    const transactionChange = yesterdayTransactions > 0 ? ((todayTransactions - yesterdayTransactions) / yesterdayTransactions * 100) : 0;
+                    const avgChange = yesterdayAvg > 0 ? ((todayAvg - yesterdayAvg) / yesterdayAvg * 100) : 0;
+                    
+                    // Update UI
+                    updateChangeIndicator('today-sales-change', salesChange, 'from yesterday');
+                    updateChangeIndicator('transaction-change', transactionChange, 'from yesterday');
+                    updateChangeIndicator('avg-change', avgChange, 'from yesterday');
+                } else {
+                    document.getElementById('today-sales-change').textContent = 'First day of data';
+                    document.getElementById('transaction-change').textContent = 'First day of data';
+                    document.getElementById('avg-change').textContent = 'First day of data';
+                }
+            } catch (error) {
+                console.error('Error loading comparison data:', error);
+            }
+        }
+
+        function updateChangeIndicator(elementId, changePercent, text) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const isPositive = changePercent >= 0;
+            const arrow = isPositive ? '↑' : '↓';
+            const absPercent = Math.abs(changePercent).toFixed(1);
+            
+            element.innerHTML = `${arrow} ${absPercent}% ${text}`;
+            element.className = `metric-change ${!isPositive ? 'negative' : ''}`;
+        }
+
+        async function loadSalesData() {
+            try {
+                // Get last 7 days data
+                const endDate = new Date();
+                const startDate = new Date();
+                startDate.setDate(startDate.getDate() - 6);
+                
+                const params = new URLSearchParams({
+                    startDate: startDate.toISOString().split('T')[0],
+                    endDate: endDate.toISOString().split('T')[0],
+                    limit: 500
+                });
+                
+                const data = await apiRequest(`/transactions?${params.toString()}`);
+                
+                if (data && data.success) {
+                    // Group transactions by date
+                    const dailySales = {};
+                    const last7Days = [];
+                    
+                    // Initialize last 7 days
+                    for (let i = 0; i < 7; i++) {
+                        const date = new Date();
+                        date.setDate(date.getDate() - (6 - i));
+                        const dateStr = date.toISOString().split('T')[0];
+                        const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+                        dailySales[dateStr] = { total: 0, dayName };
+                        last7Days.push(dateStr);
+                    }
+                    
+                    // Aggregate sales
+                    if (data.transactions && data.transactions.length > 0) {
+                        data.transactions.forEach(transaction => {
+                            const transactionDate = new Date(transaction.createdAt).toISOString().split('T')[0];
+                            if (dailySales[transactionDate]) {
+                                dailySales[transactionDate].total += transaction.total;
+                            }
+                        });
+                    }
+                    
+                    // Prepare chart data
+                    const labels = last7Days.map(date => dailySales[date].dayName);
+                    const salesData = last7Days.map(date => dailySales[date].total);
+                    
+                    updateSalesChart(labels, salesData);
+                }
+            } catch (error) {
+                console.error('Error loading sales data:', error);
+            }
+        }
+
+        async function loadRecentTransactions() {
+            try {
+                const data = await apiRequest('/transactions?page=1&limit=10');
+                
+                const container = document.getElementById('recent-transactions-list');
+                
+                if (data && data.success && data.transactions && data.transactions.length > 0) {
+                    container.innerHTML = data.transactions.map(transaction => `
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-id">${transaction.transactionId || 'N/A'}</div>
+                                <div class="transaction-date">${formatDate(transaction.createdAt)}</div>
+                                <div class="mt-1">
+                                    <span class="status-badge ${getStatusClass(transaction.status)}">
+                                        ${transaction.status || 'Completed'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="transaction-amount">
+                                $${transaction.total?.toFixed(2) || '0.00'}
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="bi bi-receipt" style="font-size: 48px;"></i>
+                            <p class="mt-2">No recent transactions</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading recent transactions:', error);
+                const container = document.getElementById('recent-transactions-list');
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="bi bi-exclamation-triangle" style="font-size: 48px;"></i>
+                        <p class="mt-2">Error loading transactions</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadLowStockItems() {
+            try {
+                const data = await apiRequest('/inventory');
+                
+                if (data && data.success && data.inventory) {
+                    // Count low stock items (quantity <= lowStockThreshold)
+                    const lowStockCount = data.inventory.filter(item => 
+                        item.category !== 'services' && 
+                        item.quantity <= item.lowStockThreshold && 
+                        item.quantity > 0
+                    ).length;
+                    
+                    document.getElementById('low-stock-count').textContent = lowStockCount;
+                } else {
+                    document.getElementById('low-stock-count').textContent = '0';
+                }
+            } catch (error) {
+                console.error('Error loading low stock items:', error);
+                document.getElementById('low-stock-count').textContent = '?';
+            }
+        }
+
+        async function loadTopSellingItems() {
+            try {
+                // Get last 30 days of transactions
+                const endDate = new Date();
+                const startDate = new Date();
+                startDate.setDate(startDate.getDate() - 30);
+                
+                const params = new URLSearchParams({
+                    startDate: startDate.toISOString().split('T')[0],
+                    endDate: endDate.toISOString().split('T')[0],
+                    limit: 500
+                });
+                
+                const data = await apiRequest(`/transactions?${params.toString()}`);
+                
+                if (data && data.success && data.transactions && data.transactions.length > 0) {
+                    // Aggregate item sales
+                    const itemSales = {};
+                    
+                    data.transactions.forEach(transaction => {
+                        if (transaction.items && transaction.items.length > 0) {
+                            transaction.items.forEach(item => {
+                                if (itemSales[item.name]) {
+                                    itemSales[item.name] += item.quantity;
+                                } else {
+                                    itemSales[item.name] = item.quantity;
+                                }
+                            });
+                        }
+                    });
+                    
+                    // Get top 5 items
+                    const topItems = Object.entries(itemSales)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 5);
+                    
+                    if (topItems.length > 0) {
+                        const labels = topItems.map(item => item[0]);
+                        const dataPoints = topItems.map(item => item[1]);
+                        updateTopItemsChart(labels, dataPoints);
+                    } else {
+                        updateTopItemsChart(['No data'], [0]);
+                    }
+                } else {
+                    updateTopItemsChart(['No transactions'], [0]);
+                }
+            } catch (error) {
+                console.error('Error loading top selling items:', error);
+                updateTopItemsChart(['Error loading data'], [0]);
+            }
+        }
+
+        // ============================================
+        // CHART UPDATES
+        // ============================================
+
+        function updateSalesChart(labels, data) {
+            const ctx = document.getElementById('salesChart')?.getContext('2d');
+            if (!ctx) return;
+            
+            if (salesChart) {
+                salesChart.destroy();
+            }
+            
+            salesChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Daily Sales ($)',
+                        data: data,
+                        borderColor: '#5B4B9E',
+                        backgroundColor: 'rgba(91, 75, 158, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#5B4B9E',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `$${context.parsed.y.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateTopItemsChart(labels, data) {
+            const ctx = document.getElementById('topItemsChart')?.getContext('2d');
+            if (!ctx) return;
+            
+            if (topItemsChart) {
+                topItemsChart.destroy();
+            }
+            
+            const colors = ['#5B4B9E', '#FF6B35', '#2ECC71', '#3498DB', '#E74C3C'];
+            
+            topItemsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Units Sold',
+                        data: data,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderRadius: 8,
+                        barPercentage: 0.7
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.parsed.x} units sold`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Units Sold',
+                                font: { size: 12 }
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                font: { size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ============================================
+        // AUTO REFRESH
+        // ============================================
+
+        let refreshInterval = null;
+
+        function startAutoRefresh() {
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(() => {
+                console.log('Auto-refreshing dashboard...');
+                loadDashboardData();
+            }, 30000); // Refresh every 30 seconds
+        }
+
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+
+        async function initializeApp() {
+            if (!checkAuthentication()) {
+                return;
+            }
+            
+            setupLogout();
+            
+            // Show loading state
+            document.getElementById('today-sales').textContent = '$0.00';
+            document.getElementById('total-transactions').textContent = '0';
+            document.getElementById('avg-order-value').textContent = '$0.00';
+            document.getElementById('low-stock-count').textContent = '0';
+            
+            await loadDashboardData();
+            
+            startAutoRefresh();
+        }
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            stopAutoRefresh();
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeApp();
         });
     </script>
 </body>

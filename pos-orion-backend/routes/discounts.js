@@ -8,6 +8,7 @@ const User = require('../models/User');
 const Business = require('../models/Business');
 const Inventory = require('../models/Inventory');
 const Category = require('../models/Category');
+const Permission = require('../models/Permission');
 
 // Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
@@ -50,8 +51,43 @@ const requireAdmin = (req, res, next) => {
     next();
 };
 
+// Middleware to check discount management permission
+const requireDiscountPermission = async (req, res, next) => {
+    try {
+        const permissions = await Permission.findOne({ business: req.user.business });
+        
+        if (!permissions) {
+            // If no permissions configured, use default: only admin and manager can manage discounts
+            if (req.user.role === 'cashier') {
+                return res.status(403).json({
+                    success: false,
+                    message: 'You don\'t have permission to manage discounts'
+                });
+            }
+            return next();
+        }
+        
+        const hasPermission = permissions.hasPermission(req.user.role, 'canManageDiscounts');
+        
+        if (!hasPermission) {
+            return res.status(403).json({
+                success: false,
+                message: 'You don\'t have permission to manage discounts'
+            });
+        }
+        
+        next();
+    } catch (error) {
+        console.error('Permission check error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error checking permissions'
+        });
+    }
+};
+
 // GET discount settings for business (admin only)
-router.get('/settings', authenticateToken, requireAdmin, async (req, res) => {
+router.get('/settings', authenticateToken, requireDiscountPermission, async (req, res) => {
     try {
         let settings = await BusinessDiscountSettings.findOne({ 
             business: req.user.business 
@@ -76,7 +112,7 @@ router.get('/settings', authenticateToken, requireAdmin, async (req, res) => {
 });
 
 // PUT update discount settings (admin only)
-router.put('/settings', authenticateToken, requireAdmin, async (req, res) => {
+router.put('/settings', authenticateToken, requireAdmin, requireDiscountPermission, async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -120,7 +156,7 @@ router.put('/settings', authenticateToken, requireAdmin, async (req, res) => {
 });
 
 // GET all discounts for business
-router.get('/', authenticateToken, async (req, res) => {
+router.get('/', authenticateToken, requireDiscountPermission, async (req, res) => {
     try {
         const { status, type, search, sort = '-createdAt' } = req.query;
         
@@ -182,7 +218,7 @@ router.get('/', authenticateToken, async (req, res) => {
 });
 
 // GET single discount
-router.get('/:id', authenticateToken, async (req, res) => {
+router.get('/:id', authenticateToken, requireDiscountPermission, async (req, res) => {
     try {
         const discount = await Discount.findOne({
             _id: req.params.id,
@@ -215,7 +251,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 });
 
 // POST create new discount (admin only)
-router.post('/', authenticateToken, requireAdmin, [
+router.post('/', authenticateToken, requireAdmin, requireDiscountPermission, [
     body('name').trim().notEmpty().withMessage('Discount name is required'),
     body('type').isIn(['percentage', 'fixed', 'bogo', 'bulk']).withMessage('Invalid discount type'),
     body('value').optional().isFloat({ min: 0 }).withMessage('Discount value must be positive'),
@@ -317,7 +353,7 @@ router.post('/', authenticateToken, requireAdmin, [
 });
 
 // PUT update discount (admin only)
-router.put('/:id', authenticateToken, requireAdmin, [
+router.put('/:id', authenticateToken, requireAdmin, requireDiscountPermission, [
     body('name').trim().notEmpty().withMessage('Discount name is required'),
     body('type').isIn(['percentage', 'fixed', 'bogo', 'bulk']).withMessage('Invalid discount type'),
     body('value').optional().isFloat({ min: 0 }).withMessage('Discount value must be positive'),
@@ -417,7 +453,7 @@ router.put('/:id', authenticateToken, requireAdmin, [
 });
 
 // PATCH update discount status (admin only)
-router.patch('/:id/status', authenticateToken, requireAdmin, async (req, res) => {
+router.patch('/:id/status', authenticateToken, requireAdmin, requireDiscountPermission, async (req, res) => {
     try {
         const { status } = req.body;
         
@@ -459,7 +495,7 @@ router.patch('/:id/status', authenticateToken, requireAdmin, async (req, res) =>
 });
 
 // DELETE discount (admin only)
-router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
+router.delete('/:id', authenticateToken, requireAdmin, requireDiscountPermission, async (req, res) => {
     try {
         const discount = await Discount.findOneAndDelete({
             _id: req.params.id,

@@ -59,7 +59,7 @@
         .btn-add-category {
             background: var(--success);
         }
-        
+
         .btn-add-category:hover {
             background: var(--success-dark);
         }
@@ -406,7 +406,8 @@
                         <button class="btn-manage" id="btn-manage-categories">
                             <i class="bi bi-gear"></i> Manage Categories
                         </button>
-                        <button class="btn-add btn-add-category" id="btn-add-category" style="background: var(--success);">
+                        <button class="btn-add btn-add-category" id="btn-add-category"
+                            style="background: var(--success);">
                             <i class="bi bi-plus-circle"></i> Add Category
                         </button>
                         <button class="btn-add" id="btn-add-product">
@@ -760,8 +761,16 @@
         // API Configuration
         const API_BASE_URL = 'http://localhost:3001/api';
 
+
+
         // Global variables
         let categories = [];
+
+
+        // User permissions (this should ideally come from the backend based on the logged-in user's role)
+        let currentUserPermissions = {
+            canManageInventory: false
+        };
 
         // Check authentication
         function checkAuthentication() {
@@ -794,6 +803,62 @@
             }
             if (avatarEl && user.fullName) {
                 avatarEl.textContent = user.fullName.charAt(0).toUpperCase();
+            }
+        }
+
+        async function fetchUserPermissions() {
+            const userData = JSON.parse(localStorage.getItem('user'));
+
+            if (!userData || !userData._id) {
+                console.warn('User ID not found');
+                return false;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3001/api/permissions/user/${userData._id}`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    currentUserPermissions = {
+                        canManageInventory: result.permissions?.canManageInventory || false
+                    };
+                    console.log('Inventory permissions:', currentUserPermissions);
+                    return currentUserPermissions.canManageInventory;
+                }
+                return false;
+            } catch (error) {
+                console.error('Error fetching permissions:', error);
+                // Fallback: Admin and manager can manage inventory
+                currentUserPermissions.canManageInventory = (userData.role === 'admin' || userData.role === 'manager');
+                return currentUserPermissions.canManageInventory;
+            }
+        }
+
+        // Update button visibility based on permissions
+        function updateButtonVisibility() {
+            const canManage = currentUserPermissions.canManageInventory;
+            const userData = JSON.parse(localStorage.getItem('user'));
+
+            // Add Product button
+            const addProductBtn = document.getElementById('btn-add-product');
+            if (addProductBtn) {
+                addProductBtn.style.display = canManage ? 'flex' : 'none';
+            }
+
+            // Add Category button
+            const addCategoryBtn = document.getElementById('btn-add-category');
+            if (addCategoryBtn) {
+                addCategoryBtn.style.display = canManage ? 'flex' : 'none';
+            }
+
+            // Manage Categories button
+            const manageCategoriesBtn = document.getElementById('btn-manage-categories');
+            if (manageCategoriesBtn) {
+                manageCategoriesBtn.style.display = canManage ? 'flex' : 'none';
             }
         }
 
@@ -905,6 +970,7 @@
                 };
             }
         }
+
 
         // ============================================
         // CATEGORY MANAGEMENT
@@ -1266,51 +1332,60 @@
             const tbody = document.getElementById('categories-table-body');
             if (!tbody) return;
 
+            const canManage = currentUserPermissions.canManageInventory;
+
             tbody.innerHTML = '';
 
             if (categories.length === 0) {
                 tbody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="text-center py-4">
-                            <i class="bi bi-folder2-open" style="font-size: 2rem; color: #6c757d; margin-bottom: 10px;"></i>
-                            <p>No categories found. Add your first category.</p>
-                        </td>
-                    </tr>
-                `;
+            <tr>
+                <td colspan="4" class="text-center py-4">
+                    <i class="bi bi-folder2-open" style="font-size: 2rem; color: #6c757d; margin-bottom: 10px;"></i>
+                    <p>No categories found. Add your first category.</p>
+                </td>
+            </tr>
+        `;
                 return;
             }
 
             categories.forEach(category => {
                 const row = document.createElement('tr');
 
+                // Only show action buttons if user has permission
+                const actionButtons = canManage ? `
+            <div class="action-buttons">
+                <button class="btn-icon" title="Edit" onclick="openEditCategoryModal('${category._id}')"
+                        ${category.isDefault ? 'disabled' : ''}>
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn-icon btn-icon-danger" title="Delete" onclick="openDeleteCategoryModal('${category._id}')"
+                        ${category.isDefault ? 'disabled' : ''}>
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        ` : `
+            <div class="action-buttons">
+                <span class="text-muted">No actions</span>
+            </div>
+        `;
+
                 row.innerHTML = `
-                    <td>
-                        <div class="d-flex align-items-center">          
-                            <div>
-                                <div>${category.name}</div>                  
-                            </div>
-                        </div>
-                    </td>
-                    <td>${category.description || '-'}</td>
-                    <td>
-                        ${category.isDefault ?
+            <td>
+                <div class="d-flex align-items-center">          
+                    <div>
+                        <div>${category.name}</div>                  
+                    </div>
+                </div>
+            </td>
+            <td>${category.description || '-'}</td>
+            <td>
+                ${category.isDefault ?
                         '<span class="badge category-type-badge bg-info">Default</span>' :
                         '<span class="badge category-type-badge bg-secondary">Custom</span>'
                     }
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn-icon" title="Edit" onclick="openEditCategoryModal('${category._id}')"
-                                    ${category.isDefault ? 'disabled' : ''}>
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn-icon btn-icon-danger" title="Delete" onclick="openDeleteCategoryModal('${category._id}')"
-                                    ${category.isDefault ? 'disabled' : ''}>
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
+            </td>
+            <td>${actionButtons}</td>
+        `;
 
                 tbody.appendChild(row);
             });
@@ -1367,7 +1442,6 @@
 
         function renderInventoryTable(inventory) {
             const tableBody = document.getElementById('inventory-table-body');
-
             if (!tableBody) return;
 
             tableBody.innerHTML = '';
@@ -1377,47 +1451,57 @@
                 return;
             }
 
+            const canManage = currentUserPermissions.canManageInventory;
+
             inventory.forEach(item => {
                 const row = document.createElement('tr');
                 const stockStatus = getStockStatus(item.quantity, item.category);
                 const statusClass = getStockStatusClass(item.quantity, item.category);
                 const statusText = formatStockStatus(stockStatus);
 
-                // Find category name
                 const category = categories.find(cat => cat._id === item.category);
                 const categoryName = category ? category.name : item.category;
 
+                // Only show action buttons if user has permission
+                const actionButtons = canManage ? `
+            <div class="action-buttons">
+                <button class="btn-icon" title="Edit" onclick="openEditProductModal('${item._id}')">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn-icon" title="Restock" onclick="openRestockModal('${item._id}', '${item.name}')">
+                    <i class="bi bi-arrow-up-circle"></i>
+                </button>
+                <button class="btn-icon btn-icon-danger" title="Delete" onclick="openDeleteProductModal('${item._id}', '${item.name}')">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        ` : `
+            <div class="action-buttons">
+                <span class="text-muted">Do not have permission</span>
+            </div>
+        `;
+
                 row.innerHTML = `
-                    <td>
-                        <div class="product-cell">
-                            <div class="product-icon-small">
-                                <i class="bi bi-box"></i>
-                            </div>
-                            <div>
-                                <div>${item.name}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>${categoryName}</td>
-                    <td>$${item.price.toFixed(2)}</td>
-                    <td>${item.quantity} ${item.unit || 'pcs'}</td>
-                    <td><span class="badge ${statusClass}">${statusText}</span></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn-icon" title="Edit" onclick="openEditProductModal('${item._id}')">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn-icon" title="Restock" onclick="openRestockModal('${item._id}', '${item.name}')">
-                                <i class="bi bi-arrow-up-circle"></i>
-                            </button>
-                            <button class="btn-icon btn-icon-danger" title="Delete" onclick="openDeleteProductModal('${item._id}', '${item.name}')"><i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
+            <td>
+                <div class="product-cell">
+                    <div class="product-icon-small">
+                        <i class="bi bi-box"></i>
+                    </div>
+                    <div>
+                        <div>${item.name}</div>
+                    </div>
+                </div>
+            </td>
+            <td>${categoryName}</td>
+            <td>$${item.price.toFixed(2)}</td>
+            <td>${item.quantity} ${item.unit || 'pcs'}</td>
+            <td><span class="badge ${statusClass}">${statusText}</span></td>
+            <td>${actionButtons}</td>
+        `;
                 tableBody.appendChild(row);
             });
         }
+
 
         function renderEmptyState() {
             const tableBody = document.getElementById('inventory-table-body');
@@ -1837,6 +1921,10 @@
             if (!checkAuthentication()) {
                 return; // Stop if not authenticated
             }
+
+            await fetchUserPermissions();
+
+            updateButtonVisibility();
 
             // Load categories first
             await loadCategories();

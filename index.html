@@ -330,6 +330,12 @@
             color: white;
         }
 
+        .btn-action.disabled.btn-info {
+            background-color: var(--info-light) !important;
+            border-color: var(--info-light) !important;
+            color: white !important;
+        }
+
         .btn-info:hover {
             background-color: var(--info-dark);
             border-color: var(--info-dark);
@@ -1362,6 +1368,7 @@
     function updateButtonStates() {
         const cancelBtn = document.getElementById('btn-cancel');
         const paymentBtn = document.getElementById('btn-payment');
+        const discountBtn = document.getElementById('btn-discount');
         const isCartEmpty = cart.length === 0;
 
         if (cancelBtn) {
@@ -1374,15 +1381,20 @@
             }
         }
 
-        if (paymentBtn) {
-            if (isCartEmpty) {
-                paymentBtn.disabled = true;
-                paymentBtn.classList.add('disabled');
-            } else {
-                paymentBtn.disabled = false;
-                paymentBtn.classList.remove('disabled');
+            if (paymentBtn && discountBtn) {
+                if (isCartEmpty) {
+                    paymentBtn.disabled = true;
+                    paymentBtn.classList.add('disabled');
+                    discountBtn.disabled = true;
+                    discountBtn.classList.add('disabled');
+                } else {
+                    paymentBtn.disabled = false;
+                    paymentBtn.classList.remove('disabled');
+                    discountBtn.disabled = false;
+                    discountBtn.classList.remove('disabled');
+                }
             }
-        }
+            
     }
 
     function updateCart() {

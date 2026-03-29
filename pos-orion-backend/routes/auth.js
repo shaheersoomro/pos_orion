@@ -188,7 +188,7 @@ router.post('/login', [
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials'
+        message: 'Login failed. Please check your credentials.'
       });
     }
 
@@ -197,7 +197,7 @@ router.post('/login', [
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials'
+        message: 'Login failed. Please check your credentials.'
       });
     }
 

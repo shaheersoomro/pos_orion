@@ -68,12 +68,23 @@ const businessSchema = new mongoose.Schema({
 // Add this to your existing businessSchema
 businessSchema.pre('save', async function(next) {
     if (this.isNew) {
-        // Create default discount settings when business is created
         try {
+            // Create default discount settings
             const BusinessDiscountSettings = require('./BusinessDiscountSettings');
             await BusinessDiscountSettings.createDefaultSettings(this._id);
+            
+            // Create default permissions
+            const Permission = require('./Permission');
+            const permission = new Permission({
+                business: this._id,
+                roles: Permission.getDefaultPermissions(),
+                createdBy: this.owner
+            });
+            await permission.save();
+            
+            console.log('Default permissions created for business:', this._id);
         } catch (error) {
-            console.error('Error creating default discount settings:', error);
+            console.error('Error creating default settings:', error);
         }
     }
     next();

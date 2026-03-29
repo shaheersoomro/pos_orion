@@ -14,6 +14,7 @@ const inventoryRoutes = require('./routes/inventory');
 const categoryRoutes = require('./routes/categories');
 const transactionRoutes = require('./routes/transactions');
 const discountRoutes = require('./routes/discounts');
+const permissionsRoutes = require('./routes/permissions')
 
 
 // DEBUG: Check what each route exports
@@ -22,6 +23,12 @@ console.log('authRoutes type:', typeof authRoutes);
 console.log('userRoutes type:', typeof userRoutes);
 console.log('settingsRoutes type:', typeof settingsRoutes);
 console.log('inventoryRoutes type:', typeof inventoryRoutes);
+console.log('categoryRoutes type:', typeof categoryRoutes);
+console.log('transactionRoutes type:', typeof transactionRoutes);
+console.log('discountRoutes type:', typeof discountRoutes);
+console.log('permissionsRoutes type:', typeof permissionsRoutes);
+
+
 
 
 // Check if they have router methods
@@ -30,6 +37,10 @@ console.log('authRoutes has use method?', typeof authRoutes.use === 'function');
 console.log('userRoutes has use method?', typeof userRoutes.use === 'function');
 console.log('settingsRoutes has use method?', typeof settingsRoutes.use === 'function');
 console.log('inventoryRoutes has use method?', typeof inventoryRoutes.use === 'function');
+console.log('categoryRoutes has use method?', typeof categoryRoutes.use === 'function');
+console.log('transactionRoutes has use method?', typeof transactionRoutes.use === 'function');
+console.log('discountRoutes has use method?', typeof discountRoutes.use === 'function');
+console.log('permissionsRoutes has use method?', typeof permissionsRoutes.use === 'function');
 
 // If any is an object, show its keys
 if (typeof authRoutes === 'object' && !authRoutes.use) {
@@ -44,6 +55,19 @@ if (typeof settingsRoutes === 'object' && !settingsRoutes.use) {
 if (typeof inventoryRoutes === 'object' && !inventoryRoutes.use) {
   console.log('inventoryRoutes keys:', Object.keys(inventoryRoutes));
 }
+if (typeof categoryRoutes === 'object' && !categoryRoutes.use) {
+  console.log('categoryRoutes keys:', Object.keys(categoryRoutes));
+}
+if (typeof transactionRoutes === 'object' && !transactionRoutes.use) {
+  console.log('transactionRoutes keys:', Object.keys(transactionRoutes));
+}
+if (typeof discountRoutes === 'object' && !discountRoutes.use) {
+  console.log('discountRoutes keys:', Object.keys(discountRoutes));
+}
+if (typeof permissionsRoutes === 'object' && !permissionsRoutes.use) {
+  console.log('permissionsRoutes keys:', Object.keys(permissionsRoutes));
+}
+
 
 console.log('=== END DEBUG ===\n');
 
@@ -88,6 +112,7 @@ app.use('/api/inventory', inventoryRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/discounts', discountRoutes);
+app.use('/api/permissions', permissionsRoutes); 
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -188,32 +188,6 @@
             cursor: pointer;
         }
 
-        .validation-message {
-            font-size: 12px;
-            margin-top: 4px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .error {
-            color: var(--warning);
-        }
-
-        .success {
-            color: var(--success);
-        }
-
-        .form-group.error input,
-        .form-group.error select {
-            border-color: var(--warning);
-        }
-
-        .form-group.success input,
-        .form-group.success select {
-            border-color: var(--success);
-        }
-
         .toast-container {
             position: fixed;
             top: 20px;
@@ -222,10 +196,6 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-        }
-
-        .toast:not(.show) {
-            display: block;
         }
 
         .toast {
@@ -243,6 +213,10 @@
             animation: slideIn 0.3s ease forwards;
         }
 
+        .toast:not(.show) {
+            display: block;
+        }
+
         .toast.success {
             background-color: #10b981;
             border-left: 4px solid #059669;
@@ -251,6 +225,16 @@
         .toast.error {
             background-color: #ef4444;
             border-left: 4px solid #dc2626;
+        }
+
+        .toast.info {
+            background-color: #3b82f6;
+            border-left: 4px solid #1d4ed8;
+        }
+
+        .toast.warning {
+            background-color: #f59e0b;
+            border-left: 4px solid #d97706;
         }
 
         .toast-icon {
@@ -323,6 +307,7 @@
             font-size: 13px;
         }
 
+        /* Discount Creator Styles */
         .type-option {
             transition: var(--transition);
             border: 1px solid var(--border-color);
@@ -349,6 +334,11 @@
 
         .day-option {
             transition: var(--transition);
+            text-align: center;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
         }
 
         .day-option:hover {
@@ -420,12 +410,12 @@
         }
 
         .btn-edit {
-            background: var(--info-light);
-            color: var(--info);
+            background: var(--bg-light);
+            color: var(--primary);
         }
 
         .btn-delete {
-            background: var(--warning-light);
+            background: var(--bg-light);
             color: var(--warning);
         }
 
@@ -469,12 +459,6 @@
         #discounts-list::-webkit-scrollbar-thumb {
             background: var(--border-color);
             border-radius: 3px;
-        }
-
-        .category-checkboxes::-webkit-scrollbar-thumb:hover,
-        .product-checkboxes::-webkit-scrollbar-thumb:hover,
-        #discounts-list::-webkit-scrollbar-thumb:hover {
-            background: var(--text-secondary);
         }
 
         #bogo-section .form-group {
@@ -529,7 +513,7 @@
 
             <div class="admin-content">
                 <div class="settings-grid">
-                    <!-- Business Information -->
+                    <!-- Row 1: Business Info and Tax Settings (side by side) -->
                     <div class="settings-card">
                         <div class="settings-header">
                             <div class="settings-title">
@@ -541,12 +525,11 @@
                             </button>
                         </div>
                         <div class="settings-body">
-                            <div class="form-group" id="business-name-group">
+                            <div class="form-group">
                                 <label>Business Name</label>
-                                <input type="text" value="" id="business-name" disabled>
-                                <div class="validation-message" id="business-name-group-message"></div>
+                                <input type="text" id="business-name" disabled>
                             </div>
-                            <div class="form-group" id="business-type-group">
+                            <div class="form-group">
                                 <label>Business Type</label>
                                 <select class="form-control" id="business-type" disabled>
                                     <option value="retail">Retail Store</option>
@@ -558,26 +541,22 @@
                                     <option value="grocery">Grocery Store</option>
                                     <option value="other">Other</option>
                                 </select>
-                                <div class="validation-message" id="business-type-group-message"></div>
                             </div>
-                            <div class="form-group" id="business-address-group">
+                            <div class="form-group">
                                 <label>Address</label>
-                                <input type="text" value="" id="business-address" disabled>
-                                <div class="validation-message" id="business-address-group-message"></div>
+                                <input type="text" id="business-address" disabled>
                             </div>
-                            <div class="form-group" id="business-phone-group">
+                            <div class="form-group">
                                 <label>Phone</label>
-                                <input type="tel" value="" id="business-phone" disabled>
-                                <div class="validation-message" id="business-phone-group-message"></div>
+                                <input type="tel" id="business-phone" disabled>
                             </div>
-                            <div class="form-group" id="business-owner-group">
+                            <div class="form-group">
                                 <label>Owner's Name</label>
-                                <input type="text" value="" id="business-owner" disabled>
-                                <div class="validation-message" id="business-owner-group-message"></div>
+                                <input type="text" id="business-owner" disabled>
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" value="" disabled>
+                                <input type="email" disabled>
                             </div>
                             <div class="action-buttons">
                                 <button class="btn-cancel" id="business-cancel" style="display: none;">Cancel</button>
@@ -586,7 +565,6 @@
                         </div>
                     </div>
 
-                    <!-- Tax Settings -->
                     <div class="settings-card">
                         <div class="settings-header">
                             <div class="settings-title">
@@ -598,34 +576,31 @@
                             </button>
                         </div>
                         <div class="settings-body">
-                            <div class="form-group" id="tax-rate-group">
+                            <div class="form-group">
                                 <label>Sales Tax Rate (%)</label>
-                                <input type="number" value="" step="0.01" id="tax-rate" disabled>
-                                <div class="validation-message" id="tax-rate-group-message"></div>
+                                <input type="number" step="0.01" id="tax-rate" disabled>
                             </div>
-                            <div class="form-group" id="tax-name-group">
+                            <div class="form-group">
                                 <label>Tax Name</label>
-                                <input type="text" value="" id="tax-name" disabled>
-                                <div class="validation-message" id="tax-name-group-message"></div>
+                                <input type="text" id="tax-name" disabled>
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" id="tax-enabled" checked disabled>
-                                <label for="tax-enabled">Tax enabled</label>
+                                <label>Tax enabled</label>
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" id="tax-inclusive" checked disabled>
-                                <label for="tax-inclusive">Prices are tax-inclusive</label>
+                                <label>Prices are tax-inclusive</label>
                             </div>
                             <div class="action-buttons">
                                 <button class="btn-cancel" id="tax-cancel" style="display: none;">Cancel</button>
-                                <button class="btn-save" id="tax-save" style="display: none;" disabled>Save
-                                    Changes</button>
+                                <button class="btn-save" id="tax-save" style="display: none;">Save Changes</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Custom Discount Creator -->
+                <!-- Row 2: Custom Discount Creator (full width) -->
                 <div class="settings-card" style="margin-top: var(--spacing-lg);">
                     <div class="settings-header">
                         <div class="settings-title">
@@ -634,58 +609,49 @@
                         </div>
                     </div>
                     <div class="settings-body">
+                        <!-- Discount Type Selection -->
                         <div class="form-group">
                             <label>Discount Type</label>
                             <div class="discount-type-selector"
                                 style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm);">
-                                <div class="type-option" data-type="percentage"
-                                    style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: var(--spacing-md); text-align: center; cursor: pointer;">
-                                    <i class="bi bi-percent" style="font-size: 24px; color: var(--text-secondary);"></i>
-                                    <div style="font-weight: 600; margin-top: var(--spacing-xs);">Percentage</div>
-                                    <div style="font-size: 11px; color: var(--text-secondary);">X% off</div>
+                                <div class="type-option" data-type="percentage">
+                                    <i class="bi bi-percent" style="font-size: 24px;"></i>
+                                    <div style="font-weight: 600;">Percentage</div>
+                                    <div style="font-size: 11px;">X% off</div>
                                 </div>
-                                <div class="type-option" data-type="fixed"
-                                    style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: var(--spacing-md); text-align: center; cursor: pointer;">
-                                    <i class="bi bi-currency-dollar"
-                                        style="font-size: 24px; color: var(--text-secondary);"></i>
-                                    <div style="font-weight: 600; margin-top: var(--spacing-xs);">Fixed Amount</div>
-                                    <div style="font-size: 11px; color: var(--text-secondary);">$X off</div>
+                                <div class="type-option" data-type="fixed">
+                                    <i class="bi bi-currency-dollar" style="font-size: 24px;"></i>
+                                    <div style="font-weight: 600;">Fixed Amount</div>
+                                    <div style="font-size: 11px;">$X off</div>
                                 </div>
-                                <div class="type-option active" data-type="bogo"
-                                    style="border: 1px solid var(--primary); border-radius: var(--radius-sm); padding: var(--spacing-md); text-align: center; cursor: pointer; background: var(--secondary);">
-                                    <i class="bi bi-gift" style="font-size: 24px; color: var(--primary);"></i>
-                                    <div
-                                        style="font-weight: 600; margin-top: var(--spacing-xs); color: var(--primary);">
-                                        BOGO</div>
-                                    <div style="font-size: 11px; color: var(--primary);">Buy X Get Y Free</div>
+                                <div class="type-option active" data-type="bogo">
+                                    <i class="bi bi-gift" style="font-size: 24px;"></i>
+                                    <div style="font-weight: 600;">BOGO</div>
+                                    <div style="font-size: 11px;">Buy X Get Y Free</div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Discount Name -->
                         <div class="form-group">
                             <label>Discount Name</label>
-                            <input type="text" id="discount-name"
-                                placeholder="Enter discount name (e.g., 'Summer Sale', 'Buy 1 Get 1')"
-                                style="width: 100%;">
+                            <input type="text" id="discount-name" placeholder="Enter discount name">
                         </div>
 
+                        <!-- Discount Value (Percentage/Fixed) -->
                         <div class="form-group" id="discount-value-section">
                             <label>Discount Value</label>
-                            <div style="display: block;">
-                                <div style="position: relative;">
-                                    <input type="number" id="discount-percentage" placeholder="Enter percentage"
-                                        style="width: 100%;" min="0" max="100" step="0.01">
-                                </div>
-                                <div style="position: relative; margin-top: 10px;">
-                                    <input type="number" id="discount-fixed" placeholder="Enter fixed amount"
-                                        style="width: 100%;" min="0" step="0.01">
-                                </div>
-                            </div>
+                            <input type="number" id="discount-percentage" placeholder="Enter percentage" min="0"
+                                max="100" step="0.01" style="display: none;">
+                            <input type="number" id="discount-fixed" placeholder="Enter fixed amount" min="0"
+                                step="0.01" style="display: none;">
                         </div>
 
+                        <!-- BOGO Configuration -->
                         <div class="form-group" id="bogo-section" style="display: block;">
                             <label>BOGO Configuration</label>
-                            <div style="border-radius: var(--radius-sm); padding: var(--spacing-lg);">
+                            <div
+                                style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: var(--spacing-lg);">
                                 <div
                                     style="display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--spacing-lg); align-items: center;">
                                     <div>
@@ -701,16 +667,13 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Quantity Required</label>
-                                            <input type="number" id="bogo-buy-quantity" value="1" min="1"
-                                                style="width: 100%;">
+                                            <input type="number" id="bogo-buy-quantity" value="1" min="1">
                                         </div>
                                     </div>
                                     <div style="text-align: center;">
                                         <i class="bi bi-arrow-right"
                                             style="font-size: 32px; color: var(--primary);"></i>
-                                        <div
-                                            style="font-size: 12px; color: var(--text-secondary); margin-top: var(--spacing-xs);">
-                                            to get</div>
+                                        <div style="font-size: 12px;">to get</div>
                                     </div>
                                     <div>
                                         <div
@@ -725,8 +688,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Free Quantity</label>
-                                            <input type="number" id="bogo-get-quantity" value="1" min="1"
-                                                style="width: 100%;">
+                                            <input type="number" id="bogo-get-quantity" value="1" min="1">
                                         </div>
                                     </div>
                                 </div>
@@ -735,21 +697,22 @@
                                     <label>BOGO Options</label>
                                     <div class="form-check">
                                         <input type="checkbox" id="bogo-same-product">
-                                        <label for="bogo-same-product">Buy and get same product</label>
+                                        <label>Buy and get same product</label>
                                     </div>
                                     <div class="form-check">
                                         <input type="checkbox" id="bogo-repeat">
-                                        <label for="bogo-repeat">Repeat offer for multiple sets</label>
+                                        <label>Repeat offer for multiple sets</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Product & Category Selection -->
                         <div class="form-group" id="product-category-selection">
                             <label>Apply To</label>
                             <div style="margin-bottom: var(--spacing-lg);">
                                 <div
-                                    style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-md);">
+                                    style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-md);">
                                     <div style="font-weight: 600;">Categories</div>
                                     <div style="display: flex; gap: var(--spacing-sm);">
                                         <button type="button" class="btn-select-all"
@@ -761,12 +724,12 @@
                                     </div>
                                 </div>
                                 <div class="category-checkboxes"
-                                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--spacing-sm); max-height: 200px; overflow-y: auto; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--spacing-sm); max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: var(--spacing-sm);">
                                 </div>
                             </div>
                             <div>
                                 <div
-                                    style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-md);">
+                                    style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-md);">
                                     <div style="font-weight: 600;">Individual Products</div>
                                     <div style="display: flex; gap: var(--spacing-sm);">
                                         <button type="button" class="btn-select-all-products"
@@ -782,7 +745,7 @@
                                     <div
                                         style="padding: var(--spacing-md); border-bottom: 1px solid var(--border-color);">
                                         <input type="text" id="product-search" placeholder="Search products..."
-                                            style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                                            style="width: 100%;">
                                     </div>
                                     <div class="product-checkboxes"
                                         style="max-height: 250px; overflow-y: auto; padding: var(--spacing-md);">
@@ -791,12 +754,15 @@
                             </div>
                         </div>
 
+                        <!-- Conditions -->
                         <div class="form-group">
                             <label>Conditions</label>
-                            <div style="border-radius: var(--radius-sm); padding: var(--spacing-lg);">
-                                <div class="form-group" style="margin-bottom: var(--spacing-lg);">
-                                    <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                                        <div style="flex-shrink: 0;">Apply if total amount is</div>
+                            <div
+                                style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: var(--spacing-lg);">
+                                <div class="form-group">
+                                    <div
+                                        style="display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
+                                        <div>Apply if total amount is</div>
                                         <select id="condition-operator"
                                             style="padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
                                             <option value=">=">greater than or equal to</option>
@@ -805,26 +771,24 @@
                                             <option value="<">less than</option>
                                             <option value="<=">less than or equal to</option>
                                         </select>
-                                        <div style="position: relative; width: 180px;">
-                                            <input type="number" id="condition-amount" placeholder="Amount"
-                                                style="width: 100%; padding-right: 40px;"
-                                                min="0" step="0.01">
+                                        <div style="position: relative;">
+                                            <input type="number" id="condition-amount" placeholder="Amount" min="0"
+                                                step="0.01" style="padding-right: 30px;">
                                             <span
-                                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);">$</span>
+                                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">$</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" style="margin-bottom: var(--spacing-lg);">
-                                    <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                                        <div style="flex-shrink: 0;">Time Range</div>
-                                        <input type="time" id="start-time"
-                                            style="padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                                <div class="form-group">
+                                    <div
+                                        style="display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
+                                        <div>Time Range</div>
+                                        <input type="time" id="start-time">
                                         <div>to</div>
-                                        <input type="time" id="end-time"
-                                            style="padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                                        <input type="time" id="end-time">
                                         <div class="form-check" style="margin-left: auto;">
                                             <input type="checkbox" id="enable-time">
-                                            <label for="enable-time">Enable time restriction</label>
+                                            <label>Enable time restriction</label>
                                         </div>
                                     </div>
                                 </div>
@@ -832,67 +796,61 @@
                                     <label style="margin-bottom: var(--spacing-md);">Available Days</label>
                                     <div class="week-days"
                                         style="display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--spacing-sm);">
-                                        <div class="day-option" data-day="monday"
-                                            style="text-align: center; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer;">
-                                            <div style="font-weight: 600;">Mon</div>
+                                        <div class="day-option" data-day="monday">
+                                            <div>Mon</div>
                                         </div>
-                                        <div class="day-option" data-day="tuesday"
-                                            style="text-align: center; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer;">
-                                            <div style="font-weight: 600;">Tue</div>
+                                        <div class="day-option" data-day="tuesday">
+                                            <div>Tue</div>
                                         </div>
-                                        <div class="day-option" data-day="wednesday"
-                                            style="text-align: center; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer;">
-                                            <div style="font-weight: 600;">Wed</div>
+                                        <div class="day-option" data-day="wednesday">
+                                            <div>Wed</div>
                                         </div>
-                                        <div class="day-option" data-day="thursday"
-                                            style="text-align: center; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer;">
-                                            <div style="font-weight: 600;">Thu</div>
+                                        <div class="day-option" data-day="thursday">
+                                            <div>Thu</div>
                                         </div>
-                                        <div class="day-option" data-day="friday"
-                                            style="text-align: center; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer;">
-                                            <div style="font-weight: 600;">Fri</div>
+                                        <div class="day-option" data-day="friday">
+                                            <div>Fri</div>
                                         </div>
-                                        <div class="day-option" data-day="saturday"
-                                            style="text-align: center; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer;">
-                                            <div style="font-weight: 600;">Sat</div>
+                                        <div class="day-option" data-day="saturday">
+                                            <div>Sat</div>
                                         </div>
-                                        <div class="day-option" data-day="sunday"
-                                            style="text-align: center; padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer;">
-                                            <div style="font-weight: 600;">Sun</div>
+                                        <div class="day-option" data-day="sunday">
+                                            <div>Sun</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" style="margin-top: var(--spacing-lg);">
-                                    <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                                        <div style="flex-shrink: 0;">Valid from</div>
-                                        <input type="date" id="start-date"
-                                            style="padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm); flex: 1;">
+                                <div class="form-group">
+                                    <div
+                                        style="display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
+                                        <div>Valid from</div>
+                                        <input type="date" id="start-date" style="flex: 1;">
                                         <div>to</div>
-                                        <input type="date" id="end-date"
-                                            style="padding: var(--spacing-sm); border: 1px solid var(--border-color); border-radius: var(--radius-sm); flex: 1;">
+                                        <input type="date" id="end-date" style="flex: 1;">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Additional Options -->
                         <div class="form-group">
                             <label>Additional Options</label>
                             <div class="form-check">
                                 <input type="checkbox" id="option-auto-apply">
-                                <label for="option-auto-apply">Auto-apply when conditions are met</label>
+                                <label>Auto-apply when conditions are met</label>
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" id="option-cumulative">
-                                <label for="option-cumulative">Cumulative with other discounts</label>
+                                <label>Cumulative with other discounts</label>
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" id="option-max-uses">
-                                <label for="option-max-uses">Limit total uses to</label>
+                                <label>Limit total uses to</label>
                                 <input type="number" id="max-uses" value="100" min="1"
-                                    style="width: 100px; margin-left: var(--spacing-sm); padding: var(--spacing-xs);">
+                                    style="width: 100px; margin-left: var(--spacing-sm);">
                             </div>
                         </div>
 
+                        <!-- Preview Section -->
                         <div class="form-group"
                             style="border-top: 1px solid var(--border-color); padding-top: var(--spacing-lg);">
                             <label>Preview</label>
@@ -902,12 +860,11 @@
                                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
                                     <div>
                                         <div style="font-weight: 700; font-size: 16px;">No discount configured</div>
-                                        <div style="font-size: 12px; color: var(--text-secondary);">Fill in the details
-                                            above to see preview</div>
+                                        <div style="font-size: 12px;">Fill in the details above to see preview</div>
                                     </div>
                                     <div style="font-weight: 700; font-size: 18px; color: var(--primary);">0%</div>
                                 </div>
-                                <div style="font-size: 12px; color: var(--text-secondary);">
+                                <div style="font-size: 12px;">
                                     <div>Products: None selected</div>
                                     <div>Conditions: None</div>
                                     <div>Valid: Always</div>
@@ -915,19 +872,19 @@
                             </div>
                         </div>
 
-                        <div class="action-buttons" style="margin-top: var(--spacing-lg);">
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
                             <button class="btn-cancel" id="discount-reset">Reset</button>
                             <button class="btn-save" id="discount-create">Create Discount</button>
                         </div>
 
+                        <!-- Created Discounts List -->
                         <div class="form-group"
                             style="border-top: 1px solid var(--border-color); padding-top: var(--spacing-lg); margin-top: var(--spacing-lg);">
                             <label>Created Discounts</label>
                             <div id="discounts-list" style="max-height: 300px; overflow-y: auto;">
-                                <div
-                                    style="text-align: center; padding: var(--spacing-xl); color: var(--text-secondary);">
-                                    <i class="bi bi-tag"
-                                        style="font-size: 48px; opacity: 0.3; margin-bottom: var(--spacing-md);"></i>
+                                <div style="text-align: center; padding: var(--spacing-xl);">
+                                    <i class="bi bi-tag" style="font-size: 48px; opacity: 0.3;"></i>
                                     <div>No discounts created yet</div>
                                 </div>
                             </div>
@@ -935,203 +892,115 @@
                     </div>
                 </div>
 
-                <!-- Permissions Section -->
+                <!-- Row 3: User Permissions (full width) -->
                 <div class="settings-card" style="margin-top: var(--spacing-lg);">
                     <div class="settings-header">
                         <div class="settings-title">
                             <i class="bi bi-shield-lock"></i>
                             <h3>User Permissions</h3>
                         </div>
-                        <div>
-                            <button class="edit-toggle" id="permissions-edit-toggle"
-                                style="margin-right: var(--spacing-sm);">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-                            <button class="edit-toggle" id="permissions-save-toggle" style="display: none;">
-                                <i class="bi bi-check-lg"></i>
-                            </button>
-                        </div>
+                        <button class="edit-toggle" id="permissions-edit-toggle">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
                     </div>
                     <div class="settings-body">
-                        <div id="permissions-message" style="display: none;" class="alert alert-info mb-3"></div>
                         <div class="permissions-info mb-3">
                             <p class="text-muted small">
                                 <i class="bi bi-info-circle"></i> Configure what each user role can access and manage.
-                                Changes take effect immediately for all users.
                             </p>
                         </div>
                         <div class="table-responsive">
                             <table class="permissions-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 200px;">Feature</th>
-                                        <th style="text-align: center; width: 120px;">Admin</th>
-                                        <th style="text-align: center; width: 120px;">Manager</th>
-                                        <th style="text-align: center; width: 120px;">Cashier</th>
+                                        <th>Feature</th>
+                                        <th style="text-align: center;">Admin</th>
+                                        <th style="text-align: center;">Manager</th>
+                                        <th style="text-align: center;">Cashier</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>
-                                            <i class="bi bi-people"></i> Manage Users
-                                            <small class="d-block text-muted">Create, edit, delete users</small>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
-                                                data-perm="canManageUsers" checked disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
-                                                data-perm="canManageUsers" disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
-                                                data-perm="canManageUsers" disabled>
-                                        </td>
+                                        <td>Manage Users</td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="admin" data-perm="canManageUsers" checked disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="manager" data-perm="canManageUsers" disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="cashier" data-perm="canManageUsers" disabled></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <i class="bi bi-tag"></i> Manage Discounts
-                                            <small class="d-block text-muted">Create, edit, delete discounts</small>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
-                                                data-perm="canManageDiscounts" checked disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
-                                                data-perm="canManageDiscounts" disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
-                                                data-perm="canManageDiscounts" disabled>
-                                        </td>
+                                        <td>Manage Discounts</td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="admin" data-perm="canManageDiscounts" checked disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="manager" data-perm="canManageDiscounts" disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="cashier" data-perm="canManageDiscounts" disabled></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <i class="bi bi-box-seam"></i> Manage Inventory
-                                            <small class="d-block text-muted">Add, edit, delete products</small>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
-                                                data-perm="canManageInventory" checked disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
-                                                data-perm="canManageInventory" disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
-                                                data-perm="canManageInventory" disabled>
-                                        </td>
+                                        <td>Manage Inventory</td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="admin" data-perm="canManageInventory" checked disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="manager" data-perm="canManageInventory" disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="cashier" data-perm="canManageInventory" disabled></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <i class="bi bi-gear"></i> Manage Settings
-                                            <small class="d-block text-muted">Business, tax, system settings</small>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
-                                                data-perm="canManageSettings" checked disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
-                                                data-perm="canManageSettings" disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
-                                                data-perm="canManageSettings" disabled>
-                                        </td>
+                                        <td>Manage Settings</td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="admin" data-perm="canManageSettings" checked disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="manager" data-perm="canManageSettings" disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="cashier" data-perm="canManageSettings" disabled></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <i class="bi bi-graph-up"></i> View Reports
-                                            <small class="d-block text-muted">Sales reports, analytics, statistics</small>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
-                                                data-perm="canViewReports" checked disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
-                                                data-perm="canViewReports" disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
-                                                data-perm="canViewReports" disabled>
-                                        </td>
+                                        <td>View Reports</td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="admin" data-perm="canViewReports" checked disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="manager" data-perm="canViewReports" disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="cashier" data-perm="canViewReports" disabled></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <i class="bi bi-arrow-return-left"></i> Process Refunds
-                                            <small class="d-block text-muted">Issue refunds to customers</small>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
-                                                data-perm="canProcessRefunds" checked disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
-                                                data-perm="canProcessRefunds" disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
-                                                data-perm="canProcessRefunds" disabled>
-                                        </td>
+                                        <td>Process Refunds</td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="admin" data-perm="canProcessRefunds" checked disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="manager" data-perm="canProcessRefunds" disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="cashier" data-perm="canProcessRefunds" disabled></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <i class="bi bi-cart"></i> Create Sales
-                                            <small class="d-block text-muted">Process sales transactions</small>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="admin"
-                                                data-perm="canCreateSales" checked disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="manager"
-                                                data-perm="canCreateSales" disabled>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <input type="checkbox" class="perm-checkbox" data-role="cashier"
-                                                data-perm="canCreateSales" checked disabled>
-                                        </td>
+                                        <td>Create Sales</td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="admin" data-perm="canCreateSales" checked disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="manager" data-perm="canCreateSales" disabled></td>
+                                        <td style="text-align: center;"><input type="checkbox" class="perm-checkbox"
+                                                data-role="cashier" data-perm="canCreateSales" checked disabled></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="action-buttons" style="margin-top: var(--spacing-lg);">
+                        <div class="action-buttons">
                             <button class="btn-cancel" id="permissions-cancel" style="display: none;">Cancel</button>
-                            <button class="btn-save" id="permissions-save" style="display: none;">Save Permissions</button>
+                            <button class="btn-save" id="permissions-save" style="display: none;">Save
+                                Permissions</button>
                         </div>
                     </div>
                 </div>
             </div>
             <nav class="bottom-navbar">
-                <a href="index.html" class="nav-item" data-page="pos">
-                    <i class="bi bi-shop"></i>
-                    <span>POS</span>
-                </a>
-                <a href="dashboard.html" class="nav-item" data-page="dashboard">
-                    <i class="bi bi-speedometer2"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="inventory.html" class="nav-item" data-page="inventory">
-                    <i class="bi bi-box-seam"></i>
-                    <span>Inventory</span>
-                </a>
-                <a href="history.html" class="nav-item" data-page="history">
-                    <i class="bi bi-clock-history"></i>
-                    <span>History</span>
-                </a>
-                <a href="users.html" class="nav-item" data-page="users">
-                    <i class="bi bi-people"></i>
-                    <span>Users</span>
-                </a>
-                <a href="settings.html" class="nav-item active" data-page="settings">
-                    <i class="bi bi-gear"></i>
-                    <span>Settings</span>
-                </a>
+                <a href="index.html" class="nav-item"><i class="bi bi-shop"></i><span>POS</span></a>
+                <a href="dashboard.html" class="nav-item"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+                <a href="inventory.html" class="nav-item"><i class="bi bi-box-seam"></i><span>Inventory</span></a>
+                <a href="history.html" class="nav-item"><i class="bi bi-clock-history"></i><span>History</span></a>
+                <a href="users.html" class="nav-item"><i class="bi bi-people"></i><span>Users</span></a>
+                <a href="settings.html" class="nav-item active"><i class="bi bi-gear"></i><span>Settings</span></a>
             </nav>
         </div>
     </div>
@@ -1147,152 +1016,89 @@
         let categories = [];
         let sampleProducts = [];
         let currentUserPermissions = {
-            canManageSettings: false
+            canManageSettings: false,
+            canManageDiscounts: false
         };
 
-        // Toast notification system
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill';
-            toast.innerHTML = `
-                <div class="toast-icon"><i class="bi ${icon}"></i></div>
-                <div class="toast-content">
-                    <div class="toast-title">${type === 'success' ? 'Success' : 'Error'}</div>
-                    <div class="toast-message">${message}</div>
-                </div>
-            `;
+            toast.innerHTML = `<div class="toast-icon"><i class="bi ${icon}"></i></div><div class="toast-content"><div class="toast-title">${type === 'success' ? 'Success' : 'Error'}</div><div class="toast-message">${message}</div></div>`;
             container.appendChild(toast);
             setTimeout(() => {
                 toast.classList.add('fade-out');
-                setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
+                setTimeout(() => toast.remove(), 300);
             }, 5000);
-            toast.addEventListener('click', () => {
-                toast.classList.add('fade-out');
-                setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
-            });
         }
 
-        // Load current user
         function loadCurrentUser() {
-            const token = localStorage.getItem('token');
             const userData = JSON.parse(localStorage.getItem('user'));
-            if (token && userData) {
-                document.querySelectorAll('.user-name').forEach(el => {
-                    el.textContent = userData.fullName || userData.email || 'User';
-                });
+            if (userData) {
+                document.querySelectorAll('.user-name').forEach(el => el.textContent = userData.fullName || userData.email || 'User');
                 document.querySelectorAll('.user-role').forEach(el => {
-                    el.textContent = userData.role === 'admin' ? 'Administrator' :
-                        userData.role === 'cashier' ? 'Cashier' :
-                            userData.role === 'manager' ? 'Manager' : userData.role || 'User';
+                    el.textContent = userData.role === 'admin' ? 'Administrator' : userData.role === 'cashier' ? 'Cashier' : userData.role === 'manager' ? 'Manager' : userData.role || 'User';
                 });
-                document.querySelectorAll('.avatar').forEach(el => {
-                    if (userData.fullName) {
-                        el.textContent = userData.fullName.charAt(0).toUpperCase();
-                    } else if (userData.email) {
-                        el.textContent = userData.email.charAt(0).toUpperCase();
-                    }
-                });
+                document.querySelectorAll('.avatar').forEach(el => el.textContent = userData.fullName ? userData.fullName.charAt(0).toUpperCase() : 'U');
                 return userData;
             }
             window.location.href = 'login.html';
             return null;
         }
 
-        // Fetch user permissions
         async function fetchUserPermissions() {
             const userData = JSON.parse(localStorage.getItem('user'));
-            if (!userData || !userData._id) {
-                currentUserPermissions.canManageSettings = false;
-                return false;
-            }
+            if (!userData || !userData._id) return false;
             try {
                 const token = localStorage.getItem('token');
                 const response = await fetch(`http://localhost:3001/api/permissions/user/${userData._id}`, {
-                    method: 'GET',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (response.ok) {
                     const result = await response.json();
                     currentUserPermissions = {
-                        canManageSettings: result.permissions?.canManageSettings || false
+                        canManageSettings: result.permissions?.canManageSettings || false,
+                        canManageDiscounts: result.permissions?.canManageDiscounts || false
                     };
-                    console.log('Settings permissions - canManageSettings:', currentUserPermissions.canManageSettings);
-                    return currentUserPermissions.canManageSettings;
+                    return true;
                 }
                 return false;
             } catch (error) {
                 console.error('Error fetching permissions:', error);
-                currentUserPermissions.canManageSettings = false;
                 return false;
             }
         }
 
-        // Fetch business settings
         async function fetchBusinessSettings() {
             try {
                 const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
                 const response = await fetch('http://localhost:3001/api/settings/business', {
-                    method: 'GET',
-                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
-                if (response.status === 401) {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = 'login.html';
-                    return;
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success && result.business) {
+                        document.getElementById('business-name').value = result.business.name || '';
+                        document.getElementById('business-type').value = result.business.type || 'retail';
+                        document.getElementById('business-address').value = result.business.address || '';
+                        document.getElementById('business-phone').value = result.business.phone || '';
+                        if (result.business.owner) document.getElementById('business-owner').value = result.business.owner.fullName || '';
+                        const userData = JSON.parse(localStorage.getItem('user'));
+                        if (userData && userData.email) document.querySelector('input[type="email"]').value = userData.email;
+                        if (result.business.taxSettings) {
+                            document.getElementById('tax-rate').value = result.business.taxSettings.rate || 8.0;
+                            document.getElementById('tax-name').value = result.business.taxSettings.taxName || 'Sales Tax';
+                            document.getElementById('tax-inclusive').checked = result.business.taxSettings.taxInclusive !== false;
+                            document.getElementById('tax-enabled').checked = result.business.taxSettings.enabled || false;
+                        }
+                    }
                 }
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch business settings: ${response.status}`);
-                }
-                const result = await response.json();
-                if (result.success && result.business) {
-                    updateBusinessFormFields(result.business);
-                    return { success: true };
-                }
-                return { success: false };
             } catch (error) {
                 console.error('Error fetching business settings:', error);
-                showToast('Failed to load settings', 'error');
-                return { success: false };
             }
         }
 
-        // Update business form fields
-        function updateBusinessFormFields(businessData) {
-            document.getElementById('business-name').value = businessData.name || '';
-            const businessTypeSelect = document.getElementById('business-type');
-            if (businessTypeSelect && businessData.type) {
-                businessTypeSelect.value = businessData.type;
-            }
-            document.getElementById('business-address').value = businessData.address || '';
-            document.getElementById('business-phone').value = businessData.phone || '';
-            if (businessData.owner) {
-                document.getElementById('business-owner').value = businessData.owner.fullName || '';
-            }
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (userData && userData.email) {
-                document.querySelector('input[type="email"]').value = userData.email;
-            }
-            if (businessData.taxSettings) {
-                document.getElementById('tax-rate').value = businessData.taxSettings.rate || 8.0;
-                document.getElementById('tax-name').value = businessData.taxSettings.taxName || 'Sales Tax';
-                document.getElementById('tax-inclusive').checked = businessData.taxSettings.taxInclusive !== false;
-                document.getElementById('tax-enabled').checked = businessData.taxSettings.enabled || false;
-            } else {
-                document.getElementById('tax-rate').value = 8.0;
-                document.getElementById('tax-name').value = 'Sales Tax';
-                document.getElementById('tax-inclusive').checked = true;
-                document.getElementById('tax-enabled').checked = true;
-            }
-        }
-
-        // Update business settings
         async function updateBusinessSettings() {
             if (!currentUserPermissions.canManageSettings) {
                 showToast('You don\'t have permission to edit settings', 'error');
@@ -1300,38 +1106,28 @@
             }
             try {
                 const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-                const name = document.getElementById('business-name').value.trim();
-                const type = document.getElementById('business-type').value;
-                const phone = document.getElementById('business-phone').value.trim();
-                const address = document.getElementById('business-address').value.trim();
-                if (!name || !type || !phone || !address) {
-                    showToast('All fields are required', 'error');
-                    return;
-                }
-                const businessData = { name, type: type.toLowerCase(), phone, address };
                 const response = await fetch('http://localhost:3001/api/settings/business', {
                     method: 'PUT',
                     headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(businessData)
+                    body: JSON.stringify({
+                        name: document.getElementById('business-name').value.trim(),
+                        type: document.getElementById('business-type').value,
+                        phone: document.getElementById('business-phone').value.trim(),
+                        address: document.getElementById('business-address').value.trim()
+                    })
                 });
                 const result = await response.json();
                 if (response.ok && result.success) {
                     showToast('Business settings updated successfully', 'success');
                     toggleEditMode('business', false);
                 } else {
-                    showToast(result.message || 'Failed to update business settings', 'error');
+                    showToast(result.message || 'Failed to update', 'error');
                 }
             } catch (error) {
-                console.error('Error updating business settings:', error);
-                showToast('An error occurred while updating settings', 'error');
+                showToast('Error updating settings', 'error');
             }
         }
 
-        // Update tax settings
         async function updateTaxSettings() {
             if (!currentUserPermissions.canManageSettings) {
                 showToast('You don\'t have permission to edit settings', 'error');
@@ -1339,122 +1135,872 @@
             }
             try {
                 const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-                const enabled = document.getElementById('tax-enabled').checked;
-                const taxInclusive = document.getElementById('tax-inclusive').checked;
-                const rate = document.getElementById('tax-rate').value;
-                const taxName = document.getElementById('tax-name').value.trim();
-                if (rate === '' || isNaN(parseFloat(rate))) {
-                    showToast('Please enter a valid tax rate', 'error');
-                    return;
-                }
-                const taxData = { enabled, taxInclusive, rate: parseFloat(rate), taxName };
                 const response = await fetch('http://localhost:3001/api/settings/tax', {
                     method: 'PUT',
                     headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(taxData)
+                    body: JSON.stringify({
+                        enabled: document.getElementById('tax-enabled').checked,
+                        taxInclusive: document.getElementById('tax-inclusive').checked,
+                        rate: parseFloat(document.getElementById('tax-rate').value),
+                        taxName: document.getElementById('tax-name').value.trim()
+                    })
                 });
                 const result = await response.json();
                 if (response.ok && result.success) {
                     showToast('Tax settings updated successfully', 'success');
                     toggleEditMode('tax', false);
-                    if (result.taxSettings) {
-                        document.getElementById('tax-rate').value = result.taxSettings.rate || 8.0;
-                        document.getElementById('tax-name').value = result.taxSettings.taxName || 'Sales Tax';
-                        document.getElementById('tax-inclusive').checked = result.taxSettings.taxInclusive !== false;
-                        document.getElementById('tax-enabled').checked = result.taxSettings.enabled || false;
-                    }
                 } else {
-                    showToast(result.message || 'Failed to update tax settings', 'error');
+                    showToast(result.message || 'Failed to update', 'error');
                 }
             } catch (error) {
-                console.error('Error updating tax settings:', error);
-                showToast('An error occurred while updating settings', 'error');
+                showToast('Error updating tax settings', 'error');
             }
         }
 
-        // Toggle edit mode
         function toggleEditMode(section, enable) {
             if (!currentUserPermissions.canManageSettings && enable) {
                 showToast('You don\'t have permission to edit settings', 'error');
                 return;
             }
             if (section === 'business') {
-                if (enable) {
-                    document.getElementById('business-name').disabled = false;
-                    document.getElementById('business-type').disabled = false;
-                    document.getElementById('business-address').disabled = false;
-                    document.getElementById('business-phone').disabled = false;
-                    document.getElementById('business-save').style.display = 'block';
-                    document.getElementById('business-cancel').style.display = 'block';
-                    document.getElementById('business-edit-toggle').style.display = 'none';
-                } else {
-                    document.getElementById('business-name').disabled = true;
-                    document.getElementById('business-type').disabled = true;
-                    document.getElementById('business-address').disabled = true;
-                    document.getElementById('business-phone').disabled = true;
-                    document.getElementById('business-save').style.display = 'none';
-                    document.getElementById('business-cancel').style.display = 'none';
-                    document.getElementById('business-edit-toggle').style.display = 'block';
-                }
+                document.getElementById('business-name').disabled = !enable;
+                document.getElementById('business-type').disabled = !enable;
+                document.getElementById('business-address').disabled = !enable;
+                document.getElementById('business-phone').disabled = !enable;
+                document.getElementById('business-save').style.display = enable ? 'block' : 'none';
+                document.getElementById('business-cancel').style.display = enable ? 'block' : 'none';
+                document.getElementById('business-edit-toggle').style.display = enable ? 'none' : 'block';
             } else if (section === 'tax') {
-                if (enable) {
-                    document.getElementById('tax-rate').disabled = false;
-                    document.getElementById('tax-name').disabled = false;
-                    document.getElementById('tax-inclusive').disabled = false;
-                    document.getElementById('tax-enabled').disabled = false;
-                    document.getElementById('tax-save').style.display = 'block';
-                    document.getElementById('tax-cancel').style.display = 'block';
-                    document.getElementById('tax-edit-toggle').style.display = 'none';
-                } else {
-                    document.getElementById('tax-rate').disabled = true;
-                    document.getElementById('tax-name').disabled = true;
-                    document.getElementById('tax-inclusive').disabled = true;
-                    document.getElementById('tax-enabled').disabled = true;
-                    document.getElementById('tax-save').style.display = 'none';
-                    document.getElementById('tax-cancel').style.display = 'none';
-                    document.getElementById('tax-edit-toggle').style.display = 'block';
-                }
+                document.getElementById('tax-rate').disabled = !enable;
+                document.getElementById('tax-name').disabled = !enable;
+                document.getElementById('tax-inclusive').disabled = !enable;
+                document.getElementById('tax-enabled').disabled = !enable;
+                document.getElementById('tax-save').style.display = enable ? 'block' : 'none';
+                document.getElementById('tax-cancel').style.display = enable ? 'block' : 'none';
+                document.getElementById('tax-edit-toggle').style.display = enable ? 'none' : 'block';
             }
         }
 
-        // Show restricted view (only hides edit buttons)
         function showRestrictedView() {
             if (!currentUserPermissions.canManageSettings) {
-                document.querySelectorAll('.edit-toggle').forEach(btn => { btn.style.display = 'none'; });
+                document.querySelectorAll('.edit-toggle').forEach(btn => btn.style.display = 'none');
                 document.getElementById('business-save').style.display = 'none';
                 document.getElementById('business-cancel').style.display = 'none';
                 document.getElementById('tax-save').style.display = 'none';
                 document.getElementById('tax-cancel').style.display = 'none';
-                document.getElementById('business-name').disabled = true;
-                document.getElementById('business-type').disabled = true;
-                document.getElementById('business-address').disabled = true;
-                document.getElementById('business-phone').disabled = true;
-                document.getElementById('tax-rate').disabled = true;
-                document.getElementById('tax-name').disabled = true;
-                document.getElementById('tax-inclusive').disabled = true; 
-                document.getElementById('tax-enabled').disabled = true;
-                const businessCard = document.querySelector('.settings-card:first-child .settings-body');
-                if (businessCard && !businessCard.querySelector('.permission-info')) {
-                    const infoDiv = document.createElement('div');
-                    infoDiv.className = 'permission-info';
-                    infoDiv.innerHTML = '<i class="bi bi-info-circle"></i> View-only mode. You cannot edit these settings.';
-                    businessCard.insertBefore(infoDiv, businessCard.firstChild);
-                }
-                const taxCard = document.querySelector('.settings-card:nth-child(2) .settings-body');
-                if (taxCard && !taxCard.querySelector('.permission-info')) {
-                    const infoDiv = document.createElement('div');
-                    infoDiv.className = 'permission-info';
-                    infoDiv.innerHTML = '<i class="bi bi-info-circle"></i> View-only mode. You cannot edit these settings.';
-                    taxCard.insertBefore(infoDiv, taxCard.firstChild);
-                }
             }
         }
 
-        // Setup event listeners
+        // ========== DISCOUNT CREATOR FUNCTIONS ==========
+
+        async function fetchCategories() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:3001/api/categories', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    categories = result.categories || [];
+                    loadCategories();
+                }
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        }
+
+        async function fetchProducts() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:3001/api/inventory', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success && result.inventory) {
+                        sampleProducts = result.inventory.map(p => ({
+                            id: p._id,
+                            name: p.name,
+                            price: p.price,
+                            category: p.category
+                        }));
+                        loadProducts();
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+
+        function loadCategories() {
+            const container = document.querySelector('.category-checkboxes');
+            if (!container) return;
+            container.innerHTML = '';
+            categories.forEach(category => {
+                const div = document.createElement('div');
+                div.className = 'category-checkbox';
+                div.innerHTML = `<input type="checkbox" id="cat-${category._id}" class="category-checkbox-input" data-category-id="${category._id}" data-category-name="${category.name}"><label for="cat-${category._id}" style="cursor: pointer; flex: 1;"><div style="font-weight: 600;">${category.name}</div><div style="font-size: 11px; color: var(--text-secondary);">Select all products in this category</div></label>`;
+                container.appendChild(div);
+
+                // Add event listener for category checkbox
+                const categoryCheckbox = document.getElementById(`cat-${category._id}`);
+                categoryCheckbox.addEventListener('change', function (e) {
+                    const isChecked = e.target.checked;
+                    const categoryId = this.dataset.categoryId;
+
+                    if (isChecked) {
+                        selectedCategories.add(categoryId);
+                        // Check all products in this category
+                        const productsInCategory = sampleProducts.filter(p => p.category === categoryId || p.category === category.name);
+                        productsInCategory.forEach(product => {
+                            const productCheckbox = document.querySelector(`.product-checkbox-input[data-product-id="${product.id}"]`);
+                            if (productCheckbox && !productCheckbox.checked) {
+                                productCheckbox.checked = true;
+                                selectedProducts.add(product.id);
+                            }
+                        });
+                    } else {
+                        selectedCategories.delete(categoryId);
+                        // Uncheck all products in this category
+                        const productsInCategory = sampleProducts.filter(p => p.category === categoryId || p.category === category.name);
+                        productsInCategory.forEach(product => {
+                            const productCheckbox = document.querySelector(`.product-checkbox-input[data-product-id="${product.id}"]`);
+                            if (productCheckbox && productCheckbox.checked) {
+                                productCheckbox.checked = false;
+                                selectedProducts.delete(product.id);
+                            }
+                        });
+                    }
+                    updateDiscountPreview();
+                });
+            });
+        }
+
+        function loadProducts() {
+            const container = document.querySelector('.product-checkboxes');
+            const buySelect = document.getElementById('bogo-buy-products');
+            const getSelect = document.getElementById('bogo-get-products');
+            if (!container || !buySelect || !getSelect) return;
+            container.innerHTML = '';
+            buySelect.innerHTML = '<option value="">Select products...</option>';
+            getSelect.innerHTML = '<option value="">Select products...</option>';
+
+            sampleProducts.forEach(product => {
+                const div = document.createElement('div');
+                div.className = 'product-checkbox';
+                div.dataset.productId = product.id;
+                div.dataset.categoryId = product.category;
+                div.innerHTML = `<input type="checkbox" id="prod-${product.id}" class="product-checkbox-input" data-product-id="${product.id}" data-category-id="${product.category}"><label for="prod-${product.id}" style="cursor: pointer; flex: 1;"><div style="font-weight: 600;">${product.name}</div><div style="font-size: 11px;">$${product.price.toFixed(2)}</div></label>`;
+                container.appendChild(div);
+
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = `${product.name} ($${product.price.toFixed(2)})`;
+                buySelect.appendChild(option.cloneNode(true));
+                getSelect.appendChild(option);
+
+                // Add event listener for individual product checkbox
+                const productCheckbox = document.getElementById(`prod-${product.id}`);
+                productCheckbox.addEventListener('change', function (e) {
+                    const isChecked = e.target.checked;
+                    const productId = this.dataset.productId;
+                    const categoryId = this.dataset.categoryId;
+
+                    if (isChecked) {
+                        selectedProducts.add(productId);
+                        // Check if all products in the category are now selected
+                        const productsInCategory = sampleProducts.filter(p => p.category === categoryId);
+                        const allProductsInCategorySelected = productsInCategory.every(p =>
+                            document.querySelector(`.product-checkbox-input[data-product-id="${p.id}"]`)?.checked
+                        );
+
+                        if (allProductsInCategorySelected) {
+                            const categoryCheckbox = document.querySelector(`.category-checkbox-input[data-category-id="${categoryId}"]`);
+                            if (categoryCheckbox && !categoryCheckbox.checked) {
+                                categoryCheckbox.checked = true;
+                                selectedCategories.add(categoryId);
+                            }
+                        }
+                    } else {
+                        selectedProducts.delete(productId);
+                        // Uncheck the category if it was checked
+                        const categoryCheckbox = document.querySelector(`.category-checkbox-input[data-category-id="${categoryId}"]`);
+                        if (categoryCheckbox && categoryCheckbox.checked) {
+                            categoryCheckbox.checked = false;
+                            selectedCategories.delete(categoryId);
+                        }
+                    }
+                    updateDiscountPreview();
+                });
+            });
+        }
+
+        function setupDiscountTypeSelector() {
+            const typeOptions = document.querySelectorAll('.type-option');
+            typeOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    typeOptions.forEach(opt => {
+                        opt.classList.remove('active');
+                        opt.style.borderColor = 'var(--border-color)';
+                        opt.style.background = 'transparent';
+                    });
+                    this.classList.add('active');
+                    this.style.borderColor = 'var(--primary)';
+                    this.style.background = 'var(--secondary)';
+                    const type = this.dataset.type;
+                    const valueSection = document.getElementById('discount-value-section');
+                    const bogoSection = document.getElementById('bogo-section');
+                    const applyToSection = document.getElementById('product-category-selection');
+                    const percentageInput = document.getElementById('discount-percentage');
+                    const fixedInput = document.getElementById('discount-fixed');
+                    if (type === 'bogo') {
+                        if (valueSection) valueSection.style.display = 'none';
+                        if (bogoSection) bogoSection.style.display = 'block';
+                        if (applyToSection) applyToSection.style.display = 'none';
+                    } else if (type === 'percentage') {
+                        if (valueSection) valueSection.style.display = 'block';
+                        if (bogoSection) bogoSection.style.display = 'none';
+                        if (applyToSection) applyToSection.style.display = 'block';
+                        if (percentageInput) percentageInput.style.display = 'block';
+                        if (fixedInput) fixedInput.style.display = 'none';
+                    } else {
+                        if (valueSection) valueSection.style.display = 'block';
+                        if (bogoSection) bogoSection.style.display = 'none';
+                        if (applyToSection) applyToSection.style.display = 'block';
+                        if (percentageInput) percentageInput.style.display = 'none';
+                        if (fixedInput) fixedInput.style.display = 'block';
+                    }
+                    updateDiscountPreview();
+                });
+            });
+        }
+
+        function setDefaultDiscountType() {
+            const percentageOption = Array.from(document.querySelectorAll('.type-option')).find(opt => opt.dataset.type === 'percentage');
+            if (percentageOption) percentageOption.click();
+        }
+
+        function updateDiscountPreview() {
+            const preview = document.getElementById('discount-preview');
+            if (!preview) return;
+            const discountName = document.getElementById('discount-name')?.value || 'Untitled Discount';
+            const discountType = document.querySelector('.type-option.active')?.dataset.type || 'percentage';
+            let discountValue = '';
+            let productCount = '';
+            if (discountType === 'bogo') {
+                const buyQty = document.getElementById('bogo-buy-quantity')?.value || 1;
+                const getQty = document.getElementById('bogo-get-quantity')?.value || 1;
+                discountValue = `Buy ${buyQty} Get ${getQty} Free`;
+                productCount = 'BOGO offer';
+            } else {
+                const percentage = document.getElementById('discount-percentage')?.value;
+                const fixed = document.getElementById('discount-fixed')?.value;
+                if (percentage) discountValue = `${percentage}% OFF`;
+                else if (fixed) discountValue = `$${fixed} OFF`;
+                else discountValue = 'No discount set';
+                let productSummary = [];
+                if (selectedCategories.size > 0) productSummary.push(`${selectedCategories.size} categor${selectedCategories.size > 1 ? 'ies' : 'y'}`);
+                if (selectedProducts.size > 0) productSummary.push(`${selectedProducts.size} product${selectedProducts.size > 1 ? 's' : ''}`);
+                productCount = productSummary.length > 0 ? productSummary.join(', ') : 'No products selected';
+            }
+            const conditions = [];
+            const amount = document.getElementById('condition-amount')?.value;
+            if (amount) conditions.push(`Order ≥ $${amount}`);
+            const enableTime = document.getElementById('enable-time')?.checked;
+            if (enableTime) {
+                const start = document.getElementById('start-time')?.value;
+                const end = document.getElementById('end-time')?.value;
+                if (start && end) conditions.push(`${start} - ${end}`);
+            }
+            const activeDays = Array.from(document.querySelectorAll('.day-option.active')).map(day => day.dataset.day.substring(0, 3).toUpperCase()).join(', ');
+            preview.innerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);"><div><div style="font-weight: 700; font-size: 16px;">${discountName}</div></div><div style="font-weight: 700; font-size: 18px; color: var(--primary);">${discountValue}</div></div><div style="font-size: 12px;"><div><i class="bi bi-box"></i> Products: ${productCount}</div><div><i class="bi bi-filter"></i> Conditions: ${conditions.length > 0 ? conditions.join(', ') : 'None'}</div><div><i class="bi bi-calendar"></i> Days: ${activeDays || 'All days'}</div></div>`;
+        }
+
+        async function fetchDiscountsFromServer() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:3001/api/discounts', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        createdDiscounts = result.discounts || [];
+                        updateDiscountsList();
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching discounts:', error);
+            }
+        }
+
+        function updateDiscountsList() {
+            const container = document.getElementById('discounts-list');
+            if (!container) return;
+            if (createdDiscounts.length === 0) {
+                container.innerHTML = `<div style="text-align: center; padding: var(--spacing-xl);"><i class="bi bi-tag" style="font-size: 48px; opacity: 0.3;"></i><div>No discounts created yet</div></div>`;
+                return;
+            }
+            container.innerHTML = '';
+            createdDiscounts.forEach((discount, index) => {
+                const discountEl = document.createElement('div');
+                discountEl.className = 'discount-item';
+                let valueText = '';
+                if (discount.type === 'bogo') valueText = `Buy ${discount.bogo?.buyQuantity || 1} Get ${discount.bogo?.getQuantity || 1} Free`;
+                else if (discount.type === 'percentage') valueText = `${discount.value}% OFF`;
+                else if (discount.type === 'fixed') valueText = `$${discount.value} OFF`;
+                discountEl.innerHTML = `<div class="discount-info"><div style="font-weight: 600;">${discount.name}</div><div style="font-size: 11px;">${valueText} • ${discount.status === 'active' ? 'Active' : 'Inactive'}</div></div><div class="discount-actions"><button class="btn-toggle" onclick="toggleDiscountStatus(${index})">${discount.status === 'active' ? 'Deactivate' : 'Activate'}</button><button class="btn-edit" onclick="editDiscount(${index})"><i class="bi bi-pencil"></i></button><button class="btn-delete" onclick="deleteDiscount(${index})"><i class="bi bi-trash"></i></button></div>`;
+                container.appendChild(discountEl);
+            });
+        }
+
+        window.toggleDiscountStatus = async function (index) {
+            const discount = createdDiscounts[index];
+            if (!discount) return;
+            try {
+                const token = localStorage.getItem('token');
+                const newStatus = discount.status === 'active' ? 'inactive' : 'active';
+                const response = await fetch(`http://localhost:3001/api/discounts/${discount._id}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    createdDiscounts[index].status = newStatus;
+                    updateDiscountsList();
+                    showToast(`Discount ${newStatus === 'active' ? 'activated' : 'deactivated'}`, 'success');
+                }
+            } catch (error) {
+                showToast('Failed to update status', 'error');
+            }
+        };
+
+        window.editDiscount = async function (index) {
+            const discount = createdDiscounts[index];
+            if (!discount) return;
+
+            editingDiscountId = discount._id;
+            document.getElementById('discount-name').value = discount.name;
+
+            // Clear previous selections
+            selectedCategories.clear();
+            selectedProducts.clear();
+
+            document.querySelectorAll('.category-checkbox-input').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.product-checkbox-input').forEach(cb => cb.checked = false);
+
+            // Restore categories
+            if (discount.categories && discount.categories.length > 0) {
+                discount.categories.forEach(cat => {
+                    const cb = document.querySelector(`.category-checkbox-input[data-category-id="${cat._id || cat}"]`);
+                    if (cb) {
+                        cb.checked = true;
+                        selectedCategories.add(cat._id || cat);
+                    }
+                });
+            }
+
+            // Restore products - handle both object and string formats
+            if (discount.products && discount.products.length > 0) {
+                discount.products.forEach(prod => {
+                    const productId = prod._id || prod;
+                    const cb = document.querySelector(`.product-checkbox-input[data-product-id="${productId}"]`);
+                    if (cb) {
+                        cb.checked = true;
+                        selectedProducts.add(productId);
+                    }
+                });
+            }
+
+            const typeOptions = document.querySelectorAll('.type-option');
+            typeOptions.forEach(opt => {
+                if (opt.dataset.type === discount.type) opt.click();
+            });
+
+            if (discount.type === 'percentage') document.getElementById('discount-percentage').value = discount.value;
+            if (discount.type === 'fixed') document.getElementById('discount-fixed').value = discount.value;
+
+            if (discount.type === 'bogo' && discount.bogo) {
+                document.getElementById('bogo-buy-quantity').value = discount.bogo.buyQuantity || 1;
+                document.getElementById('bogo-get-quantity').value = discount.bogo.getQuantity || 1;
+                document.getElementById('bogo-same-product').checked = discount.bogo.sameProduct || false;
+                document.getElementById('bogo-repeat').checked = discount.bogo.repeatable || false;
+
+                if (discount.bogo.buyProducts && discount.bogo.buyProducts.length > 0) {
+                    const buySelect = document.getElementById('bogo-buy-products');
+                    Array.from(buySelect.options).forEach(opt => {
+                        if (discount.bogo.buyProducts.includes(opt.value)) {
+                            opt.selected = true;
+                        }
+                    });
+                }
+
+                if (discount.bogo.getProducts && !discount.bogo.sameProduct && discount.bogo.getProducts.length > 0) {
+                    const getSelect = document.getElementById('bogo-get-products');
+                    Array.from(getSelect.options).forEach(opt => {
+                        if (discount.bogo.getProducts.includes(opt.value)) {
+                            opt.selected = true;
+                        }
+                    });
+                }
+            }
+
+            if (discount.conditions?.minAmount) {
+                document.getElementById('condition-amount').value = discount.conditions.minAmount.amount;
+                document.getElementById('condition-operator').value = discount.conditions.minAmount.operator || '>=';
+            }
+            if (discount.conditions?.timeRange?.enabled) {
+                document.getElementById('enable-time').checked = true;
+                document.getElementById('start-time').value = discount.conditions.timeRange.start || '';
+                document.getElementById('end-time').value = discount.conditions.timeRange.end || '';
+            }
+            if (discount.conditions?.days) {
+                document.querySelectorAll('.day-option').forEach(day => {
+                    if (discount.conditions.days.includes(day.dataset.day)) day.classList.add('active');
+                });
+            }
+            if (discount.validFrom) document.getElementById('start-date').value = discount.validFrom.split('T')[0];
+            if (discount.validUntil) document.getElementById('end-date').value = discount.validUntil.split('T')[0];
+            document.getElementById('option-auto-apply').checked = discount.autoApply || false;
+            document.getElementById('option-cumulative').checked = discount.cumulative || false;
+            if (discount.maxUses) {
+                document.getElementById('option-max-uses').checked = true;
+                document.getElementById('max-uses').value = discount.maxUses;
+            }
+
+            document.getElementById('discount-create').textContent = 'Update Discount';
+            document.querySelector('.settings-card:nth-child(3)').scrollIntoView({ behavior: 'smooth' });
+            updateDiscountPreview();
+        };
+
+        window.deleteDiscount = async function (index) {
+            const discount = createdDiscounts[index];
+            if (!discount || !confirm('Are you sure you want to delete this discount?')) return;
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3001/api/discounts/${discount._id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    createdDiscounts.splice(index, 1);
+                    updateDiscountsList();
+                    showToast('Discount deleted successfully', 'success');
+                }
+            } catch (error) {
+                showToast('Failed to delete discount', 'error');
+            }
+        };
+
+        async function createDiscount() {
+            if (!currentUserPermissions.canManageDiscounts) {
+                showToast('You don\'t have permission to manage discounts', 'error');
+                return;
+            }
+            const discountName = document.getElementById('discount-name')?.value.trim();
+            if (!discountName) {
+                showToast('Please enter a discount name', 'error');
+                return;
+            }
+            const discountType = document.querySelector('.type-option.active')?.dataset.type || 'percentage';
+            let discountData = { name: discountName, type: discountType, status: 'active' };
+
+            // Add selected categories and products
+            const selectedCategoriesList = Array.from(document.querySelectorAll('.category-checkbox-input:checked')).map(cb => cb.dataset.categoryId);
+            const selectedProductsList = Array.from(document.querySelectorAll('.product-checkbox-input:checked')).map(cb => cb.dataset.productId);
+
+            if (selectedCategoriesList.length > 0) {
+                discountData.categories = selectedCategoriesList;
+            }
+            if (selectedProductsList.length > 0) {
+                discountData.products = selectedProductsList;
+            }
+
+            if (discountType === 'bogo') {
+                // Get BOGO configuration
+                const buyProducts = Array.from(document.getElementById('bogo-buy-products')?.selectedOptions || []).map(opt => opt.value).filter(v => v);
+                const getProducts = Array.from(document.getElementById('bogo-get-products')?.selectedOptions || []).map(opt => opt.value).filter(v => v);
+
+                discountData.bogo = {
+                    buyQuantity: parseInt(document.getElementById('bogo-buy-quantity')?.value || 1),
+                    getQuantity: parseInt(document.getElementById('bogo-get-quantity')?.value || 1),
+                    sameProduct: document.getElementById('bogo-same-product')?.checked || false,
+                    repeatable: document.getElementById('bogo-repeat')?.checked || false,
+                    buyProducts: buyProducts,
+                    getProducts: getProducts
+                };
+
+                // IMPORTANT: For BOGO discounts, also add the products to the main products array
+                // so they are recognized by the discount eligibility system
+                const allBogoProducts = [...buyProducts, ...getProducts];
+                if (allBogoProducts.length > 0) {
+                    if (!discountData.products) {
+                        discountData.products = [];
+                    }
+                    // Add unique products to the products array
+                    allBogoProducts.forEach(productId => {
+                        if (!discountData.products.includes(productId)) {
+                            discountData.products.push(productId);
+                        }
+                    });
+                }
+
+                // Set applyToAll to false since we have specific products
+                discountData.applyToAll = false;
+
+            } else {
+                const percentage = document.getElementById('discount-percentage')?.value;
+                const fixed = document.getElementById('discount-fixed')?.value;
+                if (percentage) {
+                    discountData.value = parseFloat(percentage);
+                    discountData.valueType = 'percentage';
+                } else if (fixed) {
+                    discountData.value = parseFloat(fixed);
+                    discountData.valueType = 'fixed';
+                } else {
+                    showToast('Please enter a discount value', 'error');
+                    return;
+                }
+            }
+
+            const amount = document.getElementById('condition-amount')?.value;
+            if (amount) {
+                discountData.conditions = {
+                    minAmount: { amount: parseFloat(amount), operator: document.getElementById('condition-operator')?.value || '>=' }
+                };
+            }
+
+            if (document.getElementById('enable-time')?.checked) {
+                discountData.conditions = discountData.conditions || {};
+                discountData.conditions.timeRange = {
+                    start: document.getElementById('start-time')?.value,
+                    end: document.getElementById('end-time')?.value,
+                    enabled: true
+                };
+            }
+
+            const activeDays = Array.from(document.querySelectorAll('.day-option.active')).map(day => day.dataset.day);
+            if (activeDays.length > 0) {
+                discountData.conditions = discountData.conditions || {};
+                discountData.conditions.days = activeDays;
+            }
+
+            const startDate = document.getElementById('start-date')?.value;
+            const endDate = document.getElementById('end-date')?.value;
+            if (startDate) discountData.validFrom = startDate;
+            if (endDate) discountData.validUntil = endDate;
+
+            discountData.autoApply = document.getElementById('option-auto-apply')?.checked || false;
+            discountData.cumulative = document.getElementById('option-cumulative')?.checked || false;
+
+            if (document.getElementById('option-max-uses')?.checked) {
+                discountData.maxUses = parseInt(document.getElementById('max-uses')?.value || 100);
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                let response, result;
+                if (editingDiscountId) {
+                    response = await fetch(`http://localhost:3001/api/discounts/${editingDiscountId}`, {
+                        method: 'PUT',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify(discountData)
+                    });
+                    result = await response.json();
+                    if (response.ok && result.success) {
+                        showToast(`Discount updated successfully`, 'success');
+                        editingDiscountId = null;
+                        document.getElementById('discount-create').textContent = 'Create Discount';
+                        resetDiscountForm();
+                    } else {
+                        showToast(result.message || 'Failed to update discount', 'error');
+                    }
+                } else {
+                    response = await fetch('http://localhost:3001/api/discounts', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify(discountData)
+                    });
+                    result = await response.json();
+                    if (response.ok && result.success) {
+                        showToast(`Discount created successfully`, 'success');
+                        resetDiscountForm();
+                    } else {
+                        showToast(result.message || 'Failed to create discount', 'error');
+                    }
+                }
+                await fetchDiscountsFromServer();
+            } catch (error) {
+                console.error('Error saving discount:', error);
+                showToast('Failed to save discount', 'error');
+            }
+        }
+
+        function resetDiscountForm() {
+            editingDiscountId = null;
+            document.getElementById('discount-create').textContent = 'Create Discount';
+            document.getElementById('discount-name').value = '';
+            document.getElementById('discount-percentage').value = '';
+            document.getElementById('discount-fixed').value = '';
+            document.getElementById('condition-amount').value = '';
+            document.getElementById('start-time').value = '';
+            document.getElementById('end-time').value = '';
+            document.getElementById('start-date').value = '';
+            document.getElementById('end-date').value = '';
+            document.getElementById('bogo-buy-quantity').value = '1';
+            document.getElementById('bogo-get-quantity').value = '1';
+            document.getElementById('max-uses').value = '100';
+            document.getElementById('option-auto-apply').checked = false;
+            document.getElementById('option-cumulative').checked = false;
+            document.getElementById('option-max-uses').checked = false;
+            document.getElementById('bogo-same-product').checked = false;
+            document.getElementById('bogo-repeat').checked = false;
+            document.getElementById('enable-time').checked = false;
+            document.getElementById('start-time').disabled = true;
+            document.getElementById('end-time').disabled = true;
+
+            // Clear selected categories and products
+            selectedCategories.clear();
+            selectedProducts.clear();
+
+            // Uncheck all category and product checkboxes
+            document.querySelectorAll('.category-checkbox-input').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.product-checkbox-input').forEach(cb => cb.checked = false);
+
+            // Clear BOGO product selections
+            const buySelect = document.getElementById('bogo-buy-products');
+            const getSelect = document.getElementById('bogo-get-products');
+            if (buySelect) {
+                Array.from(buySelect.options).forEach(opt => opt.selected = false);
+            }
+            if (getSelect) {
+                Array.from(getSelect.options).forEach(opt => opt.selected = false);
+            }
+
+            document.querySelectorAll('.day-option').forEach(day => day.classList.remove('active'));
+            setDefaultDiscountType();
+            updateDiscountPreview();
+        }
+
+        function setupDiscountCreatorEventListeners() {
+            // Select All Categories - Also selects all products in those categories
+            document.querySelector('.btn-select-all')?.addEventListener('click', () => {
+                // Select all categories
+                document.querySelectorAll('.category-checkbox-input').forEach(cb => {
+                    cb.checked = true;
+                    selectedCategories.add(cb.dataset.categoryId);
+                });
+
+                // Select all products
+                document.querySelectorAll('.product-checkbox-input').forEach(cb => {
+                    cb.checked = true;
+                    selectedProducts.add(cb.dataset.productId);
+                });
+
+                updateDiscountPreview();
+            });
+
+            // Deselect All Categories - Also deselects all products
+            document.querySelector('.btn-deselect-all')?.addEventListener('click', () => {
+                // Deselect all categories
+                document.querySelectorAll('.category-checkbox-input').forEach(cb => {
+                    cb.checked = false;
+                    selectedCategories.delete(cb.dataset.categoryId);
+                });
+
+                // Deselect all products
+                document.querySelectorAll('.product-checkbox-input').forEach(cb => {
+                    cb.checked = false;
+                    selectedProducts.delete(cb.dataset.productId);
+                });
+
+                updateDiscountPreview();
+            });
+
+            // Select All Products - Also selects all categories
+            document.querySelector('.btn-select-all-products')?.addEventListener('click', () => {
+                // Select all products
+                document.querySelectorAll('.product-checkbox-input').forEach(cb => {
+                    cb.checked = true;
+                    selectedProducts.add(cb.dataset.productId);
+                });
+
+                // Select all categories
+                document.querySelectorAll('.category-checkbox-input').forEach(cb => {
+                    cb.checked = true;
+                    selectedCategories.add(cb.dataset.categoryId);
+                });
+
+                updateDiscountPreview();
+            });
+
+            // Deselect All Products - Also deselects all categories
+            document.querySelector('.btn-deselect-all-products')?.addEventListener('click', () => {
+                // Deselect all products
+                document.querySelectorAll('.product-checkbox-input').forEach(cb => {
+                    cb.checked = false;
+                    selectedProducts.delete(cb.dataset.productId);
+                });
+
+                // Deselect all categories
+                document.querySelectorAll('.category-checkbox-input').forEach(cb => {
+                    cb.checked = false;
+                    selectedCategories.delete(cb.dataset.categoryId);
+                });
+
+                updateDiscountPreview();
+            });
+
+            // Handle individual checkbox changes
+            document.addEventListener('change', (e) => {
+                if (e.target.classList.contains('category-checkbox-input')) {
+                    if (e.target.checked) selectedCategories.add(e.target.dataset.categoryId);
+                    else selectedCategories.delete(e.target.dataset.categoryId);
+                    updateDiscountPreview();
+                }
+                if (e.target.classList.contains('product-checkbox-input')) {
+                    if (e.target.checked) selectedProducts.add(e.target.dataset.productId);
+                    else selectedProducts.delete(e.target.dataset.productId);
+                    updateDiscountPreview();
+                }
+            });
+
+            document.getElementById('product-search')?.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                document.querySelectorAll('.product-checkbox').forEach(product => {
+                    const label = product.querySelector('label');
+                    product.style.display = label?.textContent.toLowerCase().includes(searchTerm) ? 'flex' : 'none';
+                });
+            });
+
+            document.getElementById('bogo-same-product')?.addEventListener('change', (e) => {
+                const getSelect = document.getElementById('bogo-get-products');
+                if (e.target.checked) {
+                    const buySelect = document.getElementById('bogo-buy-products');
+                    getSelect.innerHTML = buySelect.innerHTML;
+                    getSelect.disabled = true;
+                } else {
+                    getSelect.disabled = false;
+                }
+            });
+
+            document.getElementById('enable-time')?.addEventListener('change', (e) => {
+                document.getElementById('start-time').disabled = !e.target.checked;
+                document.getElementById('end-time').disabled = !e.target.checked;
+                updateDiscountPreview();
+            });
+
+            document.querySelectorAll('.day-option').forEach(option => {
+                option.addEventListener('click', function () {
+                    this.classList.toggle('active');
+                    updateDiscountPreview();
+                });
+            });
+
+            document.getElementById('discount-create')?.addEventListener('click', createDiscount);
+            document.getElementById('discount-reset')?.addEventListener('click', resetDiscountForm);
+
+            ['discount-name', 'discount-percentage', 'discount-fixed', 'condition-amount', 'start-time', 'end-time', 'start-date', 'end-date', 'bogo-buy-quantity', 'bogo-get-quantity', 'max-uses', 'option-auto-apply', 'option-cumulative', 'option-max-uses'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', updateDiscountPreview);
+            });
+        }
+
+        async function initCustomDiscountCreator() {
+            await fetchCategories();
+            await fetchProducts();
+            setupDiscountTypeSelector();
+            setupDiscountCreatorEventListeners();
+            setDefaultDiscountType();
+            updateDiscountPreview();
+        }
+
+        // ========== PERMISSIONS FUNCTIONS ==========
+
+        let originalPermissions = null;
+
+        async function fetchPermissions() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:3001/api/permissions', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success && result.permissions) {
+                        updatePermissionsTable(result.permissions.roles);
+                        originalPermissions = JSON.parse(JSON.stringify(result.permissions.roles));
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching permissions:', error);
+            }
+        }
+
+        function updatePermissionsTable(roles) {
+            const checkboxes = document.querySelectorAll('.perm-checkbox');
+            checkboxes.forEach(checkbox => {
+                const role = checkbox.dataset.role;
+                const perm = checkbox.dataset.perm;
+                if (roles[role] && roles[role][perm] !== undefined) {
+                    checkbox.checked = roles[role][perm];
+                }
+                checkbox.dataset.originalChecked = checkbox.checked;
+            });
+        }
+
+        function enablePermissionEditing() {
+            const checkboxes = document.querySelectorAll('.perm-checkbox');
+            checkboxes.forEach(checkbox => checkbox.disabled = false);
+            document.getElementById('permissions-edit-toggle').style.display = 'none';
+            document.getElementById('permissions-save').style.display = 'block';
+            document.getElementById('permissions-cancel').style.display = 'block';
+        }
+
+        function cancelPermissionEditing() {
+            const checkboxes = document.querySelectorAll('.perm-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = checkbox.dataset.originalChecked === 'true';
+                checkbox.disabled = true;
+            });
+            document.getElementById('permissions-edit-toggle').style.display = 'block';
+            document.getElementById('permissions-save').style.display = 'none';
+            document.getElementById('permissions-cancel').style.display = 'none';
+        }
+
+        async function savePermissions() {
+            try {
+                const token = localStorage.getItem('token');
+                const roles = { admin: {}, manager: {}, cashier: {} };
+                const checkboxes = document.querySelectorAll('.perm-checkbox');
+                checkboxes.forEach(checkbox => {
+                    const role = checkbox.dataset.role;
+                    const perm = checkbox.dataset.perm;
+                    roles[role][perm] = checkbox.checked;
+                });
+                const response = await fetch('http://localhost:3001/api/permissions', {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ roles })
+                });
+                if (response.ok) {
+                    showToast('Permissions updated successfully', 'success');
+                    cancelPermissionEditing();
+                } else {
+                    showToast('Failed to update permissions', 'error');
+                }
+            } catch (error) {
+                showToast('Error saving permissions', 'error');
+            }
+        }
+
+        function setupPermissionsEventListeners() {
+            document.getElementById('permissions-edit-toggle')?.addEventListener('click', enablePermissionEditing);
+            document.getElementById('permissions-save')?.addEventListener('click', savePermissions);
+            document.getElementById('permissions-cancel')?.addEventListener('click', cancelPermissionEditing);
+        }
+
         function setupEventListeners() {
             document.getElementById('business-edit-toggle')?.addEventListener('click', () => toggleEditMode('business', true));
             document.getElementById('business-cancel')?.addEventListener('click', () => toggleEditMode('business', false));
@@ -1470,7 +2016,6 @@
             });
         }
 
-        // Initialize app
         async function initializeApp() {
             const userData = loadCurrentUser();
             if (!userData) return;
@@ -1478,9 +2023,16 @@
             await fetchBusinessSettings();
             showRestrictedView();
             setupEventListeners();
+            await initCustomDiscountCreator();
+            await fetchDiscountsFromServer();
+            if (userData.role === 'admin') {
+                await fetchPermissions();
+                setupPermissionsEventListeners();
+            }
         }
 
         document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
+
 </html>

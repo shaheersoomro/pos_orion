@@ -26,6 +26,7 @@ const authenticateToken = (req, res, next) => {
       if (!user) {
         return res.status(404).json({ success: false, message: "User not found" });
       }
+
       req.user = user;
       next();
     } catch (error) {
@@ -41,6 +42,7 @@ const requireEditSettingsPermission = async (req, res, next) => {
     const permissions = await Permission.findOne({ business: req.user.business });
 
     if (!permissions) {
+      // If no permissions configured, only admin can edit
       if (req.user.role !== 'admin') {
         return res.status(403).json({
           success: false,
@@ -103,7 +105,7 @@ router.get("/business", authenticateToken, async (req, res) => {
 router.put(
   "/business",
   authenticateToken,
-  requireEditSettingsPermission,
+  requireEditSettingsPermission, // Check permission for editing
   [
     body("name").trim().notEmpty().withMessage("Business name is required"),
     body("type").isIn(["retail", "restaurant", "service", "ecommerce", "wholesale", "salon", "grocery", "other"]).withMessage("Invalid business type"),
@@ -155,7 +157,7 @@ router.put(
 router.put(
   "/tax",
   authenticateToken,
-  requireEditSettingsPermission,
+  requireEditSettingsPermission, // Check permission for editing
   [
     body("enabled").isBoolean().withMessage("Tax enabled must be a boolean"),
     body("rate").isFloat({ min: 0, max: 100 }).withMessage("Tax rate must be between 0 and 100"),

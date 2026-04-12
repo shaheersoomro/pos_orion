@@ -165,6 +165,36 @@
             background: var(--primary-dark);
         }
 
+        btn-action {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .btn-action.btn-secondary {
+            background: var(--secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .btn-action.btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-action.btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-action:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .permissions-table {
             width: 100%;
             font-size: 13px;
@@ -601,7 +631,7 @@
                 </div>
 
                 <!-- Row 2: Custom Discount Creator (full width) -->
-                <div class="settings-card" style="margin-top: var(--spacing-lg);">
+                <div class="settings-card discount-card" style="margin-top: var(--spacing-lg);">
                     <div class="settings-header">
                         <div class="settings-title">
                             <i class="bi bi-plus-circle"></i>
@@ -1006,6 +1036,28 @@
     </div>
 
     <div class="toast-container" id="toast-container"></div>
+
+    <!-- Delete Discount Confirmation Modal -->
+    <div class="modal fade" id="deleteDiscountModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Discount</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="delete-discount-id">
+                    <div id="delete-discount-message"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-action btn-danger" id="btn-confirm-delete-discount">Delete
+                        Discount</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -1380,41 +1432,150 @@
             if (percentageOption) percentageOption.click();
         }
 
+
+
         function updateDiscountPreview() {
             const preview = document.getElementById('discount-preview');
             if (!preview) return;
+
             const discountName = document.getElementById('discount-name')?.value || 'Untitled Discount';
             const discountType = document.querySelector('.type-option.active')?.dataset.type || 'percentage';
             let discountValue = '';
-            let productCount = '';
+            let productDetails = '';
+
             if (discountType === 'bogo') {
                 const buyQty = document.getElementById('bogo-buy-quantity')?.value || 1;
                 const getQty = document.getElementById('bogo-get-quantity')?.value || 1;
-                discountValue = `Buy ${buyQty} Get ${getQty} Free`;
-                productCount = 'BOGO offer';
+                const sameProduct = document.getElementById('bogo-same-product')?.checked || false;
+
+                // Get selected products for BUY
+                const buySelect = document.getElementById('bogo-buy-products');
+                const selectedBuyProducts = Array.from(buySelect?.selectedOptions || [])
+                    .filter(opt => opt.value)
+                    .map(opt => opt.textContent.split(' (')[0]);
+
+                // Get selected products for GET
+                const getSelect = document.getElementById('bogo-get-products');
+                let selectedGetProducts = [];
+
+                if (sameProduct) {
+                    selectedGetProducts = selectedBuyProducts;
+                } else {
+                    selectedGetProducts = Array.from(getSelect?.selectedOptions || [])
+                        .filter(opt => opt.value)
+                        .map(opt => opt.textContent.split(' (')[0]);
+                }
+
+                // Build the BOGO preview text
+                if (selectedBuyProducts.length > 0) {
+                    const buyText = `Buy ${buyQty} ${selectedBuyProducts.join(', ')}`;
+                    const getText = selectedGetProducts.length > 0
+                        ? `get ${getQty} ${selectedGetProducts.join(', ')} Free`
+                        : `get ${getQty} product(s) Free`;
+
+                    discountValue = `${buyText} → ${getText}`;
+                } else {
+                    discountValue = `Buy ${buyQty} Get ${getQty} Free`;
+                }
+
             } else {
                 const percentage = document.getElementById('discount-percentage')?.value;
                 const fixed = document.getElementById('discount-fixed')?.value;
                 if (percentage) discountValue = `${percentage}% OFF`;
                 else if (fixed) discountValue = `$${fixed} OFF`;
                 else discountValue = 'No discount set';
-                let productSummary = [];
-                if (selectedCategories.size > 0) productSummary.push(`${selectedCategories.size} categor${selectedCategories.size > 1 ? 'ies' : 'y'}`);
-                if (selectedProducts.size > 0) productSummary.push(`${selectedProducts.size} product${selectedProducts.size > 1 ? 's' : ''}`);
-                productCount = productSummary.length > 0 ? productSummary.join(', ') : 'No products selected';
+
+                // Get selected product names
+                const selectedProductNames = Array.from(document.querySelectorAll('.product-checkbox-input:checked'))
+                    .slice(0, 5)
+                    .map(cb => {
+                        const label = cb.nextElementSibling;
+                        return label?.querySelector('div')?.textContent || 'Product';
+                    });
+
+                if (selectedProductNames.length > 0) {
+                    const productText = selectedProductNames.join(', ');
+                    productDetails = `<div><i class="bi bi-box"></i> ${productText}${selectedProductNames.length >= 5 ? '...' : ''}</div>`;
+                } else if (selectedCategories.size > 0) {
+                    productDetails = `<div><i class="bi bi-folder"></i> ${selectedCategories.size} categor${selectedCategories.size > 1 ? 'ies' : 'y'} selected</div>`;
+                } else {
+                    productDetails = `<div><i class="bi bi-box"></i> No products selected</div>`;
+                }
             }
+
+            // Build conditions text
             const conditions = [];
             const amount = document.getElementById('condition-amount')?.value;
-            if (amount) conditions.push(`Order ≥ $${amount}`);
+            if (amount) conditions.push(`Min $${amount}`);
+
             const enableTime = document.getElementById('enable-time')?.checked;
             if (enableTime) {
                 const start = document.getElementById('start-time')?.value;
                 const end = document.getElementById('end-time')?.value;
                 if (start && end) conditions.push(`${start} - ${end}`);
             }
-            const activeDays = Array.from(document.querySelectorAll('.day-option.active')).map(day => day.dataset.day.substring(0, 3).toUpperCase()).join(', ');
-            preview.innerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);"><div><div style="font-weight: 700; font-size: 16px;">${discountName}</div></div><div style="font-weight: 700; font-size: 18px; color: var(--primary);">${discountValue}</div></div><div style="font-size: 12px;"><div><i class="bi bi-box"></i> Products: ${productCount}</div><div><i class="bi bi-filter"></i> Conditions: ${conditions.length > 0 ? conditions.join(', ') : 'None'}</div><div><i class="bi bi-calendar"></i> Days: ${activeDays || 'All days'}</div></div>`;
+
+            const activeDays = Array.from(document.querySelectorAll('.day-option.active'))
+                .map(day => day.dataset.day.substring(0, 3).toUpperCase());
+            if (activeDays.length > 0 && activeDays.length < 7) {
+                conditions.push(activeDays.join(', '));
+            }
+
+            preview.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+            <div>
+                <div style="font-weight: 700; font-size: 16px;">${discountName}</div>
+                <div style="font-size: 11px; color: var(--text-secondary);">${discountType.toUpperCase()}</div>
+            </div>
+            <div style="font-weight: 700; font-size: 16x; color: var(--primary);">
+                ${discountType === 'bogo' ? 'BOGO' : discountValue}
+            </div>
+        </div>
+        <div style="font-size: 12px;">
+            ${discountType === 'bogo' ? `<div><i class="bi bi-gift"></i> ${discountValue}</div>` : ''}
+            ${productDetails}
+            ${conditions.length > 0 ? `<div class="mt-2 pt-2 border-top"><i class="bi bi-filter"></i> ${conditions.join(' • ')}</div>` : ''}
+        </div>
+    `;
         }
+
+        // function updateDiscountPreview() {
+        //     const preview = document.getElementById('discount-preview');
+        //     if (!preview) return;
+        //     const discountName = document.getElementById('discount-name')?.value || 'Untitled Discount';
+        //     const discountType = document.querySelector('.type-option.active')?.dataset.type || 'percentage';
+        //     let discountValue = '';
+        //     let productCount = '';
+        //     if (discountType === 'bogo') {
+        //         const buyQty = document.getElementById('bogo-buy-quantity')?.value || 1;
+        //         const getQty = document.getElementById('bogo-get-quantity')?.value || 1;
+        //         const buyProducts = document.getElementById('bogo-buy-products')?.selectedOptions
+
+        //         discountValue = `Buy ${buyQty} Get ${getQty} Free`;
+        //         productCount = 'BOGO offer';
+        //     } else {
+        //         const percentage = document.getElementById('discount-percentage')?.value;
+        //         const fixed = document.getElementById('discount-fixed')?.value;
+        //         if (percentage) discountValue = `${percentage}% OFF`;
+        //         else if (fixed) discountValue = `$${fixed} OFF`;
+        //         else discountValue = 'No discount set';
+        //         let productSummary = [];
+        //         if (selectedCategories.size > 0) productSummary.push(`${selectedCategories.size} categor${selectedCategories.size > 1 ? 'ies' : 'y'}`);
+        //         if (selectedProducts.size > 0) productSummary.push(`${selectedProducts.size} product${selectedProducts.size > 1 ? 's' : ''}`);
+        //         productCount = productSummary.length > 0 ? productSummary.join(', ') : 'No products selected';
+        //     }
+        //     const conditions = [];
+        //     const amount = document.getElementById('condition-amount')?.value;
+        //     if (amount) conditions.push(`Order ≥ $${amount}`);
+        //     const enableTime = document.getElementById('enable-time')?.checked;
+        //     if (enableTime) {
+        //         const start = document.getElementById('start-time')?.value;
+        //         const end = document.getElementById('end-time')?.value;
+        //         if (start && end) conditions.push(`${start} - ${end}`);
+        //     }
+        //     const activeDays = Array.from(document.querySelectorAll('.day-option.active')).map(day => day.dataset.day.substring(0, 3).toUpperCase()).join(', ');
+        //     preview.innerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);"><div><div style="font-weight: 700; font-size: 16px;">${discountName}</div></div><div style="font-weight: 700; font-size: 18px; color: var(--primary);">${discountValue}</div></div><div style="font-size: 12px;"><div><i class="bi bi-box"></i> Products: ${productCount}</div><div><i class="bi bi-filter"></i> Conditions: ${conditions.length > 0 ? conditions.join(', ') : 'None'}</div><div><i class="bi bi-calendar"></i> Days: ${activeDays || 'All days'}</div></div>`;
+        // }
 
         async function fetchDiscountsFromServer() {
             try {
@@ -1449,7 +1610,7 @@
                 if (discount.type === 'bogo') valueText = `Buy ${discount.bogo?.buyQuantity || 1} Get ${discount.bogo?.getQuantity || 1} Free`;
                 else if (discount.type === 'percentage') valueText = `${discount.value}% OFF`;
                 else if (discount.type === 'fixed') valueText = `$${discount.value} OFF`;
-                discountEl.innerHTML = `<div class="discount-info"><div style="font-weight: 600;">${discount.name}</div><div style="font-size: 11px;">${valueText} • ${discount.status === 'active' ? 'Active' : 'Inactive'}</div></div><div class="discount-actions"><button class="btn-toggle" onclick="toggleDiscountStatus(${index})">${discount.status === 'active' ? 'Deactivate' : 'Activate'}</button><button class="btn-edit" onclick="editDiscount(${index})"><i class="bi bi-pencil"></i></button><button class="btn-delete" onclick="deleteDiscount(${index})"><i class="bi bi-trash"></i></button></div>`;
+                discountEl.innerHTML = `<div class="discount-info"><div style="font-weight: 600;">${discount.name}</div><div style="font-size: 11px;">${valueText} • ${discount.status === 'active' ? 'Active' : 'Inactive'}</div></div><div class="discount-actions"><button class="btn-toggle" onclick="toggleDiscountStatus(${index})">${discount.status === 'active' ? 'Deactivate' : 'Activate'}</button><button class="btn-edit" onclick="editDiscount(${index})"><i class="bi bi-pencil"></i></button><button class="btn-delete" onclick="openDeleteDiscountModal(${index})"><i class="bi bi-trash"></i></button></div>`;
                 container.appendChild(discountEl);
             });
         }
@@ -1570,28 +1731,72 @@
             }
 
             document.getElementById('discount-create').textContent = 'Update Discount';
-            document.querySelector('.settings-card:nth-child(3)').scrollIntoView({ behavior: 'smooth' });
+            document.querySelector('.discount-card').scrollIntoView({ behavior: 'smooth' });
             updateDiscountPreview();
         };
 
-        window.deleteDiscount = async function (index) {
+        window.openDeleteDiscountModal = function (index) {
             const discount = createdDiscounts[index];
-            if (!discount || !confirm('Are you sure you want to delete this discount?')) return;
+            if (!discount) return;
+
+            document.getElementById('delete-discount-id').value = discount._id;
+            document.getElementById('delete-discount-message').innerHTML = `
+        <div class="text-center py-3">
+            <i class="bi bi-tag" style="font-size: 2.5rem; color: #ef4444;"></i>
+            <h5 class="mt-3">Delete "${escapeHtml(discount.name)}"?</h5>
+            <p>Type: ${discount.type === 'bogo' ? 'BOGO' : discount.type === 'percentage' ? 'Percentage' : 'Fixed Amount'}<br>
+            Status: ${discount.status === 'active' ? 'Active' : 'Inactive'}</p>
+            <div class="alert alert-warning"><small>This action cannot be undone.</small></div>
+        </div>
+    `;
+            new bootstrap.Modal(document.getElementById('deleteDiscountModal')).show();
+        };
+
+        // Helper function to escape HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function (m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        async function confirmDeleteDiscount() {
+            const discountId = document.getElementById('delete-discount-id').value;
+            const deleteBtn = document.getElementById('btn-confirm-delete-discount');
+            const originalText = deleteBtn.innerHTML;
+
+            deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Deleting...';
+            deleteBtn.disabled = true;
+
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`http://localhost:3001/api/discounts/${discount._id}`, {
+                const response = await fetch(`http://localhost:3001/api/discounts/${discountId}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
+
                 if (response.ok) {
-                    createdDiscounts.splice(index, 1);
-                    updateDiscountsList();
+                    const index = createdDiscounts.findIndex(d => d._id === discountId);
+                    if (index !== -1) {
+                        createdDiscounts.splice(index, 1);
+                        updateDiscountsList();
+                    }
+                    bootstrap.Modal.getInstance(document.getElementById('deleteDiscountModal')).hide();
                     showToast('Discount deleted successfully', 'success');
+                } else {
+                    const result = await response.json();
+                    showToast(result.message || 'Failed to delete discount', 'error');
                 }
             } catch (error) {
-                showToast('Failed to delete discount', 'error');
+                showToast('An error occurred while deleting', 'error');
+            } finally {
+                deleteBtn.innerHTML = originalText;
+                deleteBtn.disabled = false;
             }
-        };
+        }
 
         async function createDiscount() {
             if (!currentUserPermissions.canManageDiscounts) {
@@ -1678,6 +1883,9 @@
                     end: document.getElementById('end-time')?.value,
                     enabled: true
                 };
+            } else {
+                discountData.conditions = discountData.conditions || {};
+                discountData.conditions.timeRange = { enabled: false };
             }
 
             const activeDays = Array.from(document.querySelectorAll('.day-option.active')).map(day => day.dataset.day);
@@ -1688,8 +1896,21 @@
 
             const startDate = document.getElementById('start-date')?.value;
             const endDate = document.getElementById('end-date')?.value;
+
+
             if (startDate) discountData.validFrom = startDate;
             if (endDate) discountData.validUntil = endDate;
+
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                showToast('Start date cannot be after end date', 'error');
+                return;
+            }
+
+            if (endDate >= new Date().toISOString().split('T')[0]) {
+                discountData.status = 'active';
+            } else {
+                discountData.status = 'inactive';
+            }
 
             discountData.autoApply = document.getElementById('option-auto-apply')?.checked || false;
             discountData.cumulative = document.getElementById('option-cumulative')?.checked || false;
@@ -2008,6 +2229,7 @@
             document.getElementById('tax-edit-toggle')?.addEventListener('click', () => toggleEditMode('tax', true));
             document.getElementById('tax-cancel')?.addEventListener('click', () => toggleEditMode('tax', false));
             document.getElementById('tax-save')?.addEventListener('click', updateTaxSettings);
+            document.getElementById('btn-confirm-delete-discount')?.addEventListener('click', confirmDeleteDiscount);
             document.querySelector('.logout-btn')?.addEventListener('click', (e) => {
                 e.preventDefault();
                 localStorage.removeItem('token');

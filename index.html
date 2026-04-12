@@ -550,7 +550,7 @@
             </div>
         </main>
         <!-- Right: Order Summary & Cart -->
-        <aside class="order-panel">
+        <aside class="order-panel" id="order-panel">
             <!-- Order Header -->
             <div class="order-header">
                 <h2>Order #<span id="order-number"></span></h2>
@@ -600,6 +600,48 @@
                 </button>
             </div>
         </aside>
+
+        <aside class="payment-panel" id="payment-panel" style="display: none;">
+            <!-- Order Header -->
+            <div class="payment-header">
+                <h2>Payment<span id="order-number"></span></h2>          
+            </div>
+
+            <!-- Order Items -->
+            <div class="payment-items" id="order-items">
+                <div class="payment-info">
+                        <div class="info-row">
+                            <span>Total Amount:</span>
+                            <span class="amount" id="modal-total">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="payment-methods">
+                        <button class="payment-method active" data-method="cash">
+                            <i class="bi bi-cash-coin"></i> Cash
+                        </button>
+                        <button class="payment-method" data-method="card">
+                            <i class="bi bi-credit-card"></i> Card
+                        </button>
+                        <button class="payment-method" data-method="wallet">
+                            <i class="bi bi-wallet"></i> Wallet
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount Received</label>
+                        <input type="number" id="amount-received" placeholder="0.00" step="0.01">
+                    </div>
+                    <div class="change-due" id="change-display" style="display: none;">
+                        <span>Change Due:</span>
+                        <span id="change-amount">$0.00</span>
+                    </div>
+            </div>
+
+            <div class="order-actions">
+                <button type="button" class="btn-action btn-secondary" id="btn-cancel-payment">Cancel</button>
+                    <button type="button" class="btn-action btn-primary" id="btn-complete-payment">Complete
+                        Payment</button>
+            </div>
+        </aside>
     </div>
 
     <!-- Bottom Navigation -->
@@ -631,7 +673,7 @@
     </nav>
 
     <!-- Payment Modal -->
-    <div class="modal fade" id="paymentModal" tabindex="-1">
+    <!-- <div class="modal fade" id="paymentModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -672,7 +714,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Complete Modal -->
     <div class="modal success-modal fade" id="completeModal" tabindex="-1">
@@ -692,7 +734,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Print Bill</button>
-                    <button type="button" class="btn-action btn-primary" id="btn-complete-payment">Done</button>
+                    <button type="button" class="btn-action btn-primary" data-bs-dismiss="modal" id="btn-complete-payment">Done</button>
                 </div>
             </div>
         </div>
@@ -1960,20 +2002,52 @@
     // PAYMENT MANAGEMENT
     // ============================================
 
-    function openPaymentModal() {
+    // function openPaymentModal() {
+    //     if (cart.length === 0) {
+    //         showToast("Please add items to the cart first", 'error');
+    //         updateButtonStates();
+    //         return;
+    //     }
+
+    //     document.getElementById("amount-received").value = parseFloat(document.getElementById("total").textContent.replace("$", "")).toFixed(2);
+    //     document.getElementById("change-display").style.display = "none";
+
+    //     const paymentModal = new bootstrap.Modal(
+    //         document.getElementById("paymentModal")
+    //     );
+    //     paymentModal.show();
+        
+    // }
+
+    function showPaymentPanel() {
+
         if (cart.length === 0) {
             showToast("Please add items to the cart first", 'error');
             updateButtonStates();
             return;
         }
 
-        document.getElementById("amount-received").value = "";
+        document.getElementById("amount-received").value = parseFloat(document.getElementById("total").textContent.replace("$", "")).toFixed(2);
         document.getElementById("change-display").style.display = "none";
 
-        const paymentModal = new bootstrap.Modal(
-            document.getElementById("paymentModal")
-        );
-        paymentModal.show();
+        const paymentPanel = document.getElementById("payment-panel");
+        const orderPanel = document.getElementById("order-panel");
+        if (paymentPanel) {
+            paymentPanel.style.display = "flex";
+            orderPanel.style.display = "none";
+            console.log("Payment panel shown");
+        }
+    }
+
+
+    function cancelPayment() {
+        const paymentPanel = document.getElementById("payment-panel");
+        const orderPanel = document.getElementById("order-panel");
+        if (paymentPanel) {
+            paymentPanel.style.display = "none";
+            orderPanel.style.display = "flex";
+            console.log("Payment cancelled, back to order panel");
+        }
     }
 
     function setupPaymentListeners() {
@@ -2008,10 +2082,14 @@
             await loadTodaySummary();
             await loadNextOrderNumber();
 
-            const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-            if (paymentModal) {
-                paymentModal.hide();
+            const paymentPanel = document.getElementById("payment-panel");
+            const orderPanel = document.getElementById("order-panel");
+            if (paymentPanel) {
+                paymentPanel.style.display = "none";
+                orderPanel.style.display = "flex";
+                console.log("Payment completed, back to order panel");
             }
+            
         }
     }
 
@@ -2290,8 +2368,9 @@
             });
 
             document.getElementById("btn-cancel")?.addEventListener("click", cancelOrder);
-            document.getElementById("btn-payment")?.addEventListener("click", openPaymentModal);
-        }
+            document.getElementById("btn-payment")?.addEventListener("click", showPaymentPanel);
+            document.getElementById("btn-cancel-payment")?.addEventListener("click", cancelPayment);
+        }   
 
         if (document.getElementById("btn-complete-payment")) {
             document.getElementById("btn-complete-payment").addEventListener("click", completePayment);

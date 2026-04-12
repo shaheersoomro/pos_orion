@@ -560,7 +560,7 @@ body {
    ORDER PANEL
    ============================================ */
 
-.order-panel {
+.order-panel, .payment-panel {
     margin: var(--spacing-sm);
     width: 380px;
     background: var(--bg-white);
@@ -571,7 +571,7 @@ body {
     overflow: hidden;
 }
 
-.order-header {
+.order-header, .payment-header {
     padding: var(--spacing-lg);
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -579,7 +579,7 @@ body {
     align-items: center;
 }
 
-.order-header h2 {
+.order-header h2, .payment-header h2 {
     font-size: 18px;
     font-weight: 700;
     color: var(--text-primary);
@@ -592,7 +592,7 @@ body {
     font-weight: 500;
 }
 
-.order-items {
+.order-items, .payment-items {
     flex: 1;
     overflow-y: auto;
     padding: var(--spacing-md);
@@ -674,11 +674,12 @@ body {
     margin-bottom: 0;
 }
 
-.order-actions {
+.order-actions, .payment-actions {
     padding: var(--spacing-lg);
     display: flex;
     gap: var(--spacing-md);
 }
+
 
 .btn-action {
     flex: 1;

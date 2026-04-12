@@ -586,7 +586,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" disabled>
+                                <input type="email" id="business-owner-email" disabled>
                             </div>
                             <div class="action-buttons">
                                 <button class="btn-cancel" id="business-cancel" style="display: none;">Cancel</button>
@@ -1136,8 +1136,9 @@
                         document.getElementById('business-address').value = result.business.address || '';
                         document.getElementById('business-phone').value = result.business.phone || '';
                         if (result.business.owner) document.getElementById('business-owner').value = result.business.owner.fullName || '';
-                        const userData = JSON.parse(localStorage.getItem('user'));
-                        if (userData && userData.email) document.querySelector('input[type="email"]').value = userData.email;
+                        if (result.business.owner) document.getElementById('business-owner-email').value = result.business.owner.email || '';
+                        // const userData = JSON.parse(localStorage.getItem('user'));
+                        // if (userData && userData.email) document.querySelector('input[type="email"]').value = userData.email;
                         if (result.business.taxSettings) {
                             document.getElementById('tax-rate').value = result.business.taxSettings.rate || 8.0;
                             document.getElementById('tax-name').value = result.business.taxSettings.taxName || 'Sales Tax';

@@ -1363,7 +1363,8 @@
                     if (data.business.name) businessSettings.name = data.business.name;
                     if (data.business.address) businessSettings.address = data.business.address;
                     if (data.business.phone) businessSettings.phone = data.business.phone;
-                    if (data.business.email) businessSettings.email = data.business.email;
+                    if (data.business.owner) businessSettings.email = data.business.owner.email || '';
+
                     if (data.business.taxRegNo) businessSettings.taxRegNo = data.business.taxRegNo;
                     if (data.business.taxSettings) {
                             businessSettings.taxSettings.rate = data.business.taxSettings.rate || 8.0;

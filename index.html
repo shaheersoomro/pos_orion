@@ -484,6 +484,121 @@
             margin-bottom: 10px;
             opacity: 0.5;
         }
+
+
+        /* Print Styles for Thermal Receipt */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #print-receipt-area,
+            #print-receipt-area * {
+                visibility: visible;
+            }
+
+            #print-receipt-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 80mm;
+                margin: 0;
+                padding: 0;
+            }
+
+            @page {
+                size: 80mm auto;
+                margin: 0mm;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        .receipt {
+            font-family: 'Courier New', 'Monaco', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #000;
+            background: white;
+        }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #000;
+        }
+
+        .receipt-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .receipt-store-info {
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .receipt-divider {
+            border-top: 1px dashed #000;
+            margin: 8px 0;
+        }
+
+        .receipt-items {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .receipt-item {
+            margin-bottom: 4px;
+        }
+
+        .receipt-item-name {
+            font-weight: bold;
+        }
+
+        .receipt-item-details {
+            font-size: 10px;
+            margin-left: 5px;
+        }
+
+        .receipt-summary {
+            margin: 10px 0;
+            padding-top: 8px;
+            border-top: 1px dashed #000;
+        }
+
+        .receipt-total {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .receipt-footer {
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px dashed #000;
+            font-size: 10px;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin: 10px 0;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+
+        /* Thermal Printer Specific */
+        @media print and (max-width: 80mm) {
+            .receipt {
+                width: 100%;
+                padding: 0;
+            }
+        }
     </style>
 </head>
 
@@ -604,42 +719,42 @@
         <aside class="payment-panel" id="payment-panel" style="display: none;">
             <!-- Order Header -->
             <div class="payment-header">
-                <h2>Payment<span id="order-number"></span></h2>          
+                <h2>Payment<span id="order-number"></span></h2>
             </div>
 
             <!-- Order Items -->
             <div class="payment-items" id="order-items">
                 <div class="payment-info">
-                        <div class="info-row">
-                            <span>Total Amount:</span>
-                            <span class="amount" id="modal-total">$0.00</span>
-                        </div>
+                    <div class="info-row">
+                        <span>Total Amount:</span>
+                        <span class="amount" id="modal-total">$0.00</span>
                     </div>
-                    <div class="payment-methods">
-                        <button class="payment-method active" data-method="cash">
-                            <i class="bi bi-cash-coin"></i> Cash
-                        </button>
-                        <button class="payment-method" data-method="card">
-                            <i class="bi bi-credit-card"></i> Card
-                        </button>
-                        <button class="payment-method" data-method="wallet">
-                            <i class="bi bi-wallet"></i> Wallet
-                        </button>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount Received</label>
-                        <input type="number" id="amount-received" placeholder="0.00" step="0.01">
-                    </div>
-                    <div class="change-due" id="change-display" style="display: none;">
-                        <span>Change Due:</span>
-                        <span id="change-amount">$0.00</span>
-                    </div>
+                </div>
+                <div class="payment-methods">
+                    <button class="payment-method active" data-method="cash">
+                        <i class="bi bi-cash-coin"></i> Cash
+                    </button>
+                    <button class="payment-method" data-method="card">
+                        <i class="bi bi-credit-card"></i> Card
+                    </button>
+                    <button class="payment-method" data-method="wallet">
+                        <i class="bi bi-wallet"></i> Wallet
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>Amount Received</label>
+                    <input type="number" id="amount-received" placeholder="0.00" step="0.01">
+                </div>
+                <div class="change-due" id="change-display" style="display: none;">
+                    <span>Change Due:</span>
+                    <span id="change-amount">$0.00</span>
+                </div>
             </div>
 
             <div class="order-actions">
                 <button type="button" class="btn-action btn-secondary" id="btn-cancel-payment">Cancel</button>
-                    <button type="button" class="btn-action btn-primary" id="btn-complete-payment">Complete
-                        Payment</button>
+                <button type="button" class="btn-action btn-primary" id="btn-complete-payment">Complete
+                    Payment</button>
             </div>
         </aside>
     </div>
@@ -733,8 +848,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Print Bill</button>
-                    <button type="button" class="btn-action btn-primary" data-bs-dismiss="modal" id="btn-complete-payment">Done</button>
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal"
+                        id="btn-print-receipt">Print Bill</button>
+                    <button type="button" class="btn-action btn-primary" data-bs-dismiss="modal"
+                        id="btn-complete-payment">Done</button>
                 </div>
             </div>
         </div>
@@ -800,559 +917,657 @@
         </div>
     </div>
 
+    <!--Print Receipt Modal-->
+    <div class="modal fade" id="printReceiptModal" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Print Receipt</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-printer" style="font-size: 48px; color: var(--primary);"></i>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Printer Type</label>
+                        <select id="printer-type" class="form-select">
+                            <option value="thermal">Thermal Printer (80mm)</option>
+                            <option value="standard">Standard Printer</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Copies</label>
+                        <input type="number" id="print-copies" class="form-control" value="1" min="1" max="5">
+                    </div>
+                    <div class="alert alert-info">
+                        <small><i class="bi bi-info-circle"></i> Make sure your thermal printer is connected and set as
+                            default</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-action btn-primary" id="confirm-print-btn">Print Receipt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="receipt-template" style="display: none;">
+        <div class="receipt" style="width: 80mm; font-family: 'Courier New', monospace; font-size: 12px; padding: 8px;">
+            <!-- Content will be filled dynamically -->
+        </div>
+    </div>
+
 
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-   <script>
-    // ============================================
-    // AUTHENTICATION & INITIALIZATION
-    // ============================================
+    <script src="receipt-printer.js"></script>
 
-    const API_BASE_URL = 'http://localhost:3001/api';
-    let categories = [];
-    let inventory = [];
-    let cart = [];
-    let currentFilter = "all";
-    let availableDiscounts = [];
-    let appliedDiscounts = [];
+    <script>
+        // ============================================
+        // AUTHENTICATION & INITIALIZATION
+        // ============================================
 
-    function checkAuthentication() {
-        const token = localStorage.getItem('token');
-        const user = JSON.parse(localStorage.getItem('user'));
+        const API_BASE_URL = 'http://localhost:3001/api';
+        let categories = [];
+        let inventory = [];
+        let cart = [];
+        let currentFilter = "all";
+        let availableDiscounts = [];
+        let appliedDiscounts = [];
 
-        if (!token || !user) {
-            showToast('Please login first', 'error');
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 2000);
-            return false;
+        function checkAuthentication() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (!token || !user) {
+                showToast('Please login first', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return false;
+            }
+
+            updateUserInfo(user);
+            return true;
         }
 
-        updateUserInfo(user);
-        return true;
-    }
+        function updateUserInfo(user) {
+            const userNameEl = document.querySelector('.user-name');
+            const userRoleEl = document.querySelector('.user-role');
+            const avatarEl = document.querySelector('.avatar');
 
-    function updateUserInfo(user) {
-        const userNameEl = document.querySelector('.user-name');
-        const userRoleEl = document.querySelector('.user-role');
-        const avatarEl = document.querySelector('.avatar');
-
-        if (userNameEl) userNameEl.textContent = user.fullName || 'User';
-        if (userRoleEl) {
-            userRoleEl.textContent = user.role === 'admin' ? 'Administrator' :
-                user.role === 'cashier' ? 'Cashier' :
-                    user.role === 'manager' ? 'Manager' : 'User';
+            if (userNameEl) userNameEl.textContent = user.fullName || 'User';
+            if (userRoleEl) {
+                userRoleEl.textContent = user.role === 'admin' ? 'Administrator' :
+                    user.role === 'cashier' ? 'Cashier' :
+                        user.role === 'manager' ? 'Manager' : 'User';
+            }
+            if (avatarEl && user.fullName) {
+                avatarEl.textContent = user.fullName.charAt(0).toUpperCase();
+            }
         }
-        if (avatarEl && user.fullName) {
-            avatarEl.textContent = user.fullName.charAt(0).toUpperCase();
-        }
-    }
 
-    function setupLogout() {
-        document.querySelectorAll('.logout-btn').forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                window.location.href = 'login.html';
+        function setupLogout() {
+            document.querySelectorAll('.logout-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                });
             });
-        });
-    }
-
-    // ============================================
-    // API HELPER FUNCTIONS
-    // ============================================
-
-    async function apiRequest(endpoint, options = {}) {
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            window.location.href = 'login.html';
-            return null;
         }
 
-        const url = `${API_BASE_URL}${endpoint}`;
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-            ...options.headers
-        };
+        // ============================================
+        // API HELPER FUNCTIONS
+        // ============================================
 
-        try {
-            const response = await fetch(url, { ...options, headers });
-            const data = await response.json();
+        async function apiRequest(endpoint, options = {}) {
+            const token = localStorage.getItem('token');
 
-            if (!response.ok) {
+            if (!token) {
+                window.location.href = 'login.html';
+                return null;
+            }
+
+            const url = `${API_BASE_URL}${endpoint}`;
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...options.headers
+            };
+
+            try {
+                const response = await fetch(url, { ...options, headers });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    return {
+                        success: false,
+                        status: response.status,
+                        message: data.message || data.error || `API request failed with status ${response.status}`,
+                        errors: data.errors
+                    };
+                }
+
+                return data;
+            } catch (error) {
+                console.error('API request error:', error);
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    showToast('Cannot connect to server. Please check your connection.', 'error');
+                } else {
+                    showToast('Network error. Please check your connection.', 'error');
+                }
+
                 return {
                     success: false,
-                    status: response.status,
-                    message: data.message || data.error || `API request failed with status ${response.status}`,
-                    errors: data.errors
+                    status: 0,
+                    message: 'Network error',
+                    errors: []
                 };
             }
-
-            return data;
-        } catch (error) {
-            console.error('API request error:', error);
-            if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                showToast('Cannot connect to server. Please check your connection.', 'error');
-            } else {
-                showToast('Network error. Please check your connection.', 'error');
-            }
-
-            return {
-                success: false,
-                status: 0,
-                message: 'Network error',
-                errors: []
-            };
         }
-    }
 
-    // ============================================
-    // CATEGORY MANAGEMENT
-    // ============================================
+        // ============================================
+        // CATEGORY MANAGEMENT
+        // ============================================
 
-    async function loadCategories() {
-        try {
-            const data = await apiRequest('/categories');
+        async function loadCategories() {
+            try {
+                const data = await apiRequest('/categories');
 
-            if (data && data.success) {
-                categories = data.categories || [];
+                if (data && data.success) {
+                    categories = data.categories || [];
+                    updateCategoryFilter();
+                    attachFilterEvents();
+                    return categories;
+                }
+                return [];
+            } catch (error) {
+                console.error('Failed to load categories:', error);
+                showToast('Failed to load categories. Using empty list.', 'warning');
+                categories = [];
                 updateCategoryFilter();
-                attachFilterEvents();
                 return categories;
             }
-            return [];
-        } catch (error) {
-            console.error('Failed to load categories:', error);
-            showToast('Failed to load categories. Using empty list.', 'warning');
-            categories = [];
-            updateCategoryFilter();
-            return categories;
         }
-    }
 
-    function updateCategoryFilter() {
-        const container = document.getElementById('category-filter');
-        if (!container) return;
+        function updateCategoryFilter() {
+            const container = document.getElementById('category-filter');
+            if (!container) return;
 
-        container.innerHTML = '';
+            container.innerHTML = '';
 
-        const allButton = document.createElement('button');
-        allButton.className = 'filter-btn active';
-        allButton.dataset.category = 'all';
-        allButton.textContent = 'All';
-        container.appendChild(allButton);
+            const allButton = document.createElement('button');
+            allButton.className = 'filter-btn active';
+            allButton.dataset.category = 'all';
+            allButton.textContent = 'All';
+            container.appendChild(allButton);
 
-        categories.forEach(category => {
-            const button = document.createElement('button');
-            button.className = 'filter-btn';
-            button.dataset.category = category._id || category.id || category.name.toLowerCase();
-            button.textContent = category.name;
-            container.appendChild(button);
-        });
-    }
-
-    function attachFilterEvents() {
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                filterInventoryByCategory(this.dataset.category);
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.dataset.category = category._id || category.id || category.name.toLowerCase();
+                button.textContent = category.name;
+                container.appendChild(button);
             });
-        });
-    }
-
-    function filterInventoryByCategory(categoryId) {
-        currentFilter = categoryId;
-
-        if (categoryId === 'all') {
-            renderInventory(inventory);
-        } else {
-            const filteredInventory = inventory.filter(item => {
-                const itemCategoryId = item.category?._id || item.category;
-                return itemCategoryId === categoryId ||
-                    (item.category?.name && item.category.name.toLowerCase() === categoryId);
-            });
-            renderInventory(filteredInventory);
         }
-    }
 
-    // ============================================
-    // INVENTORY MANAGEMENT
-    // ============================================
+        function attachFilterEvents() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterInventoryByCategory(this.dataset.category);
+                });
+            });
+        }
 
-    async function loadInventory() {
-        try {
-            showLoading();
-            const data = await apiRequest('/inventory');
+        function filterInventoryByCategory(categoryId) {
+            currentFilter = categoryId;
 
-            if (!data) {
+            if (categoryId === 'all') {
+                renderInventory(inventory);
+            } else {
+                const filteredInventory = inventory.filter(item => {
+                    const itemCategoryId = item.category?._id || item.category;
+                    return itemCategoryId === categoryId ||
+                        (item.category?.name && item.category.name.toLowerCase() === categoryId);
+                });
+                renderInventory(filteredInventory);
+            }
+        }
+
+        // ============================================
+        // INVENTORY MANAGEMENT
+        // ============================================
+
+        async function loadInventory() {
+            try {
+                showLoading();
+                const data = await apiRequest('/inventory');
+
+                if (!data) {
+                    hideLoading();
+                    renderEmptyState('Failed to load inventory');
+                    return;
+                }
+
+                if (data.success) {
+                    inventory = data.inventory || data.data || [];
+                    inventory = inventory.filter(item => item.isActive !== false);
+                    renderInventory(inventory);
+                    hideLoading();
+                } else {
+                    showToast(data.message || 'Failed to load inventory', 'error');
+                    hideLoading();
+                    renderEmptyState('No inventory available');
+                }
+            } catch (error) {
+                console.error('Unexpected error in loadInventory:', error);
                 hideLoading();
-                renderEmptyState('Failed to load inventory');
+                renderEmptyState('Error loading inventory');
+            }
+        }
+
+        function showLoading() {
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const productsGrid = document.getElementById("products-grid");
+
+            if (loadingSpinner) loadingSpinner.style.display = 'block';
+            if (productsGrid) productsGrid.style.display = 'none';
+        }
+
+        function hideLoading() {
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const productsGrid = document.getElementById("products-grid");
+
+            if (loadingSpinner) loadingSpinner.style.display = 'none';
+            if (productsGrid) productsGrid.style.display = 'grid';
+        }
+
+        function handleProductCardClick(event) {
+            const card = event.currentTarget;
+
+            if (card.classList.contains('disabled')) {
                 return;
             }
 
-            if (data.success) {
-                inventory = data.inventory || data.data || [];
-                inventory = inventory.filter(item => item.isActive !== false);
-                renderInventory(inventory);
-                hideLoading();
-            } else {
-                showToast(data.message || 'Failed to load inventory', 'error');
-                hideLoading();
-                renderEmptyState('No inventory available');
+            try {
+                const itemData = JSON.parse(card.dataset.item);
+                addToCart(itemData);
+            } catch (error) {
+                console.error('Error parsing item data:', error);
+                showToast('Error adding product to cart', 'error');
             }
-        } catch (error) {
-            console.error('Unexpected error in loadInventory:', error);
-            hideLoading();
-            renderEmptyState('Error loading inventory');
-        }
-    }
-
-    function showLoading() {
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const productsGrid = document.getElementById("products-grid");
-
-        if (loadingSpinner) loadingSpinner.style.display = 'block';
-        if (productsGrid) productsGrid.style.display = 'none';
-    }
-
-    function hideLoading() {
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const productsGrid = document.getElementById("products-grid");
-
-        if (loadingSpinner) loadingSpinner.style.display = 'none';
-        if (productsGrid) productsGrid.style.display = 'grid';
-    }
-
-    function handleProductCardClick(event) {
-        const card = event.currentTarget;
-
-        if (card.classList.contains('disabled')) {
-            return;
         }
 
-        try {
-            const itemData = JSON.parse(card.dataset.item);
-            addToCart(itemData);
-        } catch (error) {
-            console.error('Error parsing item data:', error);
-            showToast('Error adding product to cart', 'error');
-        }
-    }
+        function renderInventory(inventoryItems) {
+            const grid = document.getElementById("products-grid");
+            if (!grid) return;
 
-    function renderInventory(inventoryItems) {
-        const grid = document.getElementById("products-grid");
-        if (!grid) return;
+            grid.innerHTML = '';
 
-        grid.innerHTML = '';
+            if (!inventoryItems || inventoryItems.length === 0) {
+                renderEmptyState('No inventory items found');
+                return;
+            }
 
-        if (!inventoryItems || inventoryItems.length === 0) {
-            renderEmptyState('No inventory items found');
-            return;
-        }
+            inventoryItems.forEach((item) => {
+                const inCartQuantity = cart.reduce((sum, cartItem) => {
+                    if (cartItem._id === item._id) {
+                        return sum + cartItem.quantity;
+                    }
+                    return sum;
+                }, 0);
 
-        inventoryItems.forEach((item) => {
-            const inCartQuantity = cart.reduce((sum, cartItem) => {
-                if (cartItem._id === item._id) {
-                    return sum + cartItem.quantity;
-                }
-                return sum;
-            }, 0);
+                const availableQuantity = item.quantity - inCartQuantity;
+                if (availableQuantity <= 0) return;
 
-            const availableQuantity = item.quantity - inCartQuantity;
-            if (availableQuantity <= 0) return;
+                const card = document.createElement("div");
+                card.className = "product-card";
+                card.setAttribute('data-id', item._id);
 
-            const card = document.createElement("div");
-            card.className = "product-card";
-            card.setAttribute('data-id', item._id);
+                const isLowStock = availableQuantity <= (item.lowStockThreshold || 10);
 
-            const isLowStock = availableQuantity <= (item.lowStockThreshold || 10);
-
-            card.innerHTML = `
+                card.innerHTML = `
                 <div class="product-name">${item.name}</div>
                 <div class="product-price">$${item.price.toFixed(2)}</div>
                 ${isLowStock ? `<div class="low-stock-badge">Low Stock</div>` : ''}
                 <div class="product-stock">Available: ${availableQuantity}</div>
             `;
 
-            card.dataset.item = JSON.stringify({
-                _id: item._id,
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-                lowStockThreshold: item.lowStockThreshold
+                card.dataset.item = JSON.stringify({
+                    _id: item._id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    lowStockThreshold: item.lowStockThreshold
+                });
+
+                card.addEventListener("click", handleProductCardClick);
+                grid.appendChild(card);
             });
+        }
 
-            card.addEventListener("click", handleProductCardClick);
-            grid.appendChild(card);
-        });
-    }
+        function renderEmptyState(message = 'No inventory available') {
+            const grid = document.getElementById("products-grid");
+            if (!grid) return;
 
-    function renderEmptyState(message = 'No inventory available') {
-        const grid = document.getElementById("products-grid");
-        if (!grid) return;
-
-        grid.innerHTML = `
+            grid.innerHTML = `
             <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
                 <i class="bi bi-box" style="font-size: 48px; color: #6c757d; margin-bottom: 20px;"></i>
                 <h4>${message}</h4>
                 <p>Try refreshing or check your connection.</p>
             </div>
         `;
-    }
+        }
 
-    // ============================================
-    // TAX SETTINGS MANAGEMENT
-    // ============================================
+        // ============================================
+        // TAX SETTINGS MANAGEMENT
+        // ============================================
 
-    let taxSettings = {
-        enabled: true,
-        rate: 8,
-        taxName: 'Sales Tax',
-        taxInclusive: true
-    };
+        let taxSettings = {
+            enabled: true,
+            rate: 8,
+            taxName: 'Sales Tax',
+            taxInclusive: true
+        };
 
-    async function loadTaxSettings() {
-        try {
-            const data = await apiRequest('/settings/business');
+        async function loadTaxSettings() {
+            try {
+                const data = await apiRequest('/settings/business');
 
-            if (data && data.success && data.business && data.business.taxSettings) {
-                taxSettings = data.business.taxSettings;
+                if (data && data.success && data.business && data.business.taxSettings) {
+                    taxSettings = data.business.taxSettings;
 
-                if (taxSettings.taxInclusive === undefined) {
-                    taxSettings.taxInclusive = true;
+                    if (taxSettings.taxInclusive === undefined) {
+                        taxSettings.taxInclusive = true;
+                    }
+
+                    console.log('Tax settings loaded:', taxSettings);
+                    return taxSettings;
                 }
-
-                console.log('Tax settings loaded:', taxSettings);
+                return taxSettings;
+            } catch (error) {
+                console.error('Failed to load tax settings:', error);
+                showToast('Failed to load tax settings. Using default.', 'warning');
                 return taxSettings;
             }
-            return taxSettings;
-        } catch (error) {
-            console.error('Failed to load tax settings:', error);
-            showToast('Failed to load tax settings. Using default.', 'warning');
-            return taxSettings;
         }
-    }
 
-    function calculateTaxInclusive(subtotal) {
-        if (!taxSettings.enabled || !taxSettings.taxInclusive) {
+        function calculateTaxInclusive(subtotal) {
+            if (!taxSettings.enabled || !taxSettings.taxInclusive) {
+                return {
+                    subtotal: subtotal,
+                    tax: 0,
+                    total: subtotal
+                };
+            }
+
+            const taxRate = taxSettings.rate;
+            const tax = subtotal * (taxRate / (100 + taxRate));
+            const baseAmount = subtotal - tax;
+
             return {
-                subtotal: subtotal,
-                tax: 0,
+                subtotal: baseAmount,
+                tax: tax,
                 total: subtotal
             };
         }
 
-        const taxRate = taxSettings.rate;
-        const tax = subtotal * (taxRate / (100 + taxRate));
-        const baseAmount = subtotal - tax;
+        function calculateTaxExclusive(subtotal) {
+            if (!taxSettings.enabled) {
+                return {
+                    subtotal: subtotal,
+                    tax: 0,
+                    total: subtotal
+                };
+            }
 
-        return {
-            subtotal: baseAmount,
-            tax: tax,
-            total: subtotal
-        };
-    }
+            const tax = subtotal * (taxSettings.rate / 100);
 
-    function calculateTaxExclusive(subtotal) {
-        if (!taxSettings.enabled) {
             return {
                 subtotal: subtotal,
-                tax: 0,
-                total: subtotal
+                tax: tax,
+                total: subtotal + tax
             };
         }
 
-        const tax = subtotal * (taxSettings.rate / 100);
 
-        return {
-            subtotal: subtotal,
-            tax: tax,
-            total: subtotal + tax
+
+        let businessSettings = {
+            name: 'ORION POS SYSTEM',
+            address: '123 Business Street\nCity, State 12345',
+            phone: '(555) 123-4567',
+            email: 'support@orionpos.com',
+            taxRegNo: 'TAX-ID: 12-3456789',
+            footer: 'Thank you for your purchase!',
+            taxSettings: {
+                enabled: true,
+                rate: 8.0,
+                taxName: 'Sales Tax',
+                taxInclusive: true
+            }
         };
-    }
 
-    // ============================================
-    // CART MANAGEMENT
-    // ============================================
+        async function loadBusinessSettings() {
+            try {
+                const data = await apiRequest('/settings/business');
 
-    function addToCart(item) {
-        const inventoryItem = inventory.find(inv => inv._id === item._id);
+                if (data && data.success && data.business) {
+                    // Update business settings from API
+                    if (data.business.name) businessSettings.name = data.business.name;
+                    if (data.business.address) businessSettings.address = data.business.address;
+                    if (data.business.phone) businessSettings.phone = data.business.phone;
+                    if (data.business.email) businessSettings.email = data.business.email;
+                    if (data.business.taxRegNo) businessSettings.taxRegNo = data.business.taxRegNo;
+                    if (data.business.taxSettings) {
+                            businessSettings.taxSettings.rate = data.business.taxSettings.rate || 8.0;
+                            businessSettings.taxSettings.taxName = data.business.taxSettings.taxName || 'Sales Tax';
+                            businessSettings.taxSettings.taxInclusive = data.business.taxSettings.taxInclusive !== false;
+                            businessSettings.taxSettings.enabled = data.business.taxSettings.enabled || false;
+                        }
+                    
+                    if (data.business.receiptFooter) businessSettings.footer = data.business.receiptFooter;
 
-        if (!inventoryItem) {
-            showToast('Product not found in inventory', 'error');
-            return;
+                    console.log('Business settings loaded:', businessSettings);
+                }
+                return businessSettings;
+            } catch (error) {
+                console.error('Failed to load business settings:', error);
+                return businessSettings;
+            }
         }
 
-        if (inventoryItem.quantity <= 0) {
-            showToast(`${item.name} is out of stock`, 'error');
-            return;
+
+        // Get business info for receipt
+        function getBusinessInfo() {
+            return businessSettings;
         }
 
-        const existingItem = cart.find(cartItem => cartItem._id === inventoryItem._id);
-        const currentCartQty = existingItem ? existingItem.quantity : 0;
 
-        if (currentCartQty >= inventoryItem.quantity) {
-            showToast(`Only ${inventoryItem.quantity} ${item.name} available`, 'warning');
-            return;
+
+        // ============================================
+        // CART MANAGEMENT
+        // ============================================
+
+        function addToCart(item) {
+            const inventoryItem = inventory.find(inv => inv._id === item._id);
+
+            if (!inventoryItem) {
+                showToast('Product not found in inventory', 'error');
+                return;
+            }
+
+            if (inventoryItem.quantity <= 0) {
+                showToast(`${item.name} is out of stock`, 'error');
+                return;
+            }
+
+            const existingItem = cart.find(cartItem => cartItem._id === inventoryItem._id);
+            const currentCartQty = existingItem ? existingItem.quantity : 0;
+
+            if (currentCartQty >= inventoryItem.quantity) {
+                showToast(`Only ${inventoryItem.quantity} ${item.name} available`, 'warning');
+                return;
+            }
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    _id: inventoryItem._id,
+                    name: inventoryItem.name,
+                    price: inventoryItem.price,
+                    quantity: 1,
+                });
+            }
+
+            updateCart();
+            updateProductStockDisplay(inventoryItem._id);
+
+            // Recalculate discounts when cart changes
+            if (appliedDiscounts.length > 0) {
+                loadAvailableDiscounts();
+                updateDiscountSummary();
+            }
         }
 
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cart.push({
-                _id: inventoryItem._id,
-                name: inventoryItem.name,
-                price: inventoryItem.price,
-                quantity: 1,
+        function updateProductStockDisplay(productId) {
+            const inventoryItem = inventory.find(item => item._id === productId);
+            if (!inventoryItem) return;
+
+            const inCartQuantity = cart.reduce((sum, cartItem) => {
+                if (cartItem._id === productId) {
+                    return sum + cartItem.quantity;
+                }
+                return sum;
+            }, 0);
+
+            const availableQuantity = inventoryItem.quantity - inCartQuantity;
+
+            const productCards = document.querySelectorAll('.product-card');
+            productCards.forEach(card => {
+                const cardId = card.getAttribute('data-id');
+                if (cardId === productId) {
+                    const stockEl = card.querySelector('.product-stock');
+                    if (stockEl) {
+                        stockEl.textContent = `Available: ${availableQuantity}`;
+                    }
+
+                    const isLowStock = availableQuantity <= (inventoryItem.lowStockThreshold || 10);
+                    let lowStockBadge = card.querySelector('.low-stock-badge');
+
+                    if (isLowStock && availableQuantity > 0) {
+                        if (!lowStockBadge) {
+                            lowStockBadge = document.createElement('div');
+                            lowStockBadge.className = 'low-stock-badge';
+                            lowStockBadge.textContent = 'Low Stock';
+                            card.appendChild(lowStockBadge);
+                        }
+                    } else if (lowStockBadge) {
+                        lowStockBadge.remove();
+                    }
+
+                    if (availableQuantity <= 0) {
+                        card.classList.add('disabled');
+                        card.style.opacity = '0.6';
+                        card.style.cursor = 'not-allowed';
+                        card.style.pointerEvents = 'none';
+                    } else {
+                        card.classList.remove('disabled');
+                        card.style.opacity = '1';
+                        card.style.cursor = 'pointer';
+                        card.style.pointerEvents = 'auto';
+                    }
+                }
             });
         }
 
-        updateCart();
-        updateProductStockDisplay(inventoryItem._id);
-        
-        // Recalculate discounts when cart changes
-        if (appliedDiscounts.length > 0) {
-            loadAvailableDiscounts();
-            updateDiscountSummary();
-        }
-    }
+        function removeFromCart(productId) {
+            const item = cart.find(item => item._id === productId);
+            cart = cart.filter((item) => item._id !== productId);
+            updateCart();
 
-    function updateProductStockDisplay(productId) {
-        const inventoryItem = inventory.find(item => item._id === productId);
-        if (!inventoryItem) return;
-
-        const inCartQuantity = cart.reduce((sum, cartItem) => {
-            if (cartItem._id === productId) {
-                return sum + cartItem.quantity;
+            if (item) {
+                updateProductStockDisplay(item._id);
             }
-            return sum;
-        }, 0);
 
-        const availableQuantity = inventoryItem.quantity - inCartQuantity;
-
-        const productCards = document.querySelectorAll('.product-card');
-        productCards.forEach(card => {
-            const cardId = card.getAttribute('data-id');
-            if (cardId === productId) {
-                const stockEl = card.querySelector('.product-stock');
-                if (stockEl) {
-                    stockEl.textContent = `Available: ${availableQuantity}`;
-                }
-
-                const isLowStock = availableQuantity <= (inventoryItem.lowStockThreshold || 10);
-                let lowStockBadge = card.querySelector('.low-stock-badge');
-
-                if (isLowStock && availableQuantity > 0) {
-                    if (!lowStockBadge) {
-                        lowStockBadge = document.createElement('div');
-                        lowStockBadge.className = 'low-stock-badge';
-                        lowStockBadge.textContent = 'Low Stock';
-                        card.appendChild(lowStockBadge);
-                    }
-                } else if (lowStockBadge) {
-                    lowStockBadge.remove();
-                }
-
-                if (availableQuantity <= 0) {
-                    card.classList.add('disabled');
-                    card.style.opacity = '0.6';
-                    card.style.cursor = 'not-allowed';
-                    card.style.pointerEvents = 'none';
-                } else {
-                    card.classList.remove('disabled');
-                    card.style.opacity = '1';
-                    card.style.cursor = 'pointer';
-                    card.style.pointerEvents = 'auto';
-                }
+            // Recalculate discounts when cart changes
+            if (appliedDiscounts.length > 0) {
+                loadAvailableDiscounts();
+                updateDiscountSummary();
             }
-        });
-    }
-
-    function removeFromCart(productId) {
-        const item = cart.find(item => item._id === productId);
-        cart = cart.filter((item) => item._id !== productId);
-        updateCart();
-
-        if (item) {
-            updateProductStockDisplay(item._id);
-        }
-        
-        // Recalculate discounts when cart changes
-        if (appliedDiscounts.length > 0) {
-            loadAvailableDiscounts();
-            updateDiscountSummary();
-        }
-    }
-
-    function updateItemQuantity(productId, newQuantity) {
-        const item = cart.find((item) => item._id === productId);
-
-        if (!item) return;
-
-        const inventoryItem = inventory.find(inv => inv._id === productId);
-
-        if (!inventoryItem) {
-            showToast('Product not found in inventory', 'error');
-            return;
         }
 
-        if (newQuantity < 1) {
-            removeFromCart(productId);
-            return;
-        }
+        function updateItemQuantity(productId, newQuantity) {
+            const item = cart.find((item) => item._id === productId);
 
-        const totalInCart = cart.reduce((sum, cartItem) => {
-            if (cartItem._id === productId) {
-                return sum + cartItem.quantity;
+            if (!item) return;
+
+            const inventoryItem = inventory.find(inv => inv._id === productId);
+
+            if (!inventoryItem) {
+                showToast('Product not found in inventory', 'error');
+                return;
             }
-            return sum;
-        }, 0);
-
-        const otherItemsQty = totalInCart - item.quantity;
-        const newTotalInCart = otherItemsQty + newQuantity;
-
-        if (newTotalInCart > inventoryItem.quantity) {
-            showToast(`Only ${inventoryItem.quantity - otherItemsQty} ${inventoryItem.name} available`, 'warning');
-            newQuantity = Math.max(1, inventoryItem.quantity - otherItemsQty);
 
             if (newQuantity < 1) {
                 removeFromCart(productId);
                 return;
             }
+
+            const totalInCart = cart.reduce((sum, cartItem) => {
+                if (cartItem._id === productId) {
+                    return sum + cartItem.quantity;
+                }
+                return sum;
+            }, 0);
+
+            const otherItemsQty = totalInCart - item.quantity;
+            const newTotalInCart = otherItemsQty + newQuantity;
+
+            if (newTotalInCart > inventoryItem.quantity) {
+                showToast(`Only ${inventoryItem.quantity - otherItemsQty} ${inventoryItem.name} available`, 'warning');
+                newQuantity = Math.max(1, inventoryItem.quantity - otherItemsQty);
+
+                if (newQuantity < 1) {
+                    removeFromCart(productId);
+                    return;
+                }
+            }
+
+            item.quantity = newQuantity;
+            updateCart();
+            updateProductStockDisplay(productId);
+
+            // Recalculate discounts when cart changes
+            if (appliedDiscounts.length > 0) {
+                loadAvailableDiscounts();
+                updateDiscountSummary();
+            }
         }
 
-        item.quantity = newQuantity;
-        updateCart();
-        updateProductStockDisplay(productId);
-        
-        // Recalculate discounts when cart changes
-        if (appliedDiscounts.length > 0) {
-            loadAvailableDiscounts();
-            updateDiscountSummary();
-        }
-    }
+        function renderCartItems() {
+            const itemsContainer = document.getElementById("order-items");
+            if (!itemsContainer) return;
 
-    function renderCartItems() {
-        const itemsContainer = document.getElementById("order-items");
-        if (!itemsContainer) return;
-
-        if (cart.length === 0) {
-            itemsContainer.innerHTML = `
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = `
                 <div class="empty-state">
                     <i class="bi bi-inbox"></i>
                     <p>No items added</p>
                 </div>
             `;
-            return;
-        }
+                return;
+            }
 
-        itemsContainer.innerHTML = cart.map((item) => {
-            return `
+            itemsContainer.innerHTML = cart.map((item) => {
+                return `
                 <div class="order-item" data-id="${item._id}">
                     <div class="item-info">
                         <div class="item-name">${item.name}</div>
@@ -1375,53 +1590,53 @@
                     </div>
                 </div>
             `;
-        }).join("");
+            }).join("");
 
-        setTimeout(() => {
-            document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
-                btn.onclick = (e) => {
-                    const productId = e.currentTarget.getAttribute('data-id');
-                    const item = cart.find(item => item._id === productId);
-                    if (item) {
-                        updateItemQuantity(productId, item.quantity - 1);
-                    }
-                };
-            });
+            setTimeout(() => {
+                document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+                    btn.onclick = (e) => {
+                        const productId = e.currentTarget.getAttribute('data-id');
+                        const item = cart.find(item => item._id === productId);
+                        if (item) {
+                            updateItemQuantity(productId, item.quantity - 1);
+                        }
+                    };
+                });
 
-            document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
-                btn.onclick = (e) => {
-                    const productId = e.currentTarget.getAttribute('data-id');
-                    const item = cart.find(item => item._id === productId);
-                    if (item) {
-                        updateItemQuantity(productId, item.quantity + 1);
-                    }
-                };
-            });
+                document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+                    btn.onclick = (e) => {
+                        const productId = e.currentTarget.getAttribute('data-id');
+                        const item = cart.find(item => item._id === productId);
+                        if (item) {
+                            updateItemQuantity(productId, item.quantity + 1);
+                        }
+                    };
+                });
 
-            document.querySelectorAll('.remove-btn').forEach(btn => {
-                btn.onclick = (e) => {
-                    const productId = e.currentTarget.getAttribute('data-id');
-                    removeFromCart(productId);
-                };
-            });
-        }, 0);
-    }
-
-    function updateButtonStates() {
-        const cancelBtn = document.getElementById('btn-cancel');
-        const paymentBtn = document.getElementById('btn-payment');
-        const discountBtn = document.getElementById('btn-discount');
-        const isCartEmpty = cart.length === 0;
-
-        if (cancelBtn) {
-            if (isCartEmpty) {
-                cancelBtn.disabled = true;
-                cancelBtn.classList.add('disabled');
-            } else {
-                cancelBtn.disabled = false;
-                cancelBtn.classList.remove('disabled');
-            }
+                document.querySelectorAll('.remove-btn').forEach(btn => {
+                    btn.onclick = (e) => {
+                        const productId = e.currentTarget.getAttribute('data-id');
+                        removeFromCart(productId);
+                    };
+                });
+            }, 0);
         }
+
+        function updateButtonStates() {
+            const cancelBtn = document.getElementById('btn-cancel');
+            const paymentBtn = document.getElementById('btn-payment');
+            const discountBtn = document.getElementById('btn-discount');
+            const isCartEmpty = cart.length === 0;
+
+            if (cancelBtn) {
+                if (isCartEmpty) {
+                    cancelBtn.disabled = true;
+                    cancelBtn.classList.add('disabled');
+                } else {
+                    cancelBtn.disabled = false;
+                    cancelBtn.classList.remove('disabled');
+                }
+            }
 
             if (paymentBtn && discountBtn) {
                 if (isCartEmpty) {
@@ -1436,270 +1651,270 @@
                     discountBtn.classList.remove('disabled');
                 }
             }
-            
-    }
 
-    function updateCart() {
-        renderCartItems();
-        updateButtonStates();
-        updateTotals();
-    }
+        }
 
-    // ============================================
-    // BOGO DISCOUNT CALCULATION
-    // ============================================
+        function updateCart() {
+            renderCartItems();
+            updateButtonStates();
+            updateTotals();
+        }
 
-    function calculateBOGODiscountAmount(bogoDiscount, cartItems, applicableItems) {
-        if (!bogoDiscount.bogo) return 0;
-        
-        const buyQuantity = bogoDiscount.bogo.buyQuantity || 1;
-        const getQuantity = bogoDiscount.bogo.getQuantity || 1;
-        const sameProduct = bogoDiscount.bogo.sameProduct !== false;
-        const repeatable = bogoDiscount.bogo.repeatable !== false;
-        
-        // Get eligible products
-        let eligibleProducts = [];
-        
-        if (sameProduct) {
-            const buyProducts = bogoDiscount.bogo.buyProducts || [];
-            const getProducts = bogoDiscount.bogo.getProducts || [];
-            
-            if (buyProducts.length > 0 && getProducts.length > 0) {
-                const allProductIds = [...buyProducts, ...getProducts];
-                const hasValidProducts = applicableItems.every(item => 
-                    allProductIds.includes(item.productId)
-                );
-                
-                if (hasValidProducts) {
+        // ============================================
+        // BOGO DISCOUNT CALCULATION
+        // ============================================
+
+        function calculateBOGODiscountAmount(bogoDiscount, cartItems, applicableItems) {
+            if (!bogoDiscount.bogo) return 0;
+
+            const buyQuantity = bogoDiscount.bogo.buyQuantity || 1;
+            const getQuantity = bogoDiscount.bogo.getQuantity || 1;
+            const sameProduct = bogoDiscount.bogo.sameProduct !== false;
+            const repeatable = bogoDiscount.bogo.repeatable !== false;
+
+            // Get eligible products
+            let eligibleProducts = [];
+
+            if (sameProduct) {
+                const buyProducts = bogoDiscount.bogo.buyProducts || [];
+                const getProducts = bogoDiscount.bogo.getProducts || [];
+
+                if (buyProducts.length > 0 && getProducts.length > 0) {
+                    const allProductIds = [...buyProducts, ...getProducts];
+                    const hasValidProducts = applicableItems.every(item =>
+                        allProductIds.includes(item.productId)
+                    );
+
+                    if (hasValidProducts) {
+                        eligibleProducts = applicableItems;
+                    }
+                } else if (buyProducts.length > 0) {
+                    eligibleProducts = applicableItems.filter(item =>
+                        buyProducts.includes(item.productId)
+                    );
+                } else {
                     eligibleProducts = applicableItems;
                 }
-            } else if (buyProducts.length > 0) {
-                eligibleProducts = applicableItems.filter(item => 
-                    buyProducts.includes(item.productId)
-                );
             } else {
                 eligibleProducts = applicableItems;
             }
-        } else {
-            eligibleProducts = applicableItems;
-        }
-        
-        if (eligibleProducts.length === 0) return 0;
-        
-        // Calculate total items count
-        const totalItems = eligibleProducts.reduce((sum, item) => sum + item.quantity, 0);
-        
-        // Calculate how many free items we can give
-        const eligibleSets = Math.floor(totalItems / (buyQuantity + getQuantity));
-        const freeItemsCount = eligibleSets * getQuantity;
-        
-        if (freeItemsCount === 0) return 0;
-        
-        // Sort eligible items by price (lowest first for maximum discount)
-        const allItemsWithPrices = [];
-        eligibleProducts.forEach(product => {
-            for (let i = 0; i < product.quantity; i++) {
-                allItemsWithPrices.push(product.price);
-            }
-        });
-        
-        allItemsWithPrices.sort((a, b) => a - b);
-        
-        // Take the cheapest items as free
-        const freeItems = allItemsWithPrices.slice(0, freeItemsCount);
-        const discountAmount = freeItems.reduce((sum, price) => sum + price, 0);
-        
-        // If repeatable is false, limit to one set
-        if (!repeatable) {
-            const oneSetDiscount = Math.min(...allItemsWithPrices) * getQuantity;
-            return Math.min(discountAmount, oneSetDiscount);
-        }
-        
-        return discountAmount;
-    }
 
-    // ============================================
-    // DISCOUNT MANAGEMENT
-    // ============================================
+            if (eligibleProducts.length === 0) return 0;
 
-    async function loadAvailableDiscounts() {
-        try {
-            const itemsForDiscount = cart.map(item => ({
-                productId: item._id,
-                product: item._id,
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-                unitPrice: item.price
-            }));
+            // Calculate total items count
+            const totalItems = eligibleProducts.reduce((sum, item) => sum + item.quantity, 0);
 
-            const orderTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            // Calculate how many free items we can give
+            const eligibleSets = Math.floor(totalItems / (buyQuantity + getQuantity));
+            const freeItemsCount = eligibleSets * getQuantity;
 
-            const data = await apiRequest('/discounts/applicable', {
-                method: 'POST',
-                body: JSON.stringify({
-                    items: itemsForDiscount,
-                    orderTotal: orderTotal,
-                    customerId: null
-                })
+            if (freeItemsCount === 0) return 0;
+
+            // Sort eligible items by price (lowest first for maximum discount)
+            const allItemsWithPrices = [];
+            eligibleProducts.forEach(product => {
+                for (let i = 0; i < product.quantity; i++) {
+                    allItemsWithPrices.push(product.price);
+                }
             });
 
-            if (data && data.success) {
-                availableDiscounts = data.applicableDiscounts.map(discount => {
-                    let calculatedAmount = discount.amount;
-                    
-                    if (discount.discount.type === 'bogo') {
-                        calculatedAmount = calculateBOGODiscountAmount(
-                            discount.discount,
-                            cart,
-                            discount.applicableItems || []
-                        );
-                    }
-                    
-                    return {
-                        discount: discount.discount,
-                        amount: calculatedAmount,
-                        applicableItems: discount.applicableItems || []
-                    };
+            allItemsWithPrices.sort((a, b) => a - b);
+
+            // Take the cheapest items as free
+            const freeItems = allItemsWithPrices.slice(0, freeItemsCount);
+            const discountAmount = freeItems.reduce((sum, price) => sum + price, 0);
+
+            // If repeatable is false, limit to one set
+            if (!repeatable) {
+                const oneSetDiscount = Math.min(...allItemsWithPrices) * getQuantity;
+                return Math.min(discountAmount, oneSetDiscount);
+            }
+
+            return discountAmount;
+        }
+
+        // ============================================
+        // DISCOUNT MANAGEMENT
+        // ============================================
+
+        async function loadAvailableDiscounts() {
+            try {
+                const itemsForDiscount = cart.map(item => ({
+                    productId: item._id,
+                    product: item._id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    unitPrice: item.price
+                }));
+
+                const orderTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+                const data = await apiRequest('/discounts/applicable', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        items: itemsForDiscount,
+                        orderTotal: orderTotal,
+                        customerId: null
+                    })
                 });
 
-                console.log("Loaded discounts:", availableDiscounts);
-                renderAvailableDiscounts();
-            } else {
+                if (data && data.success) {
+                    availableDiscounts = data.applicableDiscounts.map(discount => {
+                        let calculatedAmount = discount.amount;
+
+                        if (discount.discount.type === 'bogo') {
+                            calculatedAmount = calculateBOGODiscountAmount(
+                                discount.discount,
+                                cart,
+                                discount.applicableItems || []
+                            );
+                        }
+
+                        return {
+                            discount: discount.discount,
+                            amount: calculatedAmount,
+                            applicableItems: discount.applicableItems || []
+                        };
+                    });
+
+                    console.log("Loaded discounts:", availableDiscounts);
+                    renderAvailableDiscounts();
+                } else {
+                    availableDiscounts = [];
+                    renderAvailableDiscounts();
+                }
+            } catch (error) {
+                console.error('Error loading discounts:', error);
                 availableDiscounts = [];
                 renderAvailableDiscounts();
             }
-        } catch (error) {
-            console.error('Error loading discounts:', error);
-            availableDiscounts = [];
+        }
+
+        function getDiscountConditionsText(discount) {
+            const conditions = [];
+
+            if (discount.type === 'bogo' && discount.bogo) {
+                conditions.push(`Buy ${discount.bogo.buyQuantity || 1} Get ${discount.bogo.getQuantity || 1} Free`);
+                if (!discount.bogo.sameProduct) {
+                    conditions.push('Any product');
+                }
+                if (!discount.bogo.repeatable) {
+                    conditions.push('One time only');
+                }
+            }
+
+            if (discount.conditions?.minAmount) {
+                conditions.push(`Min: $${discount.conditions.minAmount.amount}`);
+            }
+
+            if (discount.conditions?.days?.length > 0) {
+                const days = discount.conditions.days
+                    .map(day => day.substring(0, 3))
+                    .join(', ');
+                conditions.push(`Days: ${days}`);
+            }
+
+            if (discount.conditions?.timeRange?.enabled) {
+                conditions.push(`Time: ${discount.conditions.timeRange.start} - ${discount.conditions.timeRange.end}`);
+            }
+
+            if (discount.validUntil) {
+                const date = new Date(discount.validUntil).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                });
+                conditions.push(`Exp: ${date}`);
+            }
+
+            if (discount.maxUses) {
+                conditions.push(`Uses: ${discount.usedCount || 0}/${discount.maxUses}`);
+            }
+
+            return conditions.join(' • ');
+        }
+
+        function toggleDiscount(discount) {
+            console.log("Toggling discount:", discount);
+
+            if (discount.discount.type === 'bogo') {
+                const calculatedAmount = calculateBOGODiscountAmount(
+                    discount.discount,
+                    cart,
+                    discount.applicableItems || []
+                );
+
+                if (calculatedAmount === 0) {
+                    showToast('BOGO discount conditions not met', 'warning');
+                    return;
+                }
+
+                discount.amount = calculatedAmount;
+            }
+
+            const index = appliedDiscounts.findIndex(applied =>
+                applied.discount._id === discount.discount._id);
+
+            if (index > -1) {
+                appliedDiscounts.splice(index, 1);
+                console.log("Removed discount. Applied now:", appliedDiscounts);
+            } else {
+                appliedDiscounts.push({
+                    discount: discount.discount,
+                    amount: discount.amount,
+                    applicableItems: discount.applicableItems || []
+                });
+                console.log("Added discount. Applied now:", appliedDiscounts);
+            }
+
+            renderAppliedDiscounts();
             renderAvailableDiscounts();
-        }
-    }
-
-    function getDiscountConditionsText(discount) {
-        const conditions = [];
-
-        if (discount.type === 'bogo' && discount.bogo) {
-            conditions.push(`Buy ${discount.bogo.buyQuantity || 1} Get ${discount.bogo.getQuantity || 1} Free`);
-            if (!discount.bogo.sameProduct) {
-                conditions.push('Any product');
-            }
-            if (!discount.bogo.repeatable) {
-                conditions.push('One time only');
-            }
+            updateDiscountSummary();
+            updateTotals();
         }
 
-        if (discount.conditions?.minAmount) {
-            conditions.push(`Min: $${discount.conditions.minAmount.amount}`);
-        }
+        function renderAvailableDiscounts() {
+            const container = document.getElementById('available-discounts');
+            if (!container) return;
 
-        if (discount.conditions?.days?.length > 0) {
-            const days = discount.conditions.days
-                .map(day => day.substring(0, 3))
-                .join(', ');
-            conditions.push(`Days: ${days}`);
-        }
-
-        if (discount.conditions?.timeRange?.enabled) {
-            conditions.push(`Time: ${discount.conditions.timeRange.start} - ${discount.conditions.timeRange.end}`);
-        }
-
-        if (discount.validUntil) {
-            const date = new Date(discount.validUntil).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric'
-            });
-            conditions.push(`Exp: ${date}`);
-        }
-
-        if (discount.maxUses) {
-            conditions.push(`Uses: ${discount.usedCount || 0}/${discount.maxUses}`);
-        }
-
-        return conditions.join(' • ');
-    }
-
-    function toggleDiscount(discount) {
-        console.log("Toggling discount:", discount);
-        
-        if (discount.discount.type === 'bogo') {
-            const calculatedAmount = calculateBOGODiscountAmount(
-                discount.discount,
-                cart,
-                discount.applicableItems || []
-            );
-            
-            if (calculatedAmount === 0) {
-                showToast('BOGO discount conditions not met', 'warning');
-                return;
-            }
-            
-            discount.amount = calculatedAmount;
-        }
-
-        const index = appliedDiscounts.findIndex(applied =>
-            applied.discount._id === discount.discount._id);
-
-        if (index > -1) {
-            appliedDiscounts.splice(index, 1);
-            console.log("Removed discount. Applied now:", appliedDiscounts);
-        } else {
-            appliedDiscounts.push({
-                discount: discount.discount,
-                amount: discount.amount,
-                applicableItems: discount.applicableItems || []
-            });
-            console.log("Added discount. Applied now:", appliedDiscounts);
-        }
-
-        renderAppliedDiscounts();
-        renderAvailableDiscounts();
-        updateDiscountSummary();
-        updateTotals();
-    }
-
-    function renderAvailableDiscounts() {
-        const container = document.getElementById('available-discounts');
-        if (!container) return;
-
-        if (availableDiscounts.length === 0) {
-            container.innerHTML = `
+            if (availableDiscounts.length === 0) {
+                container.innerHTML = `
                 <div class="empty-state">
                     <i class="bi bi-percent"></i>
                     <p>No discounts available</p>
                     <small class="text-muted">Discounts will appear here when applicable</small>
                 </div>
             `;
-            return;
-        }
-
-        container.innerHTML = availableDiscounts.map(discount => {
-            const isApplied = appliedDiscounts.some(applied =>
-                applied.discount._id === discount.discount._id);
-
-            let discountAmount = '';
-            let discountDetails = '';
-            
-            if (discount.discount.type === 'percentage') {
-                discountAmount = `${discount.discount.value}% OFF`;
-                discountDetails = `Save ${discount.discount.value}% on eligible items`;
-            } else if (discount.discount.type === 'fixed') {
-                discountAmount = `$${discount.discount.value} OFF`;
-                discountDetails = `Save $${discount.discount.value} on eligible items`;
-            } else if (discount.discount.type === 'bogo') {
-                const bogo = discount.discount.bogo;
-                const buyQty = bogo?.buyQuantity || 1;
-                const getQty = bogo?.getQuantity || 1;
-                discountAmount = `Buy ${buyQty} Get ${getQty} Free`;
-                
-                if (discount.amount > 0) {
-                    discountDetails = `Potential savings: $${discount.amount.toFixed(2)}`;
-                } else {
-                    discountDetails = `Add more items to qualify for this offer`;
-                }
+                return;
             }
 
-            return `
+            container.innerHTML = availableDiscounts.map(discount => {
+                const isApplied = appliedDiscounts.some(applied =>
+                    applied.discount._id === discount.discount._id);
+
+                let discountAmount = '';
+                let discountDetails = '';
+
+                if (discount.discount.type === 'percentage') {
+                    discountAmount = `${discount.discount.value}% OFF`;
+                    discountDetails = `Save ${discount.discount.value}% on eligible items`;
+                } else if (discount.discount.type === 'fixed') {
+                    discountAmount = `$${discount.discount.value} OFF`;
+                    discountDetails = `Save $${discount.discount.value} on eligible items`;
+                } else if (discount.discount.type === 'bogo') {
+                    const bogo = discount.discount.bogo;
+                    const buyQty = bogo?.buyQuantity || 1;
+                    const getQty = bogo?.getQuantity || 1;
+                    discountAmount = `Buy ${buyQty} Get ${getQty} Free`;
+
+                    if (discount.amount > 0) {
+                        discountDetails = `Potential savings: $${discount.amount.toFixed(2)}`;
+                    } else {
+                        discountDetails = `Add more items to qualify for this offer`;
+                    }
+                }
+
+                return `
                 <div class="discount-card ${isApplied ? 'active' : ''} ${discount.amount === 0 && discount.discount.type === 'bogo' ? 'disabled' : ''}" 
                      data-discount-id="${discount.discount._id}"
                      style="${discount.amount === 0 && discount.discount.type === 'bogo' ? 'opacity: 0.6;' : ''}">
@@ -1718,52 +1933,52 @@
                     </div>
                 </div>
             `;
-        }).join('');
+            }).join('');
 
-        container.querySelectorAll('.discount-card:not(.disabled)').forEach(card => {
-            card.addEventListener('click', function () {
-                const discountId = this.dataset.discountId;
-                const discount = availableDiscounts.find(d => d.discount._id === discountId);
-                if (discount) {
-                    toggleDiscount(discount);
-                }
+            container.querySelectorAll('.discount-card:not(.disabled)').forEach(card => {
+                card.addEventListener('click', function () {
+                    const discountId = this.dataset.discountId;
+                    const discount = availableDiscounts.find(d => d.discount._id === discountId);
+                    if (discount) {
+                        toggleDiscount(discount);
+                    }
+                });
             });
-        });
-    }
+        }
 
-    function renderAppliedDiscounts() {
-        const container = document.getElementById('applied-discounts');
-        if (!container) return;
+        function renderAppliedDiscounts() {
+            const container = document.getElementById('applied-discounts');
+            if (!container) return;
 
-        if (appliedDiscounts.length === 0) {
-            container.innerHTML = `
+            if (appliedDiscounts.length === 0) {
+                container.innerHTML = `
                 <div class="empty-state">
                     <i class="bi bi-percent"></i>
                     <p>No discounts applied</p>
                 </div>
             `;
-            return;
-        }
-
-        container.innerHTML = appliedDiscounts.map(discount => {
-            let typeDisplay = '';
-            let discountDescription = '';
-            
-            if (discount.discount.type === 'percentage') {
-                typeDisplay = `${discount.discount.value}% OFF`;
-                discountDescription = `Save ${discount.discount.value}%`;
-            } else if (discount.discount.type === 'fixed') {
-                typeDisplay = `$${discount.discount.value} OFF`;
-                discountDescription = `Save $${discount.discount.value}`;
-            } else if (discount.discount.type === 'bogo') {
-                const bogo = discount.discount.bogo;
-                const buyQty = bogo?.buyQuantity || 1;
-                const getQty = bogo?.getQuantity || 1;
-                typeDisplay = `Buy ${buyQty} Get ${getQty} Free`;
-                discountDescription = `Get ${getQty} item(s) free`;
+                return;
             }
 
-            return `
+            container.innerHTML = appliedDiscounts.map(discount => {
+                let typeDisplay = '';
+                let discountDescription = '';
+
+                if (discount.discount.type === 'percentage') {
+                    typeDisplay = `${discount.discount.value}% OFF`;
+                    discountDescription = `Save ${discount.discount.value}%`;
+                } else if (discount.discount.type === 'fixed') {
+                    typeDisplay = `$${discount.discount.value} OFF`;
+                    discountDescription = `Save $${discount.discount.value}`;
+                } else if (discount.discount.type === 'bogo') {
+                    const bogo = discount.discount.bogo;
+                    const buyQty = bogo?.buyQuantity || 1;
+                    const getQty = bogo?.getQuantity || 1;
+                    typeDisplay = `Buy ${buyQty} Get ${getQty} Free`;
+                    discountDescription = `Get ${getQty} item(s) free`;
+                }
+
+                return `
                 <div class="applied-discount-item">
                     <div class="applied-discount-info">
                         <div class="applied-discount-name">
@@ -1778,216 +1993,216 @@
                     </button>
                 </div>
             `;
-        }).join('');
+            }).join('');
 
-        container.querySelectorAll('.remove-discount-btn').forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                const discountId = this.dataset.discountId;
-                appliedDiscounts = appliedDiscounts.filter(d =>
-                    d.discount._id !== discountId);
-                renderAppliedDiscounts();
-                renderAvailableDiscounts();
-                updateDiscountSummary();
-                updateTotals();
+            container.querySelectorAll('.remove-discount-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const discountId = this.dataset.discountId;
+                    appliedDiscounts = appliedDiscounts.filter(d =>
+                        d.discount._id !== discountId);
+                    renderAppliedDiscounts();
+                    renderAvailableDiscounts();
+                    updateDiscountSummary();
+                    updateTotals();
+                });
             });
-        });
-    }
-
-    function updateDiscountSummary() {
-        const summaryContainer = document.getElementById('discount-summary');
-        const originalSubtotalEl = document.getElementById('original-subtotal');
-        const totalDiscountEl = document.getElementById('total-discount');
-        const discountedSubtotalEl = document.getElementById('discounted-subtotal');
-
-        if (!summaryContainer) return;
-
-        const originalSubtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        
-        // Recalculate BOGO discounts to ensure accuracy
-        let totalDiscount = 0;
-        appliedDiscounts.forEach(discount => {
-            if (discount.discount.type === 'bogo') {
-                const recalculatedAmount = calculateBOGODiscountAmount(
-                    discount.discount,
-                    cart,
-                    discount.applicableItems || []
-                );
-                discount.amount = recalculatedAmount;
-                totalDiscount += recalculatedAmount;
-            } else {
-                totalDiscount += discount.amount;
-            }
-        });
-        
-        const discountedSubtotal = Math.max(0, originalSubtotal - totalDiscount);
-
-        if (appliedDiscounts.length > 0 && totalDiscount > 0) {
-            summaryContainer.style.display = 'block';
-            if (originalSubtotalEl) originalSubtotalEl.textContent = `$${originalSubtotal.toFixed(2)}`;
-            if (totalDiscountEl) totalDiscountEl.textContent = `-$${totalDiscount.toFixed(2)}`;
-            if (discountedSubtotalEl) discountedSubtotalEl.textContent = `$${discountedSubtotal.toFixed(2)}`;
-        } else {
-            summaryContainer.style.display = 'none';
-        }
-    }
-
-    function openDiscountModal() {
-        if (cart.length === 0) {
-            showToast("Please add items to the cart first", 'error');
-            return;
         }
 
-        loadAvailableDiscounts();
-        updateDiscountSummary();
+        function updateDiscountSummary() {
+            const summaryContainer = document.getElementById('discount-summary');
+            const originalSubtotalEl = document.getElementById('original-subtotal');
+            const totalDiscountEl = document.getElementById('total-discount');
+            const discountedSubtotalEl = document.getElementById('discounted-subtotal');
 
-        const discountModal = new bootstrap.Modal(
-            document.getElementById("discountModal")
-        );
-        discountModal.show();
-    }
+            if (!summaryContainer) return;
 
-    function applyDiscounts() {
-        const discountModal = bootstrap.Modal.getInstance(document.getElementById('discountModal'));
-        if (discountModal) {
-            discountModal.hide();
-        }
-        updateTotals();
-    }
+            const originalSubtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-    // ============================================
-    // ORDER SUMMARY & TOTALS
-    // ============================================
-
-    function updateTotals() {
-        const rawSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        
-        // Recalculate all applied discounts (especially BOGO)
-        let totalDiscount = 0;
-        appliedDiscounts.forEach(discount => {
-            if (discount.discount.type === 'bogo') {
-                const recalculatedAmount = calculateBOGODiscountAmount(
-                    discount.discount,
-                    cart,
-                    discount.applicableItems || []
-                );
-                discount.amount = recalculatedAmount;
-                totalDiscount += recalculatedAmount;
-            } else {
-                totalDiscount += discount.amount;
-            }
-        });
-        
-        const discountedSubtotal = Math.max(0, rawSubtotal - totalDiscount);
-
-        const discountBreakdownDiv = document.getElementById('discount-breakdown');
-        const discountListSpan = document.getElementById('discount-list');
-
-        if (appliedDiscounts.length > 0 && totalDiscount > 0) {
-            const discountText = appliedDiscounts.map(d => {
-                let typeText = '';
-                if (d.discount.type === 'percentage') typeText = `${d.discount.value}% OFF`;
-                else if (d.discount.type === 'fixed') typeText = `$${d.discount.value} OFF`;
-                else if (d.discount.type === 'bogo') {
-                    const bogo = d.discount.bogo;
-                    typeText = `Buy ${bogo?.buyQuantity || 1} Get ${bogo?.getQuantity || 1} Free`;
+            // Recalculate BOGO discounts to ensure accuracy
+            let totalDiscount = 0;
+            appliedDiscounts.forEach(discount => {
+                if (discount.discount.type === 'bogo') {
+                    const recalculatedAmount = calculateBOGODiscountAmount(
+                        discount.discount,
+                        cart,
+                        discount.applicableItems || []
+                    );
+                    discount.amount = recalculatedAmount;
+                    totalDiscount += recalculatedAmount;
+                } else {
+                    totalDiscount += discount.amount;
                 }
-                return `${d.discount.name} (${typeText}): -$${d.amount.toFixed(2)}`;
-            }).join(', ');
+            });
 
-            discountListSpan.textContent = discountText;
-            discountBreakdownDiv.style.display = 'flex';
-        } else {
-            discountBreakdownDiv.style.display = 'none';
+            const discountedSubtotal = Math.max(0, originalSubtotal - totalDiscount);
+
+            if (appliedDiscounts.length > 0 && totalDiscount > 0) {
+                summaryContainer.style.display = 'block';
+                if (originalSubtotalEl) originalSubtotalEl.textContent = `$${originalSubtotal.toFixed(2)}`;
+                if (totalDiscountEl) totalDiscountEl.textContent = `-$${totalDiscount.toFixed(2)}`;
+                if (discountedSubtotalEl) discountedSubtotalEl.textContent = `$${discountedSubtotal.toFixed(2)}`;
+            } else {
+                summaryContainer.style.display = 'none';
+            }
         }
 
-        let calculations;
-        if (taxSettings.taxInclusive) {
-            calculations = calculateTaxInclusive(discountedSubtotal);
-        } else {
-            calculations = calculateTaxExclusive(discountedSubtotal);
+        function openDiscountModal() {
+            if (cart.length === 0) {
+                showToast("Please add items to the cart first", 'error');
+                return;
+            }
+
+            loadAvailableDiscounts();
+            updateDiscountSummary();
+
+            const discountModal = new bootstrap.Modal(
+                document.getElementById("discountModal")
+            );
+            discountModal.show();
         }
 
-        const subtotalEl = document.getElementById("subtotal");
-        const taxEl = document.getElementById("tax");
-        const totalEl = document.getElementById("total");
-        const modalTotalEl = document.getElementById("modal-total");
-        const taxLabelEl = document.getElementById("tax-label");
+        function applyDiscounts() {
+            const discountModal = bootstrap.Modal.getInstance(document.getElementById('discountModal'));
+            if (discountModal) {
+                discountModal.hide();
+            }
+            updateTotals();
+        }
 
-        if (subtotalEl) {
-            if (totalDiscount > 0) {
-                subtotalEl.innerHTML = `
+        // ============================================
+        // ORDER SUMMARY & TOTALS
+        // ============================================
+
+        function updateTotals() {
+            const rawSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            // Recalculate all applied discounts (especially BOGO)
+            let totalDiscount = 0;
+            appliedDiscounts.forEach(discount => {
+                if (discount.discount.type === 'bogo') {
+                    const recalculatedAmount = calculateBOGODiscountAmount(
+                        discount.discount,
+                        cart,
+                        discount.applicableItems || []
+                    );
+                    discount.amount = recalculatedAmount;
+                    totalDiscount += recalculatedAmount;
+                } else {
+                    totalDiscount += discount.amount;
+                }
+            });
+
+            const discountedSubtotal = Math.max(0, rawSubtotal - totalDiscount);
+
+            const discountBreakdownDiv = document.getElementById('discount-breakdown');
+            const discountListSpan = document.getElementById('discount-list');
+
+            if (appliedDiscounts.length > 0 && totalDiscount > 0) {
+                const discountText = appliedDiscounts.map(d => {
+                    let typeText = '';
+                    if (d.discount.type === 'percentage') typeText = `${d.discount.value}% OFF`;
+                    else if (d.discount.type === 'fixed') typeText = `$${d.discount.value} OFF`;
+                    else if (d.discount.type === 'bogo') {
+                        const bogo = d.discount.bogo;
+                        typeText = `Buy ${bogo?.buyQuantity || 1} Get ${bogo?.getQuantity || 1} Free`;
+                    }
+                    return `${d.discount.name} (${typeText}): -$${d.amount.toFixed(2)}`;
+                }).join(', ');
+
+                discountListSpan.textContent = discountText;
+                discountBreakdownDiv.style.display = 'flex';
+            } else {
+                discountBreakdownDiv.style.display = 'none';
+            }
+
+            let calculations;
+            if (taxSettings.taxInclusive) {
+                calculations = calculateTaxInclusive(discountedSubtotal);
+            } else {
+                calculations = calculateTaxExclusive(discountedSubtotal);
+            }
+
+            const subtotalEl = document.getElementById("subtotal");
+            const taxEl = document.getElementById("tax");
+            const totalEl = document.getElementById("total");
+            const modalTotalEl = document.getElementById("modal-total");
+            const taxLabelEl = document.getElementById("tax-label");
+
+            if (subtotalEl) {
+                if (totalDiscount > 0) {
+                    subtotalEl.innerHTML = `
                     $${rawSubtotal.toFixed(2)}
                     
                 `;
-            } else {
-                subtotalEl.textContent = `$${rawSubtotal.toFixed(2)}`;
-            }
-        }
-
-        if (taxEl) {
-            if (taxSettings.enabled && !taxSettings.taxInclusive) {
-                taxEl.textContent = `$${calculations.tax.toFixed(2)}`;
-                if (taxLabelEl) {
-                    taxLabelEl.textContent = `${taxSettings.taxName || 'Tax'} (${taxSettings.rate}%)`;
+                } else {
+                    subtotalEl.textContent = `$${rawSubtotal.toFixed(2)}`;
                 }
-            } else if (taxSettings.taxInclusive && taxSettings.enabled) {
-                taxEl.textContent = `$${calculations.tax.toFixed(2)}`;
-                if (taxLabelEl) taxLabelEl.textContent = `${taxSettings.taxName || 'Tax'} (${taxSettings.rate}% Included)`;
+            }
 
+            if (taxEl) {
+                if (taxSettings.enabled && !taxSettings.taxInclusive) {
+                    taxEl.textContent = `$${calculations.tax.toFixed(2)}`;
+                    if (taxLabelEl) {
+                        taxLabelEl.textContent = `${taxSettings.taxName || 'Tax'} (${taxSettings.rate}%)`;
+                    }
+                } else if (taxSettings.taxInclusive && taxSettings.enabled) {
+                    taxEl.textContent = `$${calculations.tax.toFixed(2)}`;
+                    if (taxLabelEl) taxLabelEl.textContent = `${taxSettings.taxName || 'Tax'} (${taxSettings.rate}% Included)`;
+
+                } else {
+                    taxEl.textContent = '$0.00';
+                    if (taxLabelEl) taxLabelEl.textContent = 'Tax (Disabled)';
+                }
+            }
+
+            if (totalEl) totalEl.textContent = `$${calculations.total.toFixed(2)}`;
+            if (modalTotalEl) modalTotalEl.textContent = `$${calculations.total.toFixed(2)}`;
+        }
+
+        // ============================================
+        // ORDER MANAGEMENT
+        // ============================================
+
+        function cancelOrder() {
+            if (cart.length === 0) {
+                showToast("No items to cancel", 'error');
+                updateButtonStates();
+                return;
             } else {
-                taxEl.textContent = '$0.00';
-                if (taxLabelEl) taxLabelEl.textContent = 'Tax (Disabled)';
+                const productIds = cart.map(item => item._id);
+                cart = [];
+                appliedDiscounts = [];
+                updateCart();
+
+                productIds.forEach(productId => {
+                    updateProductStockDisplay(productId);
+                });
+
+                showToast('Order cancelled', 'info');
+
+                // Reset discounts
+                loadAvailableDiscounts();
+                updateDiscountSummary();
             }
         }
 
-        if (totalEl) totalEl.textContent = `$${calculations.total.toFixed(2)}`;
-        if (modalTotalEl) modalTotalEl.textContent = `$${calculations.total.toFixed(2)}`;
-    }
-
-    // ============================================
-    // ORDER MANAGEMENT
-    // ============================================
-
-    function cancelOrder() {
-        if (cart.length === 0) {
-            showToast("No items to cancel", 'error');
-            updateButtonStates();
-            return;
-        } else {
-            const productIds = cart.map(item => item._id);
-            cart = [];
-            appliedDiscounts = [];
-            updateCart();
-
-            productIds.forEach(productId => {
-                updateProductStockDisplay(productId);
+        function updateOrderTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
             });
 
-            showToast('Order cancelled', 'info');
-            
-            // Reset discounts
-            loadAvailableDiscounts();
-            updateDiscountSummary();
-        }
-    }
+            const year = now.getFullYear().toString().slice(-2);
+            const day = now.getDate().toString().padStart(2, '0');
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const dateString = `${day}-${month}-${year}`;
 
-    function updateOrderTime() {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-        });
-
-        const year = now.getFullYear().toString().slice(-2);
-        const day = now.getDate().toString().padStart(2, '0');
-        const month = (now.getMonth() + 1).toString().padStart(2, '0');
-        const dateString = `${day}-${month}-${year}`;
-
-        const orderTimeEl = document.querySelector(".order-time");
-        if (orderTimeEl) {
-            orderTimeEl.innerHTML = `
+            const orderTimeEl = document.querySelector(".order-time");
+            if (orderTimeEl) {
+                orderTimeEl.innerHTML = `
                 <div style="color: var(--primary); font-weight: 500;">
                     ${dateString}
                 </div>
@@ -1995,314 +2210,357 @@
                     ${timeString}
                 </div>
             `;
-        }
-    }
-
-    // ============================================
-    // PAYMENT MANAGEMENT
-    // ============================================
-
-    // function openPaymentModal() {
-    //     if (cart.length === 0) {
-    //         showToast("Please add items to the cart first", 'error');
-    //         updateButtonStates();
-    //         return;
-    //     }
-
-    //     document.getElementById("amount-received").value = parseFloat(document.getElementById("total").textContent.replace("$", "")).toFixed(2);
-    //     document.getElementById("change-display").style.display = "none";
-
-    //     const paymentModal = new bootstrap.Modal(
-    //         document.getElementById("paymentModal")
-    //     );
-    //     paymentModal.show();
-        
-    // }
-
-    function showPaymentPanel() {
-
-        if (cart.length === 0) {
-            showToast("Please add items to the cart first", 'error');
-            updateButtonStates();
-            return;
-        }
-
-        document.getElementById("amount-received").value = parseFloat(document.getElementById("total").textContent.replace("$", "")).toFixed(2);
-        document.getElementById("change-display").style.display = "none";
-
-        const paymentPanel = document.getElementById("payment-panel");
-        const orderPanel = document.getElementById("order-panel");
-        if (paymentPanel) {
-            paymentPanel.style.display = "flex";
-            orderPanel.style.display = "none";
-            console.log("Payment panel shown");
-        }
-    }
-
-
-    function cancelPayment() {
-        const paymentPanel = document.getElementById("payment-panel");
-        const orderPanel = document.getElementById("order-panel");
-        if (paymentPanel) {
-            paymentPanel.style.display = "none";
-            orderPanel.style.display = "flex";
-            console.log("Payment cancelled, back to order panel");
-        }
-    }
-
-    function setupPaymentListeners() {
-        const amountInput = document.getElementById("amount-received");
-        const changeDisplay = document.getElementById("change-display");
-        const changeAmount = document.getElementById("change-amount");
-
-        amountInput.addEventListener("input", () => {
-            const totalAmount = parseFloat(
-                document.getElementById("total").textContent.replace("$", "")
-            );
-            const amount = parseFloat(amountInput.value) || 0;
-
-            if (amount >= totalAmount) {
-                const change = amount - totalAmount;
-                changeAmount.textContent = `$${change.toFixed(2)}`;
-                changeDisplay.style.display = "flex";
-            } else {
-                changeDisplay.style.display = "none";
             }
-        });
-    }
+        }
 
-    async function completePayment() {
-        const result = await postTransaction();
+        // ============================================
+        // PAYMENT MANAGEMENT
+        // ============================================
 
-        if (result) {
-            const amountInput = document.getElementById("amount-received");
-            amountInput.value = "";
+        // function openPaymentModal() {
+        //     if (cart.length === 0) {
+        //         showToast("Please add items to the cart first", 'error');
+        //         updateButtonStates();
+        //         return;
+        //     }
 
-            await loadInventory();
-            await loadTodaySummary();
-            await loadNextOrderNumber();
+        //     document.getElementById("amount-received").value = parseFloat(document.getElementById("total").textContent.replace("$", "")).toFixed(2);
+        //     document.getElementById("change-display").style.display = "none";
 
+        //     const paymentModal = new bootstrap.Modal(
+        //         document.getElementById("paymentModal")
+        //     );
+        //     paymentModal.show();
+
+        // }
+
+        function showPaymentPanel() {
+
+            if (cart.length === 0) {
+                showToast("Please add items to the cart first", 'error');
+                updateButtonStates();
+                return;
+            }
+
+            document.getElementById("amount-received").value = parseFloat(document.getElementById("total").textContent.replace("$", "")).toFixed(2);
+            document.getElementById("change-display").style.display = "none";
+
+            const paymentPanel = document.getElementById("payment-panel");
+            const orderPanel = document.getElementById("order-panel");
+            if (paymentPanel) {
+                paymentPanel.style.display = "flex";
+                orderPanel.style.display = "none";
+                console.log("Payment panel shown");
+            }
+        }
+
+
+        function cancelPayment() {
             const paymentPanel = document.getElementById("payment-panel");
             const orderPanel = document.getElementById("order-panel");
             if (paymentPanel) {
                 paymentPanel.style.display = "none";
                 orderPanel.style.display = "flex";
-                console.log("Payment completed, back to order panel");
+                console.log("Payment cancelled, back to order panel");
             }
-            
         }
-    }
 
-    async function postTransaction() {
-        try {
-            console.log("=== Starting Transaction ===");
-            console.log("Cart items:", cart);
-            console.log("Applied discounts before mapping:", JSON.stringify(appliedDiscounts, null, 2));
+        function setupPaymentListeners() {
+            const amountInput = document.getElementById("amount-received");
+            const changeDisplay = document.getElementById("change-display");
+            const changeAmount = document.getElementById("change-amount");
 
-            if (cart.length === 0) {
-                showToast('Cart is empty', 'warning');
-                return null;
-            }
+            amountInput.addEventListener("input", () => {
+                const totalAmount = parseFloat(
+                    document.getElementById("total").textContent.replace("$", "")
+                );
+                const amount = parseFloat(amountInput.value) || 0;
 
-            const totalAmount = parseFloat(
-                document.getElementById("total").textContent.replace("$", "")
-            );
-            const amountReceived = parseFloat(document.getElementById("amount-received").value) || 0;
-            const paymentMethod = document.querySelector('.payment-method.active')?.dataset.method || 'cash';
-
-            if (amountReceived < totalAmount) {
-                showToast('Insufficient payment amount', 'error');
-                return null;
-            }
-
-            const rawSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-            const totalDiscount = appliedDiscounts.reduce((sum, discount) => sum + discount.amount, 0);
-            const discountedSubtotal = Math.max(0, rawSubtotal - totalDiscount);
-
-            let taxAmount = 0;
-            if (taxSettings.enabled) {
-                if (taxSettings.taxInclusive) {
-                    taxAmount = discountedSubtotal * (taxSettings.rate / (100 + taxSettings.rate));
+                if (amount >= totalAmount) {
+                    const change = amount - totalAmount;
+                    changeAmount.textContent = `$${change.toFixed(2)}`;
+                    changeDisplay.style.display = "flex";
                 } else {
-                    taxAmount = discountedSubtotal * (taxSettings.rate / 100);
+                    changeDisplay.style.display = "none";
+                }
+            });
+        }
+
+        async function completePayment() {
+            const result = await postTransaction();
+
+            if (result && result.success) {
+                const amountInput = document.getElementById("amount-received");
+                amountInput.value = "";
+
+                // Prepare transaction data for receipt
+                const transactionData = {
+                    items: cart.map(item => ({
+                        name: item.name,
+                        price: item.price,
+                        quantity: item.quantity,
+                        subtotal: item.price * item.quantity
+                    })),
+                    subtotal: parseFloat(document.getElementById("subtotal").textContent.replace("$", "")),
+                    tax: parseFloat(document.getElementById("tax").textContent.replace("$", "")),
+                    total: parseFloat(document.getElementById("total").textContent.replace("$", "")),
+                    paymentMethod: document.querySelector('.payment-method.active')?.dataset.method || 'cash',
+                    amountPaid: parseFloat(document.getElementById("amount-received").value),
+                    change: parseFloat(document.getElementById("change-amount")?.textContent.replace("$", "") || "0"),
+                    taxRate: taxSettings.rate,
+                    appliedDiscounts: appliedDiscounts.map(d => ({
+                        discountName: d.discount.name,
+                        discountedAmount: d.amount,
+                        discountType: d.discount.type
+                    }))
+                };
+
+                await loadInventory();
+                await loadTodaySummary();
+                await loadNextOrderNumber();
+
+                const paymentPanel = document.getElementById("payment-panel");
+                const orderPanel = document.getElementById("order-panel");
+                if (paymentPanel) {
+                    paymentPanel.style.display = "none";
+                    orderPanel.style.display = "flex";
                 }
             }
+        }
 
-            const formattedDiscounts = appliedDiscounts.map(d => {
-                console.log("Formatting discount:", d);
-                return {
-                    discountId: d.discount._id,
-                    discountName: d.discount.name,
-                    discountType: d.discount.type,
-                    discountValue: d.discount.type === 'percentage' ? d.discount.value : d.discount.value,
-                    discountedAmount: d.amount
-                };
-            });
+        async function postTransaction() {
+            try {
+                console.log("=== Starting Transaction ===");
+                console.log("Cart items:", cart);
+                console.log("Applied discounts before mapping:", JSON.stringify(appliedDiscounts, null, 2));
 
-            console.log("Formatted discounts to send:", JSON.stringify(formattedDiscounts, null, 2));
-
-            const transactionData = {
-                items: cart.map(item => ({
-                    productId: item._id,
-                    quantity: item.quantity,
-                    price: item.price,
-                    subtotal: item.price * item.quantity
-                })),
-                subtotal: Number(rawSubtotal.toFixed(2)),
-                tax: Number(taxAmount.toFixed(2)),
-                total: Number(totalAmount.toFixed(2)),
-                paymentMethod: paymentMethod,
-                amountPaid: amountReceived,
-                change: amountReceived - totalAmount,
-                taxRate: taxSettings.rate || 8,
-                taxName: taxSettings.taxName || 'Sales Tax',
-                taxInclusive: taxSettings.taxInclusive !== undefined ? taxSettings.taxInclusive : true,
-                discount: totalDiscount,
-                appliedDiscounts: formattedDiscounts,
-                notes: `POS transaction - ${new Date().toLocaleString()}`,
-                customer: {
-                    name: 'Walk-in Customer'
-                }
-            };
-
-            console.log("Final transaction data:", JSON.stringify(transactionData, null, 2));
-
-            const response = await apiRequest('/transactions', {
-                method: 'POST',
-                body: JSON.stringify(transactionData)
-            });
-
-            console.log("Transaction API response:", response);
-
-            if (response && response.success) {
-                showToast('Transaction completed successfully!', 'success');
-
-                if (appliedDiscounts.length > 0) {
-                    await incrementMultipleDiscountUsage(appliedDiscounts);
+                if (cart.length === 0) {
+                    showToast('Cart is empty', 'warning');
+                    return null;
                 }
 
-                const productIds = cart.map(item => item._id);
-                cart = [];
-                appliedDiscounts = [];
-                updateCart();
-                renderAppliedDiscounts();
+                const totalAmount = parseFloat(
+                    document.getElementById("total").textContent.replace("$", "")
+                );
+                const amountReceived = parseFloat(document.getElementById("amount-received").value) || 0;
+                const paymentMethod = document.querySelector('.payment-method.active')?.dataset.method || 'cash';
 
-                productIds.forEach(productId => {
-                    updateProductStockDisplay(productId);
+                if (amountReceived < totalAmount) {
+                    showToast('Insufficient payment amount', 'error');
+                    return null;
+                }
+
+                const rawSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                const totalDiscount = appliedDiscounts.reduce((sum, discount) => sum + discount.amount, 0);
+                const discountedSubtotal = Math.max(0, rawSubtotal - totalDiscount);
+
+                let taxAmount = 0;
+                if (taxSettings.enabled) {
+                    if (taxSettings.taxInclusive) {
+                        taxAmount = discountedSubtotal * (taxSettings.rate / (100 + taxSettings.rate));
+                    } else {
+                        taxAmount = discountedSubtotal * (taxSettings.rate / 100);
+                    }
+                }
+
+                const formattedDiscounts = appliedDiscounts.map(d => {
+                    console.log("Formatting discount:", d);
+                    return {
+                        discountId: d.discount._id,
+                        discountName: d.discount.name,
+                        discountType: d.discount.type,
+                        discountValue: d.discount.type === 'percentage' ? d.discount.value : d.discount.value,
+                        discountedAmount: d.amount
+                    };
                 });
 
-                const completeModal = new bootstrap.Modal(document.getElementById("completeModal"));
-                completeModal.show();
+                console.log("Formatted discounts to send:", JSON.stringify(formattedDiscounts, null, 2));
 
-                const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-                if (paymentModal) {
-                    paymentModal.hide();
+                const transactionData = {
+                    items: cart.map(item => ({
+                        productId: item._id,
+                        name: item.name,
+                        quantity: item.quantity,
+                        price: item.price,
+                        subtotal: item.price * item.quantity
+                    })),
+                    subtotal: Number(rawSubtotal.toFixed(2)),
+                    tax: Number(taxAmount.toFixed(2)),
+                    total: Number(totalAmount.toFixed(2)),
+                    paymentMethod: paymentMethod,
+                    amountPaid: amountReceived,
+                    change: amountReceived - totalAmount,
+                    taxRate: taxSettings.rate || 8,
+                    taxName: taxSettings.taxName || 'Sales Tax',
+                    taxInclusive: taxSettings.taxInclusive !== undefined ? taxSettings.taxInclusive : true,
+                    discount: totalDiscount,
+                    appliedDiscounts: formattedDiscounts,
+                    notes: `POS transaction - ${new Date().toLocaleString()}`,
+                    customer: {
+                        name: 'Walk-in Customer'
+                    }
+                };
+
+                console.log("Final transaction data:", JSON.stringify(transactionData, null, 2));
+
+                const response = await apiRequest('/transactions', {
+                    method: 'POST',
+                    body: JSON.stringify(transactionData)
+                });
+
+                console.log("Transaction API response:", response);
+
+                if (response && response.success) {
+                    showToast('Transaction completed successfully!', 'success');
+
+
+                    window.lastTransactionData = {
+                        items: cart.map(item => ({
+                            name: item.name,
+                            price: item.price,
+                            quantity: item.quantity
+                        })),
+                        subtotal: Number(rawSubtotal.toFixed(2)),
+                        tax: Number(taxAmount.toFixed(2)),
+                        total: Number(totalAmount.toFixed(2)),
+                        paymentMethod: paymentMethod,
+                        amountPaid: amountReceived,
+                        change: amountReceived - totalAmount,
+                        taxRate: taxSettings.rate || 8,
+                        appliedDiscounts: formattedDiscounts
+                    };
+
+
+                    if (appliedDiscounts.length > 0) {
+                        await incrementMultipleDiscountUsage(appliedDiscounts);
+                    }
+
+                    const productIds = cart.map(item => item._id);
+                    cart = [];
+                    appliedDiscounts = [];
+                    updateCart();
+                    renderAppliedDiscounts();
+
+                    productIds.forEach(productId => {
+                        updateProductStockDisplay(productId);
+                    });
+
+                    const completeModal = new bootstrap.Modal(document.getElementById("completeModal"));
+                    completeModal.show();
+
+                    const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                    if (paymentModal) {
+                        paymentModal.hide();
+                    }
+
+                    return response;
+                } else {
+                    showToast(response?.message || 'Transaction failed', 'error');
+                    return null;
                 }
-
-                return response;
-            } else {
-                showToast(response?.message || 'Transaction failed', 'error');
+            } catch (error) {
+                console.error('Transaction error:', error);
+                showToast('Transaction processing error: ' + error.message, 'error');
                 return null;
             }
-        } catch (error) {
-            console.error('Transaction error:', error);
-            showToast('Transaction processing error: ' + error.message, 'error');
-            return null;
         }
-    }
 
-    async function incrementMultipleDiscountUsage(appliedDiscounts) {
-        try {
-            console.log("Incrementing multiple discount usage");
+        async function incrementMultipleDiscountUsage(appliedDiscounts) {
+            try {
+                console.log("Incrementing multiple discount usage");
 
-            const discountIds = appliedDiscounts.map(discount => discount.discount._id);
+                const discountIds = appliedDiscounts.map(discount => discount.discount._id);
 
-            const response = await apiRequest('/discounts/increment-usage-batch', {
-                method: 'POST',
-                body: JSON.stringify({
-                    discountIds: discountIds,
-                    incrementBy: 1
-                })
-            });
+                const response = await apiRequest('/discounts/increment-usage-batch', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        discountIds: discountIds,
+                        incrementBy: 1
+                    })
+                });
 
-            if (response && response.success) {
-                console.log(`Successfully incremented usage for ${response.modifiedCount} discounts`);
-                return true;
-            } else {
-                console.error('Failed to increment discount usage:', response);
-                showToast('Failed to update discount usage count', 'error');
+                if (response && response.success) {
+                    console.log(`Successfully incremented usage for ${response.modifiedCount} discounts`);
+                    return true;
+                } else {
+                    console.error('Failed to increment discount usage:', response);
+                    showToast('Failed to update discount usage count', 'error');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error incrementing discount usage:', error);
+                showToast('Failed to update discount usage count', 'warning');
                 return false;
             }
-        } catch (error) {
-            console.error('Error incrementing discount usage:', error);
-            showToast('Failed to update discount usage count', 'warning');
-            return false;
         }
-    }
 
-    // ============================================
-    // LOAD TODAY SUMMARY & ORDER NUMBER
-    // ============================================
 
-    async function loadTodaySummary() {
-        try {
-            const summaryData = await apiRequest('/transactions/summary/today');
-            if (summaryData && summaryData.success) {
-                const { totalSales, transactionCount } = summaryData.summary;
 
-                const todaySalesEl = document.querySelector('.stat-item:nth-child(1) .stat-value');
-                const transactionsEl = document.querySelector('.stat-item:nth-child(2) .stat-value');
 
-                if (todaySalesEl) {
-                    todaySalesEl.textContent = `$${totalSales}`;
+
+        // ============================================
+        // LOAD TODAY SUMMARY & ORDER NUMBER
+        // ============================================
+
+        async function loadTodaySummary() {
+            try {
+                const summaryData = await apiRequest('/transactions/summary/today');
+                if (summaryData && summaryData.success) {
+                    const { totalSales, transactionCount } = summaryData.summary;
+
+                    const todaySalesEl = document.querySelector('.stat-item:nth-child(1) .stat-value');
+                    const transactionsEl = document.querySelector('.stat-item:nth-child(2) .stat-value');
+
+                    if (todaySalesEl) {
+                        todaySalesEl.textContent = `$${totalSales}`;
+                    }
+                    if (transactionsEl) {
+                        transactionsEl.textContent = transactionCount;
+                    }
                 }
-                if (transactionsEl) {
-                    transactionsEl.textContent = transactionCount;
+            } catch (error) {
+                console.error('Failed to load today summary:', error);
+            }
+        }
+
+        async function loadNextOrderNumber() {
+            try {
+                const orderData = await apiRequest('/transactions/next-order-number');
+                const orderNumberEl = document.getElementById('order-number');
+
+                if (!orderNumberEl) return;
+
+                if (orderData && orderData.success) {
+                    orderNumberEl.textContent = orderData.displayNumber;
+                    orderNumberEl.dataset.fullNumber = orderData.nextOrderNumber;
+                    orderNumberEl.title = `Full: ${orderData.nextOrderNumber}`;
+                } else {
+                    orderNumberEl.textContent = "0001";
+                }
+            } catch (error) {
+                console.error('Failed to load next order number:', error);
+                const orderNumberEl = document.getElementById('order-number');
+                if (orderNumberEl) {
+                    orderNumberEl.textContent = "0001";
                 }
             }
-        } catch (error) {
-            console.error('Failed to load today summary:', error);
         }
-    }
 
-    async function loadNextOrderNumber() {
-        try {
-            const orderData = await apiRequest('/transactions/next-order-number');
-            const orderNumberEl = document.getElementById('order-number');
+        // ============================================
+        // TOAST NOTIFICATION
+        // ============================================
 
-            if (!orderNumberEl) return;
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container') || createToastContainer();
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
 
-            if (orderData && orderData.success) {
-                orderNumberEl.textContent = orderData.displayNumber;
-                orderNumberEl.dataset.fullNumber = orderData.nextOrderNumber;
-                orderNumberEl.title = `Full: ${orderData.nextOrderNumber}`;
-            } else {
-                orderNumberEl.textContent = "0001";
-            }
-        } catch (error) {
-            console.error('Failed to load next order number:', error);
-            const orderNumberEl = document.getElementById('order-number');
-            if (orderNumberEl) {
-                orderNumberEl.textContent = "0001";
-            }
-        }
-    }
+            const icon = type === 'success' ? 'bi-check-circle-fill' :
+                type === 'error' ? 'bi-exclamation-circle-fill' :
+                    type === 'warning' ? 'bi-exclamation-triangle-fill' :
+                        'bi-info-circle-fill';
 
-    // ============================================
-    // TOAST NOTIFICATION
-    // ============================================
-
-    function showToast(message, type = 'info') {
-        const container = document.getElementById('toast-container') || createToastContainer();
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-
-        const icon = type === 'success' ? 'bi-check-circle-fill' :
-            type === 'error' ? 'bi-exclamation-circle-fill' :
-                type === 'warning' ? 'bi-exclamation-triangle-fill' :
-                    'bi-info-circle-fill';
-
-        toast.innerHTML = `
+            toast.innerHTML = `
             <i class="bi ${icon} toast-icon"></i>
             <div class="toast-content">
                 <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
@@ -2310,119 +2568,150 @@
             </div>
         `;
 
-        container.appendChild(toast);
+            container.appendChild(toast);
 
-        setTimeout(() => {
-            toast.classList.add('fade-out');
             setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, 300);
-        }, 5000);
+                toast.classList.add('fade-out');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 5000);
 
-        toast.addEventListener('click', () => {
-            toast.classList.add('fade-out');
-            setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, 300);
-        });
-    }
+            toast.addEventListener('click', () => {
+                toast.classList.add('fade-out');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            });
+        }
 
-    function createToastContainer() {
-        const container = document.createElement('div');
-        container.id = 'toast-container';
-        container.className = 'toast-container';
-        document.body.appendChild(container);
-        return container;
-    }
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+            return container;
+        }
 
-    // ============================================
-    // POS EVENT LISTENERS
-    // ============================================
 
-    function setupPosEventListeners() {
-        if (document.getElementById("product-search")) {
-            document.getElementById("product-search").addEventListener("input", (e) => {
-                const query = e.target.value.toLowerCase().trim();
+        async function handlePrintReceipt() {
+            if (!window.lastTransactionData) {
+                showToast('No receipt data available', 'error');
+                return;
+            }
 
-                if (query === '') {
-                    filterInventoryByCategory(currentFilter);
-                    return;
-                }
+            try {
+                await printReceipt(window.lastTransactionData);
+            } catch (error) {
+                console.error('Print error:', error);
+                showToast('Print failed: ' + error.message, 'error');
+            }
+        }
 
-                const filtered = inventory.filter((item) => {
-                    const matchesName = item.name.toLowerCase().includes(query);
-                    const matchesCategory = currentFilter === "all" ||
-                        (item.category &&
-                            (item.category._id === currentFilter ||
-                                item.category === currentFilter ||
-                                (item.category?.name && item.category.name.toLowerCase().includes(currentFilter))));
 
-                    return matchesName && matchesCategory;
+        // ============================================
+        // POS EVENT LISTENERS
+        // ============================================
+
+        function setupPosEventListeners() {
+            if (document.getElementById("product-search")) {
+                document.getElementById("product-search").addEventListener("input", (e) => {
+                    const query = e.target.value.toLowerCase().trim();
+
+                    if (query === '') {
+                        filterInventoryByCategory(currentFilter);
+                        return;
+                    }
+
+                    const filtered = inventory.filter((item) => {
+                        const matchesName = item.name.toLowerCase().includes(query);
+                        const matchesCategory = currentFilter === "all" ||
+                            (item.category &&
+                                (item.category._id === currentFilter ||
+                                    item.category === currentFilter ||
+                                    (item.category?.name && item.category.name.toLowerCase().includes(currentFilter))));
+
+                        return matchesName && matchesCategory;
+                    });
+
+                    renderInventory(filtered);
                 });
 
-                renderInventory(filtered);
+                document.getElementById("btn-cancel")?.addEventListener("click", cancelOrder);
+                document.getElementById("btn-payment")?.addEventListener("click", showPaymentPanel);
+                document.getElementById("btn-cancel-payment")?.addEventListener("click", cancelPayment);
+            }
+
+            if (document.getElementById("btn-complete-payment")) {
+                document.getElementById("btn-complete-payment").addEventListener("click", completePayment);
+                setupPaymentListeners();
+            }
+
+            if (document.getElementById("btn-print-receipt")) {
+                document.getElementById("btn-print-receipt").addEventListener("click", handlePrintReceipt);
+
+            }
+
+            document.querySelectorAll(".payment-method").forEach((btn) => {
+                btn.addEventListener("click", (e) => {
+                    document.querySelectorAll(".payment-method").forEach((b) => b.classList.remove("active"));
+                    e.currentTarget.classList.add("active");
+                });
             });
 
-            document.getElementById("btn-cancel")?.addEventListener("click", cancelOrder);
-            document.getElementById("btn-payment")?.addEventListener("click", showPaymentPanel);
-            document.getElementById("btn-cancel-payment")?.addEventListener("click", cancelPayment);
-        }   
-
-        if (document.getElementById("btn-complete-payment")) {
-            document.getElementById("btn-complete-payment").addEventListener("click", completePayment);
-            setupPaymentListeners();
+            document.getElementById('btn-discount')?.addEventListener('click', openDiscountModal);
+            document.getElementById('apply-discounts-btn')?.addEventListener('click', applyDiscounts);
         }
 
-        document.querySelectorAll(".payment-method").forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-                document.querySelectorAll(".payment-method").forEach((b) => b.classList.remove("active"));
-                e.currentTarget.classList.add("active");
-            });
+        // ============================================
+        // APP INITIALIZATION
+        // ============================================
+
+        async function initializeApp() {
+            if (!checkAuthentication()) {
+                return;
+            }
+
+            await loadCategories();
+            await loadInventory();
+            await loadTaxSettings();
+            await loadBusinessSettings();
+            await loadTodaySummary();
+            await loadNextOrderNumber();
+
+
+            // Update receipt-printer.js with business settings
+            if (typeof updateBusinessSettings === 'function') {
+                updateBusinessSettings(businessSettings);
+            }
+
+
+            initPrinterSettings();
+
+            setupPosEventListeners();
+            setupLogout();
+            updateTotals();
+
+            availableDiscounts = [];
+            appliedDiscounts = [];
+        }
+
+        // ============================================
+        // DOM READY INITIALIZATION
+        // ============================================
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (document.getElementById("products-grid")) {
+                initializeApp();
+                updateOrderTime();
+                setInterval(updateOrderTime, 1000);
+            }
         });
-
-        document.getElementById('btn-discount')?.addEventListener('click', openDiscountModal);
-        document.getElementById('apply-discounts-btn')?.addEventListener('click', applyDiscounts);
-    }
-
-    // ============================================
-    // APP INITIALIZATION
-    // ============================================
-
-    async function initializeApp() {
-        if (!checkAuthentication()) {
-            return;
-        }
-
-        await loadCategories();
-        await loadInventory();
-        await loadTaxSettings();
-        await loadTodaySummary();
-        await loadNextOrderNumber();
-
-        setupPosEventListeners();
-        setupLogout();
-        updateTotals();
-
-        availableDiscounts = [];
-        appliedDiscounts = [];
-    }
-
-    // ============================================
-    // DOM READY INITIALIZATION
-    // ============================================
-
-    document.addEventListener("DOMContentLoaded", () => {
-        if (document.getElementById("products-grid")) {
-            initializeApp();
-            updateOrderTime();
-            setInterval(updateOrderTime, 1000);
-        }
-    });
-</script>
+    </script>
 
 </body>
 

@@ -39,7 +39,12 @@ const businessSchema = new mongoose.Schema({
          taxInclusive: {
             type: Boolean,
             default: true  // Prices include tax by default
+        },
+        registeredTaxId: {
+            type: String,
+            default: '1234567890' // Default tax ID, can be updated by the user
         }
+    
     },
     subscription: {
         plan: {

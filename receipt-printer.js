@@ -8,8 +8,7 @@ window.businessSettings = window.businessSettings || {
   address: "123 Business Street\nCity, State 12345",
   phone: "(555) 123-4567",
   email: "support@orionpos.com",
-  taxRegNo: "TAX-ID: 12-3456789",
-  taxSettings: { enabled: true, rate: 10, taxName: "Tax", taxInclusive: true },
+  taxSettings: {enabled: true, rate: 10, taxName: "Tax", taxInclusive: true, registeredTaxId: "1234567890"},
   footer: "Thank you for your purchase!",
 };
 
@@ -42,63 +41,84 @@ function generateReceiptHTML(transactionData) {
     address: "123 Business Street\nCity, State 12345",
     phone: "(555) 123-4567",
     email: "support@orionpos.com",
-    taxRegNo: "TAX-ID: 12-3456789",
-    taxSettings: { enabled: true, rate: 10, taxName: "Tax", taxInclusive: true },
+    taxSettings: { enabled: true, rate: 10, taxName: "Tax", taxInclusive: true, registeredTaxId: "1234567890" },
     footer: "Thank you for your purchase!",
   };
 
-  console.log("Business Settings:", window.businessSettings);
+  // Get tax settings from business object
+  const taxSettings = business.taxSettings || { 
+    enabled: true, 
+    rate: 10, 
+    taxName: "Tax", 
+    taxInclusive: true, 
+    registeredTaxId: "1234567890" 
+  };
+
+  console.log("Transaction data:", transactionData);
 
   // Build items table
   let itemsHTML = "";
   if (transactionData.items && transactionData.items.length > 0) {
     transactionData.items.forEach((item) => {
-      const itemTotal = item.price * item.quantity;
+      const itemTotal = (item.price || 0) * (item.quantity || 0);
       itemsHTML += `
             <div class="receipt-item">
-                <div class="receipt-item-name">${escapeHtml(item.name)}</div>
+                <div class="receipt-item-name">${escapeHtml(item.name || 'Unknown Item')}</div>
                 <div class="receipt-item-details">
-                    ${item.quantity} x $${item.price.toFixed(2)} = $${itemTotal.toFixed(2)}
+                    ${item.quantity || 0} x $${(item.price || 0).toFixed(2)} = $${itemTotal.toFixed(2)}
                 </div>
             </div>
         `;
     });
   }
 
-  // Build discounts section
+  // Build discounts section - FIXED: Check the correct data structure
   let discountsHTML = "";
-  if (
-    transactionData.appliedDiscounts &&
-    transactionData.appliedDiscounts.length > 0
-  ) {
-    transactionData.appliedDiscounts.forEach((discount) => {
+  
+  // Check for discountsApplied array (from your transaction structure)
+  if (transactionData.discountsApplied && transactionData.discountsApplied.length > 0) {
+    transactionData.discountsApplied.forEach((discount) => {
+      const discountedAmount = discount.discountedAmount || discount.amount || 0;
       discountsHTML += `
                 <div style="display: flex; justify-content: space-between; font-size: 11px;">
-                    <span>${escapeHtml(discount.discountName)}</span>
-                    <span>-$${discount.discountedAmount.toFixed(2)}</span>
+                    <span>${escapeHtml(discount.discountName || discount.name || 'Discount')}</span>
+                    <span>-$${discountedAmount.toFixed(2)}</span>
+                </div>
+            `;
+    });
+  }
+  // Alternative: Check for appliedDiscounts array
+  else if (transactionData.appliedDiscounts && transactionData.appliedDiscounts.length > 0) {
+    transactionData.appliedDiscounts.forEach((discount) => {
+      const discountedAmount = discount.discountedAmount || discount.amount || 0;
+      discountsHTML += `
+                <div style="display: flex; justify-content: space-between; font-size: 11px;">
+                    <span>${escapeHtml(discount.discountName || discount.name || 'Discount')}</span>
+                    <span>-$${discountedAmount.toFixed(2)}</span>
                 </div>
             `;
     });
   }
 
-  // Get order number
-  const orderNumber =
-    document.getElementById("order-number")?.textContent || "0001";
+  // Get order number - use transaction ID if available
+  const orderNumber = transactionData.transactionId || 
+    document.getElementById("order-number")?.textContent || 
+    "0001";
 
   return `
         <div class="receipt" id="print-receipt-area">
             <div class="receipt-header">
                 <div class="receipt-title">${escapeHtml(business.name)}</div>
-                <div class="receipt-store-info">${business.address.replace(/\n/g, "<br>")}</div>
-                <div class="receipt-store-info">Tel: ${business.phone}</div>
+                <div class="receipt-store-info">${(business.address || "").replace(/\n/g, "<br>")}</div>
+                <div class="receipt-store-info">Tel: ${business.phone || "N/A"}</div>
                 ${business.email ? `<div class="receipt-store-info">${business.email}</div>` : ""}
-                ${business.taxRegNo ? `<div class="receipt-store-info">${business.taxRegNo}</div>` : ""}
+                ${taxSettings.registeredTaxId ? `<div class="receipt-store-info">Tax ID: ${taxSettings.registeredTaxId}</div>` : ""}
                 <div class="receipt-divider"></div>
                 <div class="receipt-store-info">
-                    Order #: ${orderNumber}<br>
+                    Transaction #: ${orderNumber}<br>
                     Date: ${dateStr}<br>
                     Time: ${timeStr}<br>
-                    Cashier: ${getCurrentUser()}
+                    Cashier: ${transactionData.cashier?.fullName || getCurrentUser()}
                 </div>
             </div>
             
@@ -114,28 +134,34 @@ function generateReceiptHTML(transactionData) {
             <div class="receipt-summary">
                 <div style="display: flex; justify-content: space-between;">
                     <span>Subtotal:</span>
-                    <span>$${transactionData.subtotal.toFixed(2)}</span>
+                    <span>$${(transactionData.subtotal || 0).toFixed(2)}</span>
                 </div>
                 ${discountsHTML ? `<div style="margin-top: 5px;">${discountsHTML}</div>` : ""}
+                ${transactionData.discount > 0 && !discountsHTML ? `
                 <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-                    <span>${taxSettings.taxName} ${taxSettings.taxInclusive ? '(Incl.)' : ''} (${transactionData.taxRate}%):</span>
-                    <span>$${transactionData.tax.toFixed(2)}</span>
+                    <span>Discount:</span>
+                    <span>-$${(transactionData.discount || 0).toFixed(2)}</span>
+                </div>
+                ` : ""}
+                <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                    <span>${taxSettings.taxName} ${taxSettings.taxInclusive ? '(Incl.)' : ''} (${transactionData.taxRate || taxSettings.rate}%):</span>
+                    <span>$${(transactionData.tax || 0).toFixed(2)}</span>
                 </div>
                 <div class="receipt-total" style="display: flex; justify-content: space-between; margin-top: 8px; padding-top: 5px; border-top: 1px dashed #000;">
                     <span>TOTAL:</span>
-                    <span>$${transactionData.total.toFixed(2)}</span>
+                    <span>$${(transactionData.total || 0).toFixed(2)}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-top: 5px;">
                     <span>Payment:</span>
-                    <span>${transactionData.paymentMethod.toUpperCase()}</span>
+                    <span>${(transactionData.paymentMethod || "N/A").toUpperCase()}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                     <span>Amount Paid:</span>
-                    <span>$${transactionData.amountPaid.toFixed(2)}</span>
+                    <span>$${(transactionData.amountPaid || transactionData.total || 0).toFixed(2)}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                     <span>Change:</span>
-                    <span>$${transactionData.change.toFixed(2)}</span>
+                    <span>$${(transactionData.change || 0).toFixed(2)}</span>
                 </div>
             </div>
             
@@ -143,13 +169,13 @@ function generateReceiptHTML(transactionData) {
                 <div class="qr-code">
                     ${generateSimpleBarcode(orderNumber)}
                 </div>
-                <div>${escapeHtml(business.footer)}</div>
+                <div>${escapeHtml(business.footer || "Thank you for your purchase!")}</div>
                 <div>★★★★★</div>
                 <div>Please come again</div>
                 <div class="receipt-divider"></div>
                 <div style="font-size: 10px;">
                     Return policy: 30 days with receipt<br>
-                    Support: ${business.email}
+                    Support: ${business.email || "support@orionpos.com"}
                 </div>
             </div>
         </div>

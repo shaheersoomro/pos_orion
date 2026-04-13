@@ -1367,12 +1367,13 @@
 
                     if (data.business.taxRegNo) businessSettings.taxRegNo = data.business.taxRegNo;
                     if (data.business.taxSettings) {
-                            businessSettings.taxSettings.rate = data.business.taxSettings.rate || 8.0;
-                            businessSettings.taxSettings.taxName = data.business.taxSettings.taxName || 'Sales Tax';
-                            businessSettings.taxSettings.taxInclusive = data.business.taxSettings.taxInclusive !== false;
-                            businessSettings.taxSettings.enabled = data.business.taxSettings.enabled || false;
-                        }
-                    
+                        businessSettings.taxSettings.rate = data.business.taxSettings.rate || 8.0;
+                        businessSettings.taxSettings.taxName = data.business.taxSettings.taxName || 'Sales Tax';
+                        businessSettings.taxSettings.regTaxId = data.business.taxSettings.regTaxId || '';
+                        businessSettings.taxSettings.taxInclusive = data.business.taxSettings.taxInclusive !== false;
+                        businessSettings.taxSettings.enabled = data.business.taxSettings.enabled || false;
+                    }
+
                     if (data.business.receiptFooter) businessSettings.footer = data.business.receiptFooter;
 
                     console.log('Business settings loaded:', businessSettings);
@@ -2428,8 +2429,11 @@
                         amountPaid: amountReceived,
                         change: amountReceived - totalAmount,
                         taxRate: taxSettings.rate || 8,
-                        appliedDiscounts: formattedDiscounts
+                        appliedDiscounts: formattedDiscounts,
+                        transactionId: document.getElementById('order-number')?.dataset.fullNumber || 'N/A',
                     };
+
+                    console.log("Stored last transaction data for receipt:", window.lastTransactionData);
 
 
                     if (appliedDiscounts.length > 0) {

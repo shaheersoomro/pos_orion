@@ -614,6 +614,10 @@
                                 <label>Tax Name</label>
                                 <input type="text" id="tax-name" disabled>
                             </div>
+                            <div class="form-group">
+                                <label>Registered Tax ID</label>
+                                <input type="text" id="tax-registered-id" disabled>
+                            </div>
                             <div class="form-check">
                                 <input type="checkbox" id="tax-enabled" checked disabled>
                                 <label>Tax enabled</label>
@@ -1142,6 +1146,7 @@
                         if (result.business.taxSettings) {
                             document.getElementById('tax-rate').value = result.business.taxSettings.rate || 8.0;
                             document.getElementById('tax-name').value = result.business.taxSettings.taxName || 'Sales Tax';
+                            document.getElementById('tax-registered-id').value = result.business.taxSettings.registeredTaxId || '';
                             document.getElementById('tax-inclusive').checked = result.business.taxSettings.taxInclusive !== false;
                             document.getElementById('tax-enabled').checked = result.business.taxSettings.enabled || false;
                         }
@@ -1195,7 +1200,8 @@
                         enabled: document.getElementById('tax-enabled').checked,
                         taxInclusive: document.getElementById('tax-inclusive').checked,
                         rate: parseFloat(document.getElementById('tax-rate').value),
-                        taxName: document.getElementById('tax-name').value.trim()
+                        taxName: document.getElementById('tax-name').value.trim(),
+                        registeredTaxId: document.getElementById('tax-registered-id').value.trim()
                     })
                 });
                 const result = await response.json();
@@ -1226,6 +1232,7 @@
             } else if (section === 'tax') {
                 document.getElementById('tax-rate').disabled = !enable;
                 document.getElementById('tax-name').disabled = !enable;
+                document.getElementById('tax-registered-id').disabled = !enable;
                 document.getElementById('tax-inclusive').disabled = !enable;
                 document.getElementById('tax-enabled').disabled = !enable;
                 document.getElementById('tax-save').style.display = enable ? 'block' : 'none';

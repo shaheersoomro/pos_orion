@@ -163,6 +163,7 @@ router.put(
     body("rate").isFloat({ min: 0, max: 100 }).withMessage("Tax rate must be between 0 and 100"),
     body("taxName").optional({ checkFalsy: true }).trim(),
     body("taxInclusive").optional().isBoolean().withMessage("Tax inclusive must be a boolean"),
+    body("registeredTaxId").optional({ checkFalsy: true }).trim(),
   ],
   async (req, res) => {
     try {
@@ -184,6 +185,8 @@ router.put(
         rate: req.body.rate,
         taxName: req.body.taxName || "Sales Tax",
         taxInclusive: req.body.taxInclusive !== undefined ? req.body.taxInclusive : true,
+        registeredTaxId: req.body.registeredTaxId || '',
+
       };
 
       await business.save();
